@@ -271,6 +271,28 @@ function initNavbarAuth() {
       mobileMenu.appendChild(el);
     }
   }
+
+  /* ── BOUTON INLINE dans la barre navbar (visible sans ouvrir le menu) ── */
+  const navInner   = document.querySelector('.navbar__inner');
+  const hamburger  = document.querySelector('.navbar__hamburger');
+  if (navInner && hamburger) {
+    document.getElementById('navbar-mobile-inline')?.remove();
+    const wrap = document.createElement('div');
+    wrap.id = 'navbar-mobile-inline';
+
+    if (isLogged && user) {
+      /* Avatar cliquable → ouvre le menu hamburger */
+      const initial = (user.prenom?.[0] || user.nom?.[0] || '?').toUpperCase();
+      wrap.innerHTML = `<div class="nmb-avatar">${initial}</div>`;
+      wrap.querySelector('.nmb-avatar').addEventListener('click', () => hamburger.click());
+    } else {
+      /* Bouton Connexion compact */
+      wrap.innerHTML = `<a href="login.html" class="nmb-login">
+        <i class="ph-light ph-sign-in"></i> Connexion
+      </a>`;
+    }
+    navInner.insertBefore(wrap, hamburger);
+  }
 }
 
 window.API                = API;
