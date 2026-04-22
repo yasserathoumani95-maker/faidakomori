@@ -434,9 +434,13 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 .navbar__hamburger {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
   background: none;
   padding: 4px;
+  min-height: 44px;
+  min-width: 44px;
 }
 .navbar__hamburger span {
   display: block;
