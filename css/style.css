@@ -2537,16 +2537,30 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
     overflow-y: auto;
   }
 
-  /* Filtres projets : scroll horizontal */
-  .filters {
+  /* Filtres principaux (type) : grille 2×2 sur mobile — pas de scroll */
+  .filters#filters {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .filters#filters .filter-btn {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 0;
+    max-width: calc(50% - 0.25rem);
+    justify-content: center;
+    text-align: center;
+    flex-shrink: 1;
+  }
+  /* Filtres île : scroll horizontal conservé */
+  .filters--ile {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap !important;
     scrollbar-width: none;
-    padding-bottom: 0.25rem;
-    justify-content: flex-start;
   }
-  .filters::-webkit-scrollbar { display: none; }
   .filter-btn { flex-shrink: 0; }
 
   /* Bannière offline */
@@ -2715,18 +2729,24 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
     margin: 0 auto;
   }
 
-  /* Filtres scroll horizontal */
-  .filters {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    flex-wrap: nowrap !important;
-    scrollbar-width: none;
-    padding-bottom: 0.5rem;
+  /* Filtres type (max-width 768) : même grille 2×2 wrap */
+  .filters#filters {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 0.5rem;
     justify-content: flex-start !important;
-    -ms-overflow-style: none;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .filters#filters .filter-btn {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 0;
+    max-width: calc(50% - 0.25rem);
+    text-align: center;
+    justify-content: center;
+    flex-shrink: 1;
   }
   .filters::-webkit-scrollbar { display: none; }
-  .filter-btn { flex-shrink: 0; }
 
   /* Modal soutien mobile-friendly */
   .support-modal,
