@@ -29,9 +29,20 @@ app.use(helmet({
   contentSecurityPolicy: false  // désactivé pour servir les fichiers statiques
 }));
 
-// CORS : autorise le front (fichiers locaux + serveur local)
+// CORS : autorise le front (local + Render + même origine)
+const allowedOrigins = [
+  'http://localhost:3001', 'http://127.0.0.1:3001',
+  'http://localhost:3000', 'http://127.0.0.1:3000',
+  'http://localhost:5500', 'http://127.0.0.1:5500',
+  'https://faidakomori.onrender.com',
+  'null'
+];
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5500', 'http://127.0.0.1:5500', 'null'],
+  origin: (origin, cb) => {
+    // Pas d'origine = requête directe (Postman, curl) ou même origine
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(null, true); // Accepter toutes les origines en prod (front servi par Express)
+  },
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
