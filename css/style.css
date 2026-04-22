@@ -2603,3 +2603,342 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
   /* Footer légal empilé */
   .footer__legal { flex-direction: column; gap: 0.5rem; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   NAVBAR MOBILE — toujours opaque (jamais transparent sur téléphone)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Force le fond navy même en haut de page (avant scroll) */
+  .navbar {
+    background: rgba(13, 34, 68, 0.97) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 2px 16px rgba(0,0,0,0.2) !important;
+  }
+  /* Padding réduit pour plus d'espace contenu */
+  .navbar { padding: 0.7rem 0 !important; }
+  /* Navbar inner bien aligné logo + bouton + hamburger */
+  .navbar__inner { gap: 0.5rem; }
+  /* Logo compact */
+  .navbar__logo { font-size: 1.2rem; gap: 0.3rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE LOGIN — responsive complet
+   ══════════════════════════════════════════════════════════════ */
+/* La page login a ses propres styles inline — ces règles globales
+   s'appliquent si elle charge style.css via <link> */
+.auth-split {
+  display: flex;
+  width: 100%;
+  min-height: 100dvh;
+}
+@media (max-width: 900px) {
+  .auth-split { flex-direction: column; }
+  .auth-left  { display: none !important; }
+  .auth-right {
+    width: 100% !important;
+    min-height: 100dvh;
+    background: var(--navy-deep) !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE PROJETS — filtres + grille + modal soutien
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Grille projets : 1 colonne */
+  .projects__grid {
+    grid-template-columns: 1fr !important;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Filtres scroll horizontal */
+  .filters {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start !important;
+    -ms-overflow-style: none;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0; }
+
+  /* Modal soutien mobile-friendly */
+  .support-modal,
+  [id^="modal"] {
+    width: 94vw !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    max-height: 88dvh !important;
+    overflow-y: auto !important;
+    padding: 1.5rem 1.25rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  /* Grilles de montants dans la modal → 2 colonnes */
+  [id^="modal"] [style*="grid-template-columns: repeat(4"],
+  [id^="modal"] [style*="repeat(4, 1fr)"] {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects__grid { max-width: 100%; }
+
+  /* Project card image height */
+  .project-card__img,
+  .card-img          { height: 170px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE PROJET DETAIL — layout + sticky card + tabs
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Stack layout */
+  .detail-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+
+  /* Sticky card → static, pleine largeur */
+  .sticky-card {
+    position: static !important;
+    width: 100% !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  /* Gallery image height */
+  .detail-gallery img,
+  .detail-gallery { height: 220px !important; border-radius: var(--radius-lg); }
+
+  /* Tabs scroll horizontal */
+  .detail-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none;
+    border-bottom: 1.5px solid var(--border-solid);
+    padding-bottom: 0;
+    gap: 0 !important;
+  }
+  .detail-tabs::-webkit-scrollbar { display: none; }
+  .detail-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0.7rem 1rem;
+    font-size: 0.88rem;
+  }
+
+  /* Bouton soutenir pleine largeur */
+  .detail-grid .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE MON ESPACE — dashboard responsive
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Grid → colonne unique */
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  /* Sidebar → header horizontal avec nav en onglets */
+  .dashboard-sidebar {
+    position: static !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    margin-bottom: 1.5rem;
+  }
+  .dashboard-sidebar__user {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    text-align: left !important;
+    padding: 1.25rem 1rem !important;
+  }
+  .dashboard-sidebar__avatar { margin: 0 !important; flex-shrink: 0; }
+  .dashboard-sidebar__nav {
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding: 0 !important;
+    border-top: 1px solid var(--border-solid);
+  }
+  .dashboard-sidebar__nav::-webkit-scrollbar { display: none; }
+  .dashboard-nav-item {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.82rem !important;
+    border-left: none !important;
+    border-bottom: 2.5px solid transparent;
+    border-radius: 0 !important;
+  }
+  .dashboard-nav-item.active {
+    border-left: none !important;
+    border-bottom-color: var(--green) !important;
+    background: rgba(0,200,83,0.06) !important;
+  }
+  .dashboard-nav-item:hover { border-bottom-color: var(--border-solid); }
+
+  /* Panel contenu plein écran */
+  .dashboard-panel.active { padding: 0 1rem 2rem; }
+
+  /* Project card empilée */
+  .dashboard-project-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Contrib stats : 2 colonnes */
+  #contrib-stats { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Select livraisons : pleine largeur */
+  #livraisons-project-select { max-width: 100% !important; width: 100% !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE DEPOSER — formulaire multi-étapes
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Grille type projets → 1 colonne */
+  .type-cards { grid-template-columns: 1fr !important; }
+
+  /* Stepper compact + scroll */
+  .stepper {
+    gap: 0.1rem !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+  .stepper::-webkit-scrollbar { display: none; }
+  .stepper__step { flex-shrink: 0; }
+  .stepper__label { display: none; }
+
+  /* Grilles inline dans le formulaire */
+  [style*="grid-template-columns: repeat(3"],
+  [style*="repeat(3, 1fr)"] {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Form row → 1 colonne */
+  .form-row { grid-template-columns: 1fr !important; }
+  .form-card { padding: 1.5rem 1rem !important; }
+
+  /* File upload zone */
+  .file-upload-zone { padding: 1.25rem 0.75rem !important; }
+
+  /* Phone field */
+  .phone-field { flex-wrap: wrap; }
+  .phone-field__code { width: auto; flex-shrink: 0; }
+  .phone-field__num  { flex: 1; min-width: 0; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE ADMIN — layout sidebar + main
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Bouton toggle mobile déjà géré dans admin.html
+     → s'assure qu'il n'est pas masqué par la navbar */
+  .admin-mobile-toggle {
+    top: 4.5rem !important;
+    z-index: 990 !important;
+  }
+
+  /* Table admin : scroll horizontal */
+  .admin-table-wrap,
+  .table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  .admin-table { min-width: 600px; }
+
+  /* Drawer plein écran */
+  .admin-drawer { width: 100vw !important; }
+  .admin-drawer__field { grid-template-columns: 1fr !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CORRECTIONS UNIVERSELLES — overflow & touch
+   ══════════════════════════════════════════════════════════════ */
+
+/* Empêcher tout débordement horizontal sur toutes les pages */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Images : toujours dans leur conteneur */
+img { max-width: 100%; height: auto; }
+
+/* Boutons et liens : taille tap target minimum */
+@media (max-width: 768px) {
+  button, .btn, a.btn {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+  input, select, textarea {
+    font-size: 16px !important; /* évite le zoom iOS */
+    touch-action: manipulation;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO INDEX — corrections mobile
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Hero padding depuis le bas de la navbar */
+  .hero {
+    padding-top: 5rem;
+    min-height: auto;
+  }
+  .hero__layout {
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
+    text-align: center;
+  }
+  .hero__ctas {
+    justify-content: center !important;
+  }
+  .hero__right { display: none; } /* masquer la partie stats verticale desktop */
+  .hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 2rem;
+    width: 100%;
+  }
+
+  /* Section labels + page hero */
+  .page-hero { padding: 5.5rem 0 2.5rem !important; }
+  .page-hero__title { font-size: clamp(1.8rem, 7vw, 2.5rem) !important; }
+
+  /* Why section → 1 colonne */
+  .why__grid { grid-template-columns: 1fr !important; }
+
+  /* Newsletter */
+  .newsletter__form { flex-direction: column; gap: 0.75rem; }
+  .newsletter__input { width: 100%; }
+  .newsletter { padding: 2rem 1.25rem; }
+
+  /* Footer grid → 1 colonne */
+  .footer__grid { grid-template-columns: 1fr !important; }
+  .footer__bottom { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+}
