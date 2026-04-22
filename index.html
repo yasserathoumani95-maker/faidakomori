@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FaidaKomori — Financez votre projet. Ensemble.</title>
+  <meta name="description" content="La première plateforme de financement participatif des Comores. Prévente, dons ou investissement — choisissez le modèle qui correspond à votre projet." />
+  <meta property="og:title"       content="FaidaKomori — Financez votre projet. Ensemble." />
+  <meta property="og:description" content="La première plateforme de financement participatif des Comores." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:image"       content="https://faidakomori.km/img/og-cover.jpg" />
+  <meta name="theme-color"        content="#00C853" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"/>
+  <style>
+    .ph-light { font-size:1.1em; vertical-align:middle; line-height:1; }
+    .why-card__icon .ph-light, .why-card__icon i { font-size:2rem; }
+    .btn-icon-wrap .ph-light { font-size:0.95em; }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Aller au contenu</a>
+
+  <!-- ══════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="index.html" class="navbar__logo">
+          <img src="img/logo-fk-icon.svg" alt="FaidaKomori logo" class="navbar__logo-img" />Faida<span>Komori</span>
+        </a>
+        <ul class="navbar__links">
+          <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="#modeles">Les 3 modèles</a></li>
+          <li><a href="projets.html">Projets</a></li>
+          <li>
+            <a href="deposer.html" class="btn btn-primary btn-sm">
+              Déposer mon projet
+              <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
+            </a>
+          </li>
+        </ul>
+        <button class="navbar__hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="navbar__mobile" role="navigation" aria-label="Menu mobile">
+      <a href="#comment-ca-marche">Comment ça marche</a>
+      <a href="#modeles">Les 3 modèles</a>
+      <a href="projets.html">Projets</a>
+      <a href="deposer.html" class="btn btn-primary btn-sm">Déposer mon projet</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+       HERO — Layout asymétrique (texte gauche / stats droite)
+  ══════════════════════════════════════════ -->
+  <main id="main-content">
+  <section class="hero" aria-label="Présentation FaidaKomori">
+    <div class="hero__bg">
+      <div class="hero__bg-grid"></div>
+      <div class="hero__bg-orb hero__bg-orb--1"></div>
+      <div class="hero__bg-orb hero__bg-orb--2"></div>
+      <div class="hero__bg-orb hero__bg-orb--3"></div>
+    </div>
+
+    <div class="container">
+      <div class="hero__layout">
+
+        <!-- Gauche : contenu principal -->
+        <div class="hero__left">
+          <div class="hero__badge">🇰🇲 Plateforme comorienne</div>
+          <h1 class="hero__title">
+            Financez votre projet.<br />
+            <em>Ensemble.</em>
+          </h1>
+          <p class="hero__subtitle">
+            La première plateforme de financement participatif des Comores. Prévente, dons ou investissement — choisissez le modèle qui correspond à votre projet.
+          </p>
+          <div class="hero__ctas">
+            <a href="deposer.html" class="btn btn-primary btn-lg">
+              <i class="ph-light ph-rocket-launch"></i> Déposer mon projet
+              <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
+            </a>
+            <a href="projets.html" class="btn btn-outline btn-lg">
+              Découvrir les projets
+            </a>
+          </div>
+        </div>
+
+        <!-- Droite : grille de stats flottante -->
+        <div class="hero__right">
+          <div class="hero__stats">
+            <div class="hero__stat">
+              <div class="hero__stat-inner">
+                <span class="hero__stat-value"
+                  data-counter data-target="3" data-suffix="%" data-decimal="0">3%</span>
+                <span class="hero__stat-label">Commission seulement si succès</span>
+              </div>
+            </div>
+            <div class="hero__stat">
+              <div class="hero__stat-inner">
+                <span class="hero__stat-value"
+                  data-counter data-target="72" data-suffix="h" data-decimal="0">72h</span>
+                <span class="hero__stat-label">Délai de réponse garanti</span>
+              </div>
+            </div>
+            <div class="hero__stat">
+              <div class="hero__stat-inner">
+                <span class="hero__stat-value"
+                  data-counter data-target="3" data-suffix="" data-decimal="0">3</span>
+                <span class="hero__stat-label">Modèles de financement</span>
+              </div>
+            </div>
+            <div class="hero__stat">
+              <div class="hero__stat-inner">
+                <span class="hero__stat-value">100%</span>
+                <span class="hero__stat-label">Accompagné de A à Z</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Badge partenaire ANPI -->
+          <div style="margin-top:1.25rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem;backdrop-filter:blur(8px);">
+            <i class="ph-light ph-buildings" style="font-size:1.75rem;flex-shrink:0;"></i>
+            <div>
+              <p style="color:var(--white);font-weight:600;font-size:0.88rem;margin:0;max-width:100%;">Partenaire officiel ANPI</p>
+              <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;margin:0;max-width:100%;">Création d'entreprise officielle incluse</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       BANDEAU DÉFILANT
+  ══════════════════════════════════════════ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span class="ticker__item"><i class="ph-light ph-plant"></i> Agriculture</span>
+      <span class="ticker__item"><i class="ph-light ph-storefront"></i> Commerce</span>
+      <span class="ticker__item"><i class="ph-light ph-paint-brush"></i> Artisanat</span>
+      <span class="ticker__item"><i class="ph-light ph-laptop"></i> Tech & Digital</span>
+      <span class="ticker__item"><i class="ph-light ph-graduation-cap"></i> Éducation</span>
+      <span class="ticker__item"><i class="ph-light ph-fish"></i> Pêche</span>
+      <span class="ticker__item"><i class="ph-light ph-heart"></i> Santé</span>
+      <span class="ticker__item"><i class="ph-light ph-music-notes"></i> Culture</span>
+      <span class="ticker__item"><i class="ph-light ph-wrench"></i> Services</span>
+      <span class="ticker__item"><i class="ph-light ph-globe"></i> Diaspora</span>
+      <span class="ticker__item"><i class="ph-light ph-fork-knife"></i> Restauration</span>
+      <span class="ticker__item"><i class="ph-light ph-airplane"></i> Tourisme</span>
+      <span class="ticker__item"><i class="ph-light ph-plant"></i> Agriculture</span>
+      <span class="ticker__item"><i class="ph-light ph-storefront"></i> Commerce</span>
+      <span class="ticker__item"><i class="ph-light ph-paint-brush"></i> Artisanat</span>
+      <span class="ticker__item"><i class="ph-light ph-laptop"></i> Tech & Digital</span>
+      <span class="ticker__item"><i class="ph-light ph-graduation-cap"></i> Éducation</span>
+      <span class="ticker__item"><i class="ph-light ph-fish"></i> Pêche</span>
+      <span class="ticker__item"><i class="ph-light ph-heart"></i> Santé</span>
+      <span class="ticker__item"><i class="ph-light ph-music-notes"></i> Culture</span>
+      <span class="ticker__item"><i class="ph-light ph-wrench"></i> Services</span>
+      <span class="ticker__item"><i class="ph-light ph-globe"></i> Diaspora</span>
+      <span class="ticker__item"><i class="ph-light ph-fork-knife"></i> Restauration</span>
+      <span class="ticker__item"><i class="ph-light ph-airplane"></i> Tourisme</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       LES 3 MODÈLES
+  ══════════════════════════════════════════ -->
+  <section class="section" id="modeles">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label">Comment vous financer</span>
+        <h2 class="section-title">Les 3 modèles de financement</h2>
+        <p class="section-subtitle">Chaque projet est unique. Choisissez le modèle qui correspond à vos besoins et à la nature de votre projet.</p>
+      </div>
+
+      <div class="models__grid">
+
+        <!-- PRÉVENTE -->
+        <article class="model-card model-card--prevente">
+          <div class="model-card__core">
+            <div class="model-card__icon"><i class="ph-light ph-package"></i></div>
+            <span class="badge badge-prevente model-card__badge">Remboursement si objectif non atteint</span>
+            <h3 class="model-card__title">Prévente</h3>
+            <p class="model-card__desc">
+              Vous voulez créer un livre, un produit artisanal, ou lancer un service ? Présentez votre projet, fixez un objectif, et les soutiens paient à l'avance pour recevoir votre produit une fois créé. Si l'objectif n'est pas atteint, chaque soutien est intégralement remboursé.
+            </p>
+            <div class="model-card__example">
+              <strong>Exemple :</strong> Un auteur veut imprimer 500 exemplaires de son livre. Les lecteurs commandent à l'avance. Une fois les fonds atteints, le livre est imprimé et livré.
+            </div>
+            <p class="model-card__for"><strong>Pour qui :</strong> Créateurs, auteurs, artisans, entrepreneurs produit</p>
+            <a href="deposer.html?type=prevente" class="btn btn-primary">
+              <i class="ph-light ph-package"></i> Déposer avec ce modèle
+            </a>
+          </div>
+        </article>
+
+        <!-- DONS -->
+        <article class="model-card model-card--dons">
+          <div class="model-card__core">
+            <div class="model-card__icon"><i class="ph-light ph-handshake"></i></div>
+            <span class="badge badge-dons model-card__badge">Soutien solidaire sans remboursement</span>
+            <h3 class="model-card__title">Dons & Soutien</h3>
+            <p class="model-card__desc">
+              Votre projet a une dimension sociale, culturelle ou solidaire ? Collectez des dons de la communauté comorienne et de la diaspora. Les donateurs soutiennent votre cause sans attendre de retour financier. Idéal pour les associations et projets éducatifs.
+            </p>
+            <div class="model-card__example">
+              <strong>Exemple :</strong> Association culturelle, projet solidaire, école communautaire, aide post-catastrophe, projet artistique.
+            </div>
+            <p class="model-card__for"><strong>Pour qui :</strong> Associations, porteurs de projets sociaux, artistes, ONG</p>
+            <a href="deposer.html?type=dons" class="btn btn-ocean">
+              <i class="ph-light ph-handshake"></i> Déposer avec ce modèle
+            </a>
+          </div>
+        </article>
+
+        <!-- INVESTISSEMENT -->
+        <article class="model-card model-card--invest">
+          <div class="model-card__core">
+            <div class="model-card__icon"><i class="ph-light ph-trend-up"></i></div>
+            <span class="badge badge-invest model-card__badge">Parts de l'entreprise en contrepartie</span>
+            <h3 class="model-card__title">Investissement & Parts</h3>
+            <p class="model-card__desc">
+              Vous avez un projet d'entreprise sérieux et vous cherchez des associés ? Proposez des parts de votre future société à des investisseurs. En échange de leur capital, ils deviennent co-propriétaires et partagent les bénéfices futurs.
+            </p>
+            <div class="model-card__example">
+              <strong>Exemple :</strong> Un entrepreneur cède 20% de son restaurant en échange de 2 millions KMF. Si le restaurant réussit, les investisseurs reçoivent 20% des bénéfices.
+            </div>
+            <p class="model-card__for"><strong>Pour qui :</strong> Entrepreneurs sérieux, créateurs d'entreprise, projets à fort potentiel</p>
+            <a href="deposer.html?type=investissement" class="btn btn-navy">
+              <i class="ph-light ph-trend-up"></i> Déposer avec ce modèle
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       COMMENT ÇA MARCHE
+  ══════════════════════════════════════════ -->
+  <section class="section section--sand" id="comment-ca-marche">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label section-label--ocean">Processus</span>
+        <h2 class="section-title">Comment ça marche ?</h2>
+        <p class="section-subtitle">De votre candidature au décaissement des fonds, nous vous accompagnons à chaque étape.</p>
+      </div>
+      <div class="steps">
+        <div class="steps__track">
+
+          <div class="step">
+            <div class="step__num">1</div>
+            <div class="step__content">
+              <h4 class="step__title">Dépôt de candidature en ligne</h4>
+              <p class="step__desc">Remplissez le formulaire en décrivant votre projet, le montant recherché et le modèle souhaité. Moins de 10 minutes.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__num">2</div>
+            <div class="step__content">
+              <h4 class="step__title">Entretien de sélection rigoureux</h4>
+              <p class="step__desc">Notre équipe vous contacte dans les 72h. Chaque projet est évalué sur une grille de 100 points (viabilité, porteur, impact, faisabilité).</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__num">3</div>
+            <div class="step__content">
+              <h4 class="step__title">Acceptation et mise en ligne</h4>
+              <p class="step__desc">Après validation, votre projet est publié avec sa page dédiée, sa barre de progression et son lien de partage.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__num">4</div>
+            <div class="step__content">
+              <h4 class="step__title">Collecte des fonds (30 à 90 jours)</h4>
+              <p class="step__desc">Les soutiens paient par Mobile Money (Huri Money, M-Pesa) ou virement bancaire. FaidaKomori sécurise les fonds sur un compte dédié.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__num">5</div>
+            <div class="step__content">
+              <h4 class="step__title">Création d'entreprise via ANPI</h4>
+              <p class="step__desc">Si votre projet nécessite une structure légale, nous vous accompagnons pour créer votre entreprise officiellement via l'ANPI Comores.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__num">6</div>
+            <div class="step__content">
+              <h4 class="step__title">Décaissement progressif + accompagnement</h4>
+              <p class="step__desc">Les fonds sont décaissés progressivement selon votre plan. Notre équipe vous accompagne pour l'achat des équipements et réalise un suivi mensuel.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       PROJETS EN COURS
+  ══════════════════════════════════════════ -->
+  <section class="section" id="projets">
+    <div class="container">
+      <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.25rem;">
+        <div>
+          <span class="section-label">En ce moment</span>
+          <h2 class="section-title" style="margin-bottom:0;">Projets en cours</h2>
+        </div>
+        <a href="projets.html" class="btn btn-outline-navy">Voir tous les projets →</a>
+      </div>
+
+      <div class="projects__grid">
+
+        <!-- Projet 1 — Prévente -->
+        <article class="project-card" data-type="prevente">
+          <div class="project-card__inner">
+            <div class="project-card__image project-card__image--prevente">
+              📚
+              <div class="project-card__badge-wrap">
+                <span class="badge badge-prevente"><i class="ph-light ph-package"></i> Prévente</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <h4 class="project-card__title">Livre de cuisine comorienne</h4>
+              <p class="project-card__author">👩‍🍳 Fatima Abdou — Grande Comore</p>
+              <p class="project-card__desc">Recueil illustré de 120 recettes traditionnelles. Les lecteurs commandent à l'avance pour financer l'impression.</p>
+              <div class="project-card__progress">
+                <div class="progress-bar">
+                  <div class="progress-bar__fill progress-bar__fill--prevente" data-pct="68"></div>
+                </div>
+                <div class="progress-meta">
+                  <span class="progress-pct progress-pct--prevente">68%</span>
+                  <span>272 000 / 400 000 KMF</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-card__footer">
+              <span class="project-card__days"><strong>22 jours</strong> restants</span>
+              <button onclick="openSupportModal('prevente','Livre de cuisine comorienne')" class="btn btn-primary btn-sm">Soutenir</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Projet 2 — Dons -->
+        <article class="project-card" data-type="dons">
+          <div class="project-card__inner">
+            <div class="project-card__image project-card__image--dons">
+              🏫
+              <div class="project-card__badge-wrap">
+                <span class="badge badge-dons"><i class="ph-light ph-handshake"></i> Dons</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <h4 class="project-card__title">École primaire à Mohéli</h4>
+              <p class="project-card__author"><i class="ph-light ph-buildings"></i> Association Éducation Mohéli — Mohéli</p>
+              <p class="project-card__desc">Construction d'une salle de classe supplémentaire pour 40 enfants dans un village rural de Mohéli.</p>
+              <div class="project-card__progress">
+                <div class="progress-bar">
+                  <div class="progress-bar__fill progress-bar__fill--dons" data-pct="42"></div>
+                </div>
+                <div class="progress-meta">
+                  <span class="progress-pct progress-pct--dons">42%</span>
+                  <span>630 000 / 1 500 000 KMF</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-card__footer">
+              <span class="project-card__days"><strong>45 jours</strong> restants</span>
+              <button onclick="openSupportModal('dons','École primaire à Mohéli')" class="btn btn-ocean btn-sm">Soutenir</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Projet 3 — Investissement -->
+        <article class="project-card" data-type="investissement">
+          <div class="project-card__inner">
+            <div class="project-card__image project-card__image--invest">
+              <i class="ph-light ph-fork-knife" style="font-size:2.5rem;opacity:0.6;"></i>
+              <div class="project-card__badge-wrap">
+                <span class="badge badge-invest"><i class="ph-light ph-trend-up"></i> Investissement</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <h4 class="project-card__title">Restaurant traditionnel Moroni</h4>
+              <p class="project-card__author">👨‍🍳 Nassim Hamidou — Grande Comore</p>
+              <p class="project-card__desc">Ouverture d'un restaurant de cuisine comorienne. 25% des parts proposées aux investisseurs.</p>
+              <div class="project-card__progress">
+                <div class="progress-bar">
+                  <div class="progress-bar__fill progress-bar__fill--invest" data-pct="85"></div>
+                </div>
+                <div class="progress-meta">
+                  <span class="progress-pct progress-pct--invest">85%</span>
+                  <span>1 700 000 / 2 000 000 KMF</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-card__footer">
+              <span class="project-card__days"><strong>8 jours</strong> restants</span>
+              <button onclick="openSupportModal('investissement','Restaurant traditionnel Moroni','25%','2 000 000')" class="btn btn-navy btn-sm">Investir</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       POURQUOI FAIDAKOMORI
+  ══════════════════════════════════════════ -->
+  <section class="section section--dark" id="pourquoi">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label section-label--white">Notre engagement</span>
+        <h2 class="section-title" style="color:var(--white);">Pourquoi FaidaKomori ?</h2>
+        <p class="section-subtitle" style="color:rgba(255,255,255,0.6);margin:0 auto;">
+          Nous ne nous contentons pas de mettre en ligne votre projet. Nous vous accompagnons pour créer votre entreprise via l'ANPI, acheter vos équipements, et suivre votre activité chaque mois.
+        </p>
+      </div>
+      <div class="why__grid">
+        <div class="why-card">
+          <div class="why-card__icon"><i class="ph-light ph-lock"></i></div>
+          <h4 class="why-card__title">Sécurité des fonds</h4>
+          <p class="why-card__desc">Chaque collecte est sécurisée sur un compte dédié. Les fonds sont décaissés progressivement selon votre plan, jamais en une seule fois.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card__icon"><i class="ph-light ph-clipboard-text"></i></div>
+          <h4 class="why-card__title">Sélection rigoureuse</h4>
+          <p class="why-card__desc">Chaque projet passe un entretien évalué sur une grille de 100 points. Seuls les projets sérieux et viables sont acceptés.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card__icon"><i class="ph-light ph-bank"></i></div>
+          <h4 class="why-card__title">Partenariat ANPI</h4>
+          <p class="why-card__desc">Partenaire officiel de l'ANPI Comores. Si votre projet nécessite une entreprise, nous vous guidons dans la création officielle de votre société.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card__icon"><i class="ph-light ph-device-mobile"></i></div>
+          <h4 class="why-card__title">Mobile Money</h4>
+          <p class="why-card__desc">Paiements simples via Huri Money, M-Pesa ou virement bancaire. Accessible à tous les Comoriens, y compris dans les îles et la diaspora.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card__icon"><i class="ph-light ph-handshake"></i></div>
+          <h4 class="why-card__title">Accompagnement terrain</h4>
+          <p class="why-card__desc">Notre équipe vous accompagne pour acheter vos équipements et réalise un suivi mensuel de votre activité pendant toute la durée du projet.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card__icon"><i class="ph-light ph-briefcase"></i></div>
+          <h4 class="why-card__title">Création d'emplois</h4>
+          <p class="why-card__desc">Objectif : 500 emplois aux Comores en 3 ans. Chaque projet financé est un emploi créé, une famille nourrie, une économie renforcée.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FAQ
+  ══════════════════════════════════════════ -->
+  <section class="section section--off" id="faq">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label">Questions fréquentes</span>
+        <h2 class="section-title">Tout ce que vous devez savoir</h2>
+        <p class="section-subtitle">Des réponses claires avant de déposer votre candidature.</p>
+      </div>
+      <div class="faq__list">
+
+        <div class="faq-item">
+          <button class="faq-item__question">
+            Quelle commission prend FaidaKomori ?
+            <span class="faq-item__icon">+</span>
+          </button>
+          <div class="faq-item__answer">
+            <div class="faq-item__answer-inner">
+              FaidaKomori prend une commission de <strong>3% à 5%</strong> uniquement si votre projet atteint son objectif de financement. Si votre collecte échoue (modèle Prévente), vous ne payez rien. La commission exacte est déterminée lors de l'entretien de sélection.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question">
+            Comment choisir entre Prévente, Dons et Investissement ?
+            <span class="faq-item__icon">+</span>
+          </button>
+          <div class="faq-item__answer">
+            <div class="faq-item__answer-inner">
+              <strong>Prévente :</strong> vous créez un produit, les soutiens paient à l'avance pour le recevoir. <strong>Dons :</strong> projet social ou culturel, les donateurs soutiennent sans retour financier. <strong>Investissement :</strong> vous cherchez des associés, les investisseurs reçoivent des parts en échange de leur capital. Si vous hésitez, notre équipe vous guidera lors de l'entretien.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question">
+            Que se passe-t-il si l'objectif n'est pas atteint en Prévente ?
+            <span class="faq-item__icon">+</span>
+          </button>
+          <div class="faq-item__answer">
+            <div class="faq-item__answer-inner">
+              En cas d'échec de la collecte, <strong>chaque soutien est intégralement remboursé</strong>. FaidaKomori ne prend aucune commission. Les fonds n'ont jamais quitté le compte sécurisé dédié à votre projet. C'est le principe du "tout ou rien".
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question">
+            Combien de temps dure la collecte de fonds ?
+            <span class="faq-item__icon">+</span>
+          </button>
+          <div class="faq-item__answer">
+            <div class="faq-item__answer-inner">
+              La durée varie entre <strong>30 et 90 jours</strong> selon la nature de votre projet et le montant recherché. Vous choisissez la durée lors de votre candidature. Les projets d'investissement ont généralement des durées plus courtes (30 à 45 jours).
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question">
+            Puis-je déposer un projet si je suis dans la diaspora ?
+            <span class="faq-item__icon">+</span>
+          </button>
+          <div class="faq-item__answer">
+            <div class="faq-item__answer-inner">
+              <strong>Oui.</strong> Les Comoriens de la diaspora peuvent déposer un projet, à condition que celui-ci soit basé et réalisé aux Comores. Un référent local peut être désigné pour le suivi terrain. La création d'entreprise via l'ANPI est possible à distance avec procuration.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       NEWSLETTER / CTA
+  ══════════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="newsletter">
+        <h2 class="newsletter__title">Restez informé(e)</h2>
+        <p class="newsletter__sub">Recevez les nouveaux projets, les succès et les actualités de la plateforme directement dans votre boîte mail.</p>
+        <form class="newsletter__form newsletter-form" novalidate>
+          <input type="email" class="newsletter__input" placeholder="votre@email.com" required aria-label="Adresse email" />
+          <button type="submit" class="btn btn-primary">S'abonner</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="footer__logo"><img src="img/logo-fk-icon.svg" alt="FaidaKomori" class="footer__logo-img" />Faida<span>Komori</span></a>
+          <p class="footer__desc">La première plateforme de financement participatif des Comores. Votre projet mérite d'être financé.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+            <a href="#" class="footer__social" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
+            <a href="#" class="footer__social" aria-label="WhatsApp"><i class="ph-light ph-whatsapp-logo"></i></a>
+            <a href="#" class="footer__social" aria-label="YouTube"><i class="ph-light ph-youtube-logo"></i></a>
+          </div>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Navigation</h5>
+          <ul class="footer__links">
+            <li><a href="#modeles">Les 3 modèles</a></li>
+            <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+            <li><a href="projets.html">Tous les projets</a></li>
+            <li><a href="deposer.html">Déposer un projet</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Financement</h5>
+          <ul class="footer__links">
+            <li><a href="deposer.html?type=prevente"><i class="ph-light ph-package"></i> Prévente</a></li>
+            <li><a href="deposer.html?type=dons"><i class="ph-light ph-handshake"></i> Dons & Soutien</a></li>
+            <li><a href="deposer.html?type=investissement"><i class="ph-light ph-trend-up"></i> Investissement</a></li>
+            <li><a href="#">Partenaire ANPI</a></li>
+            <li><a href="#">Mobile Money</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Contact</h5>
+          <div class="footer__contact">
+            <div class="footer__contact-item"><span><i class="ph-light ph-whatsapp-logo"></i></span><span>WhatsApp : +269 XXX XXXX</span></div>
+            <div class="footer__contact-item"><span><i class="ph-light ph-envelope"></i></span><span>contact@faidakomori.km</span></div>
+            <div class="footer__contact-item"><span><i class="ph-light ph-map-pin"></i></span><span>Moroni, Union des Comores</span></div>
+            <div class="footer__contact-item"><span><i class="ph-light ph-clock"></i></span><span>Lun–Ven, 8h–17h (heure locale)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2025 FaidaKomori. Tous droits réservés. 🇰🇲</span>
+        <div class="footer__legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">Conditions d'utilisation</a>
+          <a href="#">Politique de confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/db-local.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof initNavbarAuth === 'function') initNavbarAuth();
+  });
+
+  /* ══ Chargement dynamique des projets publiés sur la page d'accueil ══ */
+  (async function loadHomeProjects() {
+    try {
+      if (typeof API === 'undefined') return;
+      const { projects } = await API.projects.list({ limit: 3 });
+      if (!projects || !projects.length) return;
+
+      const grid = document.querySelector('#projets .projects__grid');
+      if (!grid) return;
+
+      const typeCfg = {
+        prevente:       { icon:'ph-package',  badgeCls:'badge-prevente', imgCls:'prevente', btnLabel:'Précommander', btnCls:'btn-primary' },
+        dons:           { icon:'ph-handshake', badgeCls:'badge-dons',    imgCls:'dons',     btnLabel:'Soutenir',     btnCls:'btn-ocean'   },
+        investissement: { icon:'ph-trend-up',  badgeCls:'badge-invest',  imgCls:'invest',   btnLabel:'Investir',     btnCls:'btn-navy'    },
+      };
+      const typeLabel = { prevente:'Prévente', dons:'Don solidaire', investissement:'Investissement' };
+      const secteurEmoji = { culture:'🎭', agriculture:'🌾', technologie:'💻', restauration:'🍽️', artisanat:'🎨', santé:'🏥', tourisme:'✈️', environnement:'🌿', education:'📚' };
+
+      const cards = projects.map(p => {
+        const tc  = typeCfg[p.type] || typeCfg.dons;
+        const pct = p.montant > 0 ? Math.min(Math.round((p.montant_collecte / p.montant) * 100), 100) : 0;
+        const emoji = secteurEmoji[(p.secteur || '').toLowerCase()] || '📁';
+        const desc  = (p.description || '').slice(0, 120) + ((p.description || '').length > 120 ? '…' : '');
+
+        return `
+          <article class="project-card reveal" data-type="${p.type}">
+            <div class="project-card__inner">
+              <div class="project-card__image project-card__image--${tc.imgCls}">
+                ${emoji}
+                <div class="project-card__badge-wrap">
+                  <span class="badge ${tc.badgeCls}"><i class="ph-light ${tc.icon}"></i> ${typeLabel[p.type]}</span>
+                </div>
+              </div>
+              <div class="project-card__body">
+                <h4 class="project-card__title">${p.nom_projet}</h4>
+                <p class="project-card__author"><i class="ph-light ph-user-circle"></i> ${p.prenom || ''} ${p.nom || ''}${p.ile ? ' — ' + p.ile : ''}</p>
+                <p class="project-card__desc">${desc || 'Projet en cours de financement.'}</p>
+                <div class="project-card__progress">
+                  <div class="progress-bar">
+                    <div class="progress-bar__fill progress-bar__fill--${tc.imgCls}" data-pct="${pct}" style="width:${pct}%"></div>
+                  </div>
+                  <div class="progress-meta">
+                    <span class="progress-pct progress-pct--${tc.imgCls}">${pct}%</span>
+                    <span>${parseInt(p.montant_collecte || 0).toLocaleString('fr-FR')} / ${parseInt(p.montant || 0).toLocaleString('fr-FR')} KMF</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-card__footer">
+                <span class="project-card__days"><strong>${p.duree || 30} j</strong> · ${p.nb_contributeurs || 0} soutien(s)</span>
+                <a href="projet-detail.html?id=${p.id}" class="btn ${tc.btnCls} btn-sm">${tc.btnLabel} <i class="ph-light ph-arrow-right"></i></a>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+
+      // Remplacer les cartes démo par les vraies
+      grid.querySelectorAll('.project-card').forEach(c => c.remove());
+      grid.insertAdjacentHTML('afterbegin', cards);
+
+      // Activer les reveal animations sur les nouvelles cartes
+      grid.querySelectorAll('.reveal').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        setTimeout(() => {
+          el.style.transition = 'opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 50);
+      });
+    } catch {
+      // API indisponible → garder les cartes démo silencieusement
+    }
+  })();
+  </script>
+
+  <!-- ══════════════════════════════════════════
+       MODALS DE SOUTIEN — par type de projet
+  ══════════════════════════════════════════ -->
+
+  <!-- OVERLAY -->
+  <div id="supportOverlay" style="display:none;position:fixed;inset:0;background:rgba(8,23,41,0.65);z-index:800;backdrop-filter:blur(4px);transition:opacity 0.3s;" onclick="closeSupportModal()"></div>
+
+  <!-- MODAL PRÉVENTE -->
+  <div id="modalPrevente" class="support-modal" role="dialog" aria-modal="true" aria-labelledby="modalPreventeTitle" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(540px,94vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:850;padding:2.5rem;overflow-y:auto;max-height:90vh;">
+    <button onclick="closeSupportModal()" style="position:absolute;top:1.25rem;right:1.25rem;width:36px;height:36px;border-radius:50%;background:var(--off-white);border:1.5px solid var(--border-solid);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold-dark);background:var(--gold-pale);border:1px solid rgba(232,160,32,0.22);padding:0.3rem 0.8rem;border-radius:50px;"><i class="ph-light ph-package"></i> Prévente</span>
+      <h3 id="modalPreventeTitle" style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--navy);margin:0.75rem 0 0.35rem;letter-spacing:-0.02em;" class="modal-project-title">Livre de cuisine comorienne</h3>
+      <p style="font-size:0.875rem;color:var(--text-muted);">Vous recevrez votre commande dès que le projet atteint son objectif et que le produit est créé.</p>
+    </div>
+    <!-- Montants preset -->
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Choisir un montant (KMF)</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
+        <button class="mamount-btn" data-amount="1500" onclick="selectAmount(this,1500)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">1 500</button>
+        <button class="mamount-btn" onclick="selectAmount(this,3000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:2px solid var(--gold);background:var(--gold-pale);color:var(--navy);font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">3 000</button>
+        <button class="mamount-btn" onclick="selectAmount(this,5000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">5 000</button>
+        <button class="mamount-btn" onclick="selectAmount(this,10000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">10 000</button>
+      </div>
+      <div style="margin-top:0.75rem;display:flex;align-items:center;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);overflow:hidden;">
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.88rem;white-space:nowrap;">Autre montant</span>
+        <input id="customAmountPrevente" type="number" min="500" placeholder="Ex : 7 500" style="flex:1;padding:0.7rem 1rem;border:none;font-size:0.88rem;font-family:var(--font-body);outline:none;" oninput="clearAmountBtns()" />
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.82rem;font-weight:600;">KMF</span>
+      </div>
+    </div>
+    <!-- Paiement -->
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Mode de paiement</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentPrevente" value="huri" checked style="display:none;" onchange="this.parentElement.style.borderColor='var(--gold)';this.parentElement.style.background='var(--gold-pale)';">
+          <i class="ph-light ph-device-mobile" style="font-size:1.4rem;"></i>Huri Money
+        </label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentPrevente" value="mpesa" style="display:none;" onchange="this.parentElement.style.borderColor='var(--gold)';this.parentElement.style.background='var(--gold-pale)';">
+          <i class="ph-light ph-currency-dollar-simple" style="font-size:1.4rem;"></i>M-Pesa
+        </label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentPrevente" value="virement" style="display:none;" onchange="this.parentElement.style.borderColor='var(--gold)';this.parentElement.style.background='var(--gold-pale)';">
+          <i class="ph-light ph-bank" style="font-size:1.4rem;"></i>Virement
+        </label>
+      </div>
+    </div>
+    <button onclick="confirmSupport('prevente')" style="width:100%;padding:0.9rem;background:var(--gold);color:var(--navy);border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:all 0.2s;" onmouseover="this.style.background='var(--gold-dark)'" onmouseout="this.style.background='var(--gold)'">
+      <i class="ph-light ph-package"></i> Précommander maintenant
+    </button>
+    <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;"><i class="ph-light ph-lock"></i> Paiement sécurisé · Remboursement si objectif non atteint</p>
+  </div>
+
+  <!-- MODAL DONS -->
+  <div id="modalDons" class="support-modal" role="dialog" aria-modal="true" aria-labelledby="modalDonsTitle" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(540px,94vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:850;padding:2.5rem;overflow-y:auto;max-height:90vh;">
+    <button onclick="closeSupportModal()" style="position:absolute;top:1.25rem;right:1.25rem;width:36px;height:36px;border-radius:50%;background:var(--off-white);border:1.5px solid var(--border-solid);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--green-dark);background:var(--green-pale);border:1px solid rgba(0,200,83,0.2);padding:0.3rem 0.8rem;border-radius:50px;"><i class="ph-light ph-handshake"></i> Don solidaire</span>
+      <h3 id="modalDonsTitle" style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--navy);margin:0.75rem 0 0.35rem;letter-spacing:-0.02em;" class="modal-project-title">École primaire à Mohéli</h3>
+      <p style="font-size:0.875rem;color:var(--text-muted);">Votre don soutient directement ce projet. Chaque contribution, quelle que soit sa taille, fait une différence réelle.</p>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Choisir un montant (KMF)</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,500)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">500</button>
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,1000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:2px solid var(--green);background:var(--green-pale);color:var(--navy);font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">1 000</button>
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,2500)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">2 500</button>
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,5000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">5 000</button>
+      </div>
+      <div style="margin-top:0.75rem;display:flex;align-items:center;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);overflow:hidden;">
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.88rem;white-space:nowrap;">Autre montant</span>
+        <input id="customAmountDons" type="number" min="100" placeholder="Ex : 3 000" style="flex:1;padding:0.7rem 1rem;border:none;font-size:0.88rem;font-family:var(--font-body);outline:none;" oninput="clearAmountBtnsDons()" />
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.82rem;font-weight:600;">KMF</span>
+      </div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem;">Message de soutien (facultatif)</p>
+      <textarea placeholder="Encouragez le porteur de projet..." style="width:100%;padding:0.75rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.875rem;font-family:var(--font-body);resize:vertical;min-height:80px;outline:none;"></textarea>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Mode de paiement</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentDons" value="huri" checked style="display:none;">
+          <i class="ph-light ph-device-mobile" style="font-size:1.4rem;"></i>Huri Money
+        </label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentDons" value="mpesa" style="display:none;">
+          <i class="ph-light ph-currency-dollar-simple" style="font-size:1.4rem;"></i>M-Pesa
+        </label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentDons" value="virement" style="display:none;">
+          <i class="ph-light ph-bank" style="font-size:1.4rem;"></i>Virement
+        </label>
+      </div>
+    </div>
+    <button onclick="confirmSupport('dons')" style="width:100%;padding:0.9rem;background:var(--green);color:var(--white);border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:all 0.2s;" onmouseover="this.style.background='var(--green-dark)'" onmouseout="this.style.background='var(--green)'">
+      <i class="ph-light ph-handshake"></i> Faire un don maintenant
+    </button>
+    <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;"><i class="ph-light ph-lock"></i> Don sécurisé · 100% versé au projet</p>
+  </div>
+
+  <!-- MODAL INVESTISSEMENT -->
+  <div id="modalInvest" class="support-modal" role="dialog" aria-modal="true" aria-labelledby="modalInvestTitle" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(560px,94vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:850;padding:2.5rem;overflow-y:auto;max-height:90vh;">
+    <button onclick="closeSupportModal()" style="position:absolute;top:1.25rem;right:1.25rem;width:36px;height:36px;border-radius:50%;background:var(--off-white);border:1.5px solid var(--border-solid);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--navy);background:rgba(13,34,68,0.08);border:1px solid rgba(13,34,68,0.15);padding:0.3rem 0.8rem;border-radius:50px;"><i class="ph-light ph-trend-up"></i> Investissement</span>
+      <h3 id="modalInvestTitle" style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--navy);margin:0.75rem 0 0.35rem;letter-spacing:-0.02em;" class="modal-project-title">Restaurant traditionnel Moroni</h3>
+      <p style="font-size:0.875rem;color:var(--text-muted);">En investissant, vous devenez co-propriétaire et participez aux bénéfices futurs selon votre part.</p>
+    </div>
+    <!-- Info parts -->
+    <div style="background:rgba(13,34,68,0.04);border:1.5px solid rgba(13,34,68,0.1);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:120px;">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:0.25rem;">Parts disponibles</div>
+        <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--navy);" id="investPartsTotal">25%</div>
+      </div>
+      <div style="flex:1;min-width:120px;">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:0.25rem;">Votre part estimée</div>
+        <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--green);" id="investPartCalc">1.25%</div>
+      </div>
+      <div style="flex:1;min-width:120px;">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:0.25rem;">Objectif total</div>
+        <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--navy);" id="investGoal">2 000 000</div>
+      </div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Montant à investir (KMF)</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
+        <button class="amount-btn-invest" onclick="selectAmountInvest(this,25000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">25 000</button>
+        <button class="amount-btn-invest" onclick="selectAmountInvest(this,50000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:2px solid var(--navy);background:rgba(13,34,68,0.06);color:var(--navy);font-size:0.78rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">50 000</button>
+        <button class="amount-btn-invest" onclick="selectAmountInvest(this,100000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">100 000</button>
+        <button class="amount-btn-invest" onclick="selectAmountInvest(this,200000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">200 000</button>
+      </div>
+      <div style="margin-top:0.75rem;display:flex;align-items:center;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);overflow:hidden;">
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.88rem;white-space:nowrap;">Montant libre</span>
+        <input id="customAmountInvest" type="number" min="10000" placeholder="Min. 10 000" style="flex:1;padding:0.7rem 1rem;border:none;font-size:0.88rem;font-family:var(--font-body);outline:none;" oninput="updateInvestPart()" />
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.82rem;font-weight:600;">KMF</span>
+      </div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Mode de paiement</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentInvest" value="huri" checked style="display:none;">
+          <i class="ph-light ph-device-mobile" style="font-size:1.4rem;"></i>Huri Money
+        </label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentInvest" value="mpesa" style="display:none;">
+          <i class="ph-light ph-currency-dollar-simple" style="font-size:1.4rem;"></i>M-Pesa
+        </label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;transition:all 0.2s;font-size:0.8rem;font-weight:600;text-align:center;">
+          <input type="radio" name="paymentInvest" value="virement" style="display:none;">
+          <i class="ph-light ph-bank" style="font-size:1.4rem;"></i>Virement bancaire
+        </label>
+      </div>
+    </div>
+    <button onclick="confirmSupport('invest')" style="width:100%;padding:0.9rem;background:var(--navy);color:var(--white);border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:all 0.2s;" onmouseover="this.style.background='var(--navy-light)'" onmouseout="this.style.background='var(--navy)'">
+      <i class="ph-light ph-trend-up"></i> Investir maintenant
+    </button>
+    <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;"><i class="ph-light ph-lock"></i> Investissement sécurisé · Contrat de parts fourni après validation</p>
+  </div>
+
+  <!-- MODAL SUCCÈS -->
+  <div id="modalSuccess" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(420px,90vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:860;padding:3rem 2.5rem;text-align:center;">
+    <div style="font-size:3.5rem;margin-bottom:1rem;"><i class="ph-light ph-confetti"></i></div>
+    <h3 style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;">Merci pour votre soutien !</h3>
+    <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:1.5rem;">Votre contribution a bien été enregistrée. Le porteur de projet vous remercie du fond du cœur. 🇰🇲</p>
+    <button onclick="closeSupportModal()" style="padding:0.8rem 2rem;background:var(--gold);color:var(--navy);border:none;border-radius:50px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:var(--font-body);">Fermer</button>
+  </div>
+
+  <script>
+    // ── Ouvrir la modal selon le type du projet ──
+    function openSupportModal(type, title, parts, goal) {
+      // Cacher tous les modals
+      document.querySelectorAll('.support-modal').forEach(m => m.style.display = 'none');
+      // Afficher overlay
+      const overlay = document.getElementById('supportOverlay');
+      overlay.style.display = 'block';
+      setTimeout(() => overlay.style.opacity = '1', 10);
+      document.body.style.overflow = 'hidden';
+
+      if (type === 'prevente') {
+        const modal = document.getElementById('modalPrevente');
+        modal.querySelector('.modal-project-title').textContent = title || 'Prévente';
+        modal.style.display = 'block';
+      } else if (type === 'dons') {
+        const modal = document.getElementById('modalDons');
+        modal.querySelector('.modal-project-title').textContent = title || 'Projet';
+        modal.style.display = 'block';
+      } else if (type === 'investissement') {
+        const modal = document.getElementById('modalInvest');
+        modal.querySelector('.modal-project-title').textContent = title || 'Projet';
+        if (parts) document.getElementById('investPartsTotal').textContent = parts;
+        if (goal) document.getElementById('investGoal').textContent = goal;
+        modal.style.display = 'block';
+      }
+    }
+
+    function closeSupportModal() {
+      document.querySelectorAll('.support-modal, #modalSuccess').forEach(m => m.style.display = 'none');
+      const overlay = document.getElementById('supportOverlay');
+      overlay.style.opacity = '0';
+      setTimeout(() => { overlay.style.display = 'none'; }, 300);
+      document.body.style.overflow = '';
+    }
+
+    // Sélection montant Prévente
+    let selectedAmount = 3000;
+    function selectAmount(btn, amount) {
+      document.querySelectorAll('.mamount-btn').forEach(b => {
+        b.style.border = '1.5px solid var(--border-solid)';
+        b.style.background = 'var(--off-white)';
+        b.style.fontWeight = '600';
+      });
+      btn.style.border = '2px solid var(--gold)';
+      btn.style.background = 'var(--gold-pale)';
+      btn.style.fontWeight = '700';
+      selectedAmount = amount;
+      document.getElementById('customAmountPrevente').value = '';
+    }
+    function clearAmountBtns() {
+      document.querySelectorAll('.mamount-btn').forEach(b => {
+        b.style.border = '1.5px solid var(--border-solid)';
+        b.style.background = 'var(--off-white)';
+        b.style.fontWeight = '600';
+      });
+    }
+
+    // Sélection montant Dons
+    let selectedAmountDons = 1000;
+    function selectAmountDons(btn, amount) {
+      document.querySelectorAll('.amount-btn-dons').forEach(b => {
+        b.style.border = '1.5px solid var(--border-solid)';
+        b.style.background = 'var(--off-white)';
+        b.style.fontWeight = '600';
+      });
+      btn.style.border = '2px solid var(--green)';
+      btn.style.background = 'var(--green-pale)';
+      btn.style.fontWeight = '700';
+      selectedAmountDons = amount;
+      document.getElementById('customAmountDons').value = '';
+    }
+    function clearAmountBtnsDons() {
+      document.querySelectorAll('.amount-btn-dons').forEach(b => {
+        b.style.border = '1.5px solid var(--border-solid)';
+        b.style.background = 'var(--off-white)';
+        b.style.fontWeight = '600';
+      });
+    }
+
+    // Sélection montant Investissement
+    let selectedAmountInvest = 50000;
+    const INVEST_GOAL_AMOUNT = 2000000;
+    const INVEST_PARTS_TOTAL = 0.25;
+    function selectAmountInvest(btn, amount) {
+      document.querySelectorAll('.amount-btn-invest').forEach(b => {
+        b.style.border = '1.5px solid var(--border-solid)';
+        b.style.background = 'var(--off-white)';
+        b.style.fontWeight = '600';
+      });
+      btn.style.border = '2px solid var(--navy)';
+      btn.style.background = 'rgba(13,34,68,0.06)';
+      btn.style.fontWeight = '700';
+      selectedAmountInvest = amount;
+      document.getElementById('customAmountInvest').value = '';
+      updateInvestPartDisplay(amount);
+    }
+    function updateInvestPart() {
+      const val = parseInt(document.getElementById('customAmountInvest').value) || 0;
+      document.querySelectorAll('.amount-btn-invest').forEach(b => {
+        b.style.border = '1.5px solid var(--border-solid)';
+        b.style.background = 'var(--off-white)';
+      });
+      updateInvestPartDisplay(val);
+    }
+    function updateInvestPartDisplay(amount) {
+      const pct = ((amount / INVEST_GOAL_AMOUNT) * INVEST_PARTS_TOTAL * 100).toFixed(2);
+      const el = document.getElementById('investPartCalc');
+      if (el) el.textContent = pct + '%';
+    }
+
+    function confirmSupport(type) {
+      // Cacher le modal courant
+      document.querySelectorAll('.support-modal').forEach(m => m.style.display = 'none');
+      // Afficher succès
+      document.getElementById('modalSuccess').style.display = 'block';
+    }
+
+    // Touche Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeSupportModal();
+    });
+  </script>
+</main>
+</body>
+</html>

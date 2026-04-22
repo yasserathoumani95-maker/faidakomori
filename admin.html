@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administration — FaidaKomori</title>
+  <meta name="robots"      content="noindex, nofollow" />
+  <meta name="theme-color" content="#00C853" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"/>
+  <style>
+    .ph-light { font-size:1.15em; vertical-align:middle; line-height:1; }
+    .admin-nav-item__icon .ph-light { font-size:1.2em; }
+    .admin-stat-card__icon .ph-light { font-size:2.2em; }
+    .btn-icon-wrap .ph-light { font-size:0.9em; }
+  </style>
+  <script src="js/api.js"></script>
+  <script src="js/db-local.js"></script>
+  <style>
+    /* ── Admin-specific styles (complément) ── */
+    body { background: var(--off-white); }
+
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .admin-sidebar {
+      background: var(--navy-deep);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .admin-sidebar__logo {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      letter-spacing: -0.02em;
+    }
+    .admin-sidebar__logo span { color: var(--gold); }
+    .admin-sidebar__badge-admin {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: rgba(0,200,83,0.18);
+      color: var(--green);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      margin-top: 0.25rem;
+      letter-spacing: 0.06em;
+    }
+    .admin-sidebar__label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.35);
+      font-weight: 700;
+      margin-top: 1rem;
+      margin-bottom: 0.15rem;
+      padding-left: 0.75rem;
+    }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.65rem 0.75rem;
+      border-radius: var(--radius-sm);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all var(--duration-sm) var(--ease-out);
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .admin-nav-item:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+    .admin-nav-item.active { background: rgba(232,160,32,0.15); color: var(--gold); font-weight: 600; }
+    .admin-nav-item__icon { font-size: 1.05rem; width: 22px; text-align: center; flex-shrink: 0; }
+    .admin-nav-item__badge {
+      margin-left: auto;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 0.12rem 0.45rem;
+      border-radius: 50px;
+    }
+    .admin-sidebar__bottom {
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ── Main content ── */
+    .admin-main {
+      background: var(--off-white);
+      overflow-y: auto;
+      padding: 2rem 2.5rem;
+    }
+    .admin-header {
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .admin-header__title {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+    .admin-header__sub { color: var(--text-muted); font-size: 0.88rem; margin-top: 0.25rem; }
+
+    /* ── Stats grid ── */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .admin-stat-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border-solid);
+      padding: 1.5rem;
+      transition: all var(--duration) var(--ease-spring);
+    }
+    .admin-stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .admin-stat-card__icon { font-size: 1.75rem; margin-bottom: 0.65rem; }
+    .admin-stat-card__value {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .admin-stat-card__label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; margin-top: 0.35rem; }
+    .admin-stat-card__trend { font-size: 0.75rem; font-weight: 600; margin-top: 0.5rem; }
+    .admin-stat-card__trend--up { color: var(--green); }
+    .admin-stat-card__trend--neutral { color: var(--text-muted); }
+
+    /* ── Panels (tabs) ── */
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    /* ── Table ── */
+    .admin-table-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border-solid);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .admin-table-header {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-solid);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .admin-table-title { font-weight: 700; color: var(--navy); font-size: 1rem; }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .admin-table th {
+      padding: 0.75rem 1.25rem;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      background: var(--off-white);
+      border-bottom: 1px solid var(--border-solid);
+    }
+    .admin-table td {
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      border-bottom: 1px solid var(--border-solid);
+      vertical-align: middle;
+    }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: var(--sand); transition: background 0.15s; }
+    .admin-table__name { font-weight: 600; color: var(--navy); }
+    .admin-table__sub  { font-size: 0.78rem; color: var(--text-light); margin-top: 0.12rem; }
+
+    /* Status badges */
+    .status { padding: 0.25rem 0.7rem; border-radius: 50px; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem; }
+    .status--new       { background: rgba(232,160,32,0.14); color: #9A6310; }
+    .status--review    { background: rgba(0,200,83,0.12); color: var(--green-dark); }
+    .status--interview { background: rgba(13,34,68,0.1); color: var(--navy); }
+    .status--approved  { background: rgba(0,200,83,0.18); color: var(--green-deep); }
+    .status--rejected  { background: rgba(220,38,38,0.1); color: #B91C1C; }
+    .status--published { background: var(--green); color: var(--white); }
+
+    /* Action buttons in table */
+    .admin-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .admin-btn {
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-body);
+    }
+    .admin-btn--primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .admin-btn--primary:hover { background: var(--navy-light); }
+    .admin-btn--gold { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+    .admin-btn--gold:hover { background: var(--gold-dark); }
+    .admin-btn--green { background: var(--green); color: var(--white); border-color: var(--green); }
+    .admin-btn--green:hover { background: var(--green-dark); }
+    .admin-btn--danger { background: transparent; color: #B91C1C; border-color: #FECACA; }
+    .admin-btn--danger:hover { background: #FEF2F2; }
+    .admin-btn--outline { background: transparent; color: var(--navy); border-color: var(--border-solid); }
+    .admin-btn--outline:hover { background: var(--off-white); }
+
+    /* ── Detail drawer / modal ── */
+    .admin-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,23,41,0.6);
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--duration) var(--ease-out);
+      backdrop-filter: blur(3px);
+    }
+    .admin-overlay.open { opacity: 1; pointer-events: all; }
+
+    .admin-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(680px, 100vw);
+      height: 100vh;
+      background: var(--white);
+      z-index: 950;
+      overflow-y: auto;
+      transition: right var(--duration) var(--ease-spring);
+      padding: 2rem;
+      box-shadow: var(--shadow-xl);
+    }
+    .admin-drawer.open { right: 0; }
+
+    .admin-drawer__close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--off-white);
+      border: 1.5px solid var(--border-solid);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-drawer__close:hover { background: var(--sand); }
+
+    .admin-drawer__header {
+      margin-bottom: 1.5rem;
+      padding-right: 2.5rem;
+    }
+    .admin-drawer__title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+    .admin-drawer__sub { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem; }
+
+    .admin-drawer__section {
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      background: var(--off-white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-solid);
+    }
+    .admin-drawer__section-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .admin-drawer__field {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-solid);
+    }
+    .admin-drawer__field:last-child { border-bottom: none; }
+    .admin-drawer__field-label { color: var(--text-muted); font-weight: 500; }
+    .admin-drawer__field-value { color: var(--navy); font-weight: 600; }
+
+    /* Interview form */
+    .interview-form { display: grid; gap: 1rem; }
+    .interview-form label { font-size: 0.82rem; font-weight: 600; color: var(--navy); display: block; margin-bottom: 0.3rem; }
+    .interview-form input,
+    .interview-form select,
+    .interview-form textarea {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-solid);
+      font-size: 0.875rem;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--white);
+      transition: border-color var(--duration-sm);
+    }
+    .interview-form input:focus,
+    .interview-form select:focus,
+    .interview-form textarea:focus {
+      outline: none;
+      border-color: var(--navy);
+    }
+    .interview-form textarea { resize: vertical; min-height: 90px; }
+
+    /* Score grid */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .score-item label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+    .score-item input[type="range"] {
+      width: 100%;
+      accent-color: var(--navy);
+      padding: 0;
+      border: none;
+    }
+    .score-total {
+      grid-column: 1 / -1;
+      background: var(--navy);
+      color: var(--white);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+    }
+    .score-total__value {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    /* Announcement form */
+    .announcement-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border-solid);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all var(--duration) var(--ease-spring);
+    }
+    .announcement-card:hover { box-shadow: var(--shadow); }
+    .announcement-card__date { font-size: 0.75rem; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .announcement-card__title { font-weight: 700; color: var(--navy); margin: 0.35rem 0 0.5rem; font-size: 1rem; }
+    .announcement-card__body { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+    .announcement-card__footer { margin-top: 1rem; display: flex; gap: 0.5rem; }
+
+    /* Interview cards */
+    .interview-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border-solid);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: all var(--duration) var(--ease-spring);
+    }
+    .interview-card:hover { box-shadow: var(--shadow); }
+    .interview-card__date-block {
+      flex-shrink: 0;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      text-align: center;
+      min-width: 68px;
+    }
+    .interview-card__day { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .interview-card__month { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 0.2rem; }
+    .interview-card__info { flex: 1; }
+    .interview-card__title { font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+    .interview-card__meta { font-size: 0.82rem; color: var(--text-muted); }
+    .interview-card__type {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+    }
+    .interview-card__type--online { background: rgba(0,200,83,0.12); color: var(--green-dark); }
+    .interview-card__type--inperson { background: rgba(232,160,32,0.14); color: #9A6310; }
+
+    /* Published project mini card */
+    .published-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border-solid);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: all var(--duration) var(--ease-spring);
+    }
+    .published-card:hover { box-shadow: var(--shadow); }
+    .published-card__emoji { font-size: 2rem; flex-shrink: 0; }
+    .published-card__info { flex: 1; }
+    .published-card__title { font-weight: 700; color: var(--navy); }
+    .published-card__meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem; }
+    .published-card__progress { margin-top: 0.5rem; }
+    .published-card__bar { height: 6px; background: var(--border-solid); border-radius: 50px; overflow: hidden; margin-top: 0.25rem; }
+    .published-card__bar-fill { height: 100%; background: var(--green); border-radius: 50px; }
+    .published-card__pct { font-size: 0.72rem; font-weight: 700; color: var(--green-dark); }
+
+    /* Mobile toggle */
+    .admin-mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 999;
+      width: 42px;
+      height: 42px;
+      background: var(--navy);
+      border-radius: var(--radius-sm);
+      color: var(--white);
+      font-size: 1.1rem;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      box-shadow: var(--shadow);
+    }
+
+    /* Notification toast */
+    .admin-toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--navy);
+      color: var(--white);
+      padding: 0.875rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(120%);
+      transition: transform var(--duration) var(--ease-spring);
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      max-width: 320px;
+    }
+    .admin-toast.show { transform: translateY(0); }
+    .admin-toast--success { border-left: 4px solid var(--green); }
+    .admin-toast--warning { border-left: 4px solid var(--gold); }
+
+    /* Empty state */
+    .admin-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+    .admin-empty__icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+    .admin-empty__text { font-size: 0.95rem; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .admin-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .admin-mobile-toggle { display: flex; }
+      .admin-layout { grid-template-columns: 1fr; }
+      .admin-sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        width: 260px;
+        z-index: 1000;
+        transition: left var(--duration) var(--ease-spring);
+      }
+      .admin-sidebar.open { left: 0; }
+      .admin-main { padding: 1.25rem; padding-top: 4rem; }
+      .admin-stats { grid-template-columns: 1fr 1fr; }
+      .admin-drawer { width: 100vw; }
+      .admin-drawer__field { grid-template-columns: 1fr; }
+      .score-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .admin-stats { grid-template-columns: 1fr; }
+      .admin-table th:nth-child(3),
+      .admin-table td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     MOBILE MENU TOGGLE
+══════════════════════════════════════════ -->
+<button class="admin-mobile-toggle" id="adminMobileToggle" aria-label="Ouvrir le menu admin">☰</button>
+
+<!-- ══════════════════════════════════════════
+     LAYOUT : SIDEBAR + MAIN
+══════════════════════════════════════════ -->
+<div class="admin-layout">
+
+  <!-- ── SIDEBAR ────────────────────────── -->
+  <aside class="admin-sidebar" id="adminSidebar">
+
+    <div>
+      <div class="admin-sidebar__logo">
+        <img src="img/logo-fk-icon.svg" alt="FK" style="width:32px;height:32px;border-radius:8px;" />Faida<span>Komori</span>
+        <div class="admin-sidebar__badge-admin">● ADMIN</div>
+      </div>
+
+      <div class="admin-sidebar__label">Principal</div>
+      <button class="admin-nav-item active" data-panel="dashboard">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-squares-four"></i></span>
+        Tableau de bord
+      </button>
+      <button class="admin-nav-item" data-panel="demandes">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-tray"></i></span>
+        Demandes reçues
+        <span class="admin-nav-item__badge">7</span>
+      </button>
+      <button class="admin-nav-item" data-panel="entretiens">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-calendar"></i></span>
+        Entretiens planifiés
+        <span class="admin-nav-item__badge">3</span>
+      </button>
+
+      <div class="admin-sidebar__label">Gestion</div>
+      <button class="admin-nav-item" data-panel="projets">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-rocket-launch"></i></span>
+        Projets publiés
+      </button>
+      <button class="admin-nav-item" data-panel="annonces">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-megaphone"></i></span>
+        Annonces
+      </button>
+      <button class="admin-nav-item" data-panel="versements">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-money"></i></span>
+        Versements
+        <span class="admin-nav-item__badge" id="versements-badge" style="display:none;">0</span>
+      </button>
+      <button class="admin-nav-item" data-panel="top-donors">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-trophy"></i></span>
+        Top Donateurs
+      </button>
+    </div>
+
+    <div class="admin-sidebar__bottom">
+      <a href="index.html" class="admin-nav-item">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-house"></i></span>
+        Voir le site public
+      </a>
+      <button class="admin-nav-item" id="admin-logout" style="color:rgba(220,38,38,0.7);">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-sign-out"></i></span>
+        Se déconnecter
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ───────────────────── -->
+  <main class="admin-main">
+
+    <!-- ══════════════════════════════════
+         PANEL : DASHBOARD
+    ══════════════════════════════════ -->
+    <div class="admin-panel active" id="panel-dashboard">
+
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title">Tableau de bord</h1>
+          <p class="admin-header__sub">Bienvenue. Voici l'état de la plateforme en temps réel.</p>
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button class="admin-btn admin-btn--outline" onclick="switchPanel('annonces')"><i class="ph-light ph-megaphone"></i> Nouvelle annonce</button>
+          <a href="deposer.html" class="admin-btn admin-btn--gold">+ Voir formulaire</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <div class="admin-stat-card__icon"><i class="ph-light ph-tray"></i></div>
+          <div class="admin-stat-card__value" id="stat-total">—</div>
+          <div class="admin-stat-card__label">Demandes reçues</div>
+          <div class="admin-stat-card__trend admin-stat-card__trend--up">↑ +3 cette semaine</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-card__icon"><i class="ph-light ph-hourglass"></i></div>
+          <div class="admin-stat-card__value" id="stat-pending">—</div>
+          <div class="admin-stat-card__label">En attente de traitement</div>
+          <div class="admin-stat-card__trend admin-stat-card__trend--neutral">À traiter sous 72h</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-card__icon"><i class="ph-light ph-check-circle"></i></div>
+          <div class="admin-stat-card__value" id="stat-approved">—</div>
+          <div class="admin-stat-card__label">Projets approuvés (total)</div>
+          <div class="admin-stat-card__trend admin-stat-card__trend--up">↑ +2 ce mois</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-card__icon"><i class="ph-light ph-rocket-launch"></i></div>
+          <div class="admin-stat-card__value" id="stat-published">—</div>
+          <div class="admin-stat-card__label">Projets publiés actifs</div>
+          <div class="admin-stat-card__trend admin-stat-card__trend--up">↑ Tous en cours</div>
+        </div>
+      </div>
+
+      <!-- Demandes récentes -->
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <div>
+            <div class="admin-table-title">Demandes récentes</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Les 5 dernières candidatures reçues</div>
+          </div>
+          <button class="admin-btn admin-btn--outline" onclick="switchPanel('demandes')">Voir toutes →</button>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Porteur de projet</th>
+              <th>Modèle</th>
+              <th>Île</th>
+              <th>Montant</th>
+              <th>Date</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="admin-table__name">Fatima Abdou</div>
+                <div class="admin-table__sub">Livre de cuisine comorienne</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>Grande Comore</td>
+              <td>400 000 KMF</td>
+              <td>08/04/2026</td>
+              <td><span class="status status--interview">🗓️ Entretien</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 1)">Voir</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Nassim Hamidou</div>
+                <div class="admin-table__sub">Restaurant traditionnel Moroni</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Investissement</span></td>
+              <td>Grande Comore</td>
+              <td>2 000 000 KMF</td>
+              <td>07/04/2026</td>
+              <td><span class="status status--approved"><i class="ph-light ph-check-circle"></i> Approuvé</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--green" onclick="openDrawer('publish', 2)">Publier</button>
+                  <button class="admin-btn admin-btn--outline" onclick="openDrawer('demande', 2)">Voir</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Association Éducation Mohéli</div>
+                <div class="admin-table__sub">École primaire à Mohéli</div>
+              </td>
+              <td><span class="badge badge-dons" style="font-size:0.72rem;"><i class="ph-light ph-handshake"></i> Dons</span></td>
+              <td>Mohéli</td>
+              <td>1 500 000 KMF</td>
+              <td>06/04/2026</td>
+              <td><span class="status status--published"><i class="ph-light ph-rocket-launch"></i> Publié</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline" onclick="openDrawer('demande', 3)">Voir</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Mariam Said</div>
+                <div class="admin-table__sub">Broderies artisanales Anjouan</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>Anjouan</td>
+              <td>300 000 KMF</td>
+              <td>05/04/2026</td>
+              <td><span class="status status--review">🔍 En analyse</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 4)">Voir</button>
+                  <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview', 4)">Planifier</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Ibrahim Youssouf</div>
+                <div class="admin-table__sub">Conserverie de poisson Anjouan</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Investissement</span></td>
+              <td>Anjouan</td>
+              <td>3 000 000 KMF</td>
+              <td>03/04/2026</td>
+              <td><span class="status status--new">🆕 Nouveau</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 5)">Voir</button>
+                  <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview', 5)">Planifier</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Entretiens à venir -->
+      <div style="margin-bottom:1.5rem;">
+        <div style="font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:1rem;">🗓️ Entretiens à venir</div>
+        <div class="interview-card">
+          <div class="interview-card__date-block">
+            <div class="interview-card__day">12</div>
+            <div class="interview-card__month">Avril</div>
+          </div>
+          <div class="interview-card__info">
+            <div class="interview-card__title">Fatima Abdou — Livre de cuisine comorienne</div>
+            <div class="interview-card__meta">14h00 · 45 min · <span class="interview-card__type interview-card__type--online"><i class="ph-light ph-video-camera"></i> Google Meet</span></div>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn admin-btn--primary" onclick="openDrawer('interview_detail', 1)">Détails</button>
+          </div>
+        </div>
+        <div class="interview-card">
+          <div class="interview-card__date-block">
+            <div class="interview-card__day">15</div>
+            <div class="interview-card__month">Avril</div>
+          </div>
+          <div class="interview-card__info">
+            <div class="interview-card__title">Ibrahim Youssouf — Conserverie de poisson</div>
+            <div class="interview-card__meta">10h30 · 60 min · <span class="interview-card__type interview-card__type--inperson"><i class="ph-light ph-map-pin"></i> Présentiel (Moroni)</span></div>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn admin-btn--primary" onclick="openDrawer('interview_detail', 5)">Détails</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel-dashboard -->
+
+
+    <!-- ══════════════════════════════════
+         PANEL : DEMANDES
+    ══════════════════════════════════ -->
+    <div class="admin-panel" id="panel-demandes">
+
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title">Demandes reçues</h1>
+          <p class="admin-header__sub">Toutes les candidatures de porteurs de projet.</p>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+          <select style="padding:0.5rem 0.9rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.82rem;font-family:var(--font-body);color:var(--text);background:var(--white);">
+            <option>Tous les statuts</option>
+            <option>🆕 Nouveau</option>
+            <option>🔍 En analyse</option>
+            <option>🗓️ Entretien</option>
+            <option><i class="ph-light ph-check-circle"></i> Approuvé</option>
+            <option><i class="ph-light ph-x-circle"></i> Refusé</option>
+            <option><i class="ph-light ph-rocket-launch"></i> Publié</option>
+          </select>
+          <select style="padding:0.5rem 0.9rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.82rem;font-family:var(--font-body);color:var(--text);background:var(--white);">
+            <option>Tous les modèles</option>
+            <option><i class="ph-light ph-package"></i> Prévente</option>
+            <option><i class="ph-light ph-handshake"></i> Dons</option>
+            <option><i class="ph-light ph-trend-up"></i> Investissement</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <div class="admin-table-title">7 candidatures au total</div>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Porteur de projet</th>
+              <th>Modèle</th>
+              <th>Île</th>
+              <th>Montant</th>
+              <th>Date</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="admin-table__name">Fatima Abdou</div>
+                <div class="admin-table__sub">Livre de cuisine comorienne</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>Grande Comore</td>
+              <td>400 000 KMF</td>
+              <td>08/04/2026</td>
+              <td><span class="status status--interview">🗓️ Entretien</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 1)">Voir dossier</button>
+                  <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview', 1)">Entretien</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Nassim Hamidou</div>
+                <div class="admin-table__sub">Restaurant traditionnel Moroni</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Investissement</span></td>
+              <td>Grande Comore</td>
+              <td>2 000 000 KMF</td>
+              <td>07/04/2026</td>
+              <td><span class="status status--approved"><i class="ph-light ph-check-circle"></i> Approuvé</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--green" onclick="openDrawer('publish', 2)"><i class="ph-light ph-rocket-launch"></i> Publier</button>
+                  <button class="admin-btn admin-btn--outline" onclick="openDrawer('demande', 2)">Voir</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Association Éducation Mohéli</div>
+                <div class="admin-table__sub">École primaire à Mohéli</div>
+              </td>
+              <td><span class="badge badge-dons" style="font-size:0.72rem;"><i class="ph-light ph-handshake"></i> Dons</span></td>
+              <td>Mohéli</td>
+              <td>1 500 000 KMF</td>
+              <td>06/04/2026</td>
+              <td><span class="status status--published"><i class="ph-light ph-rocket-launch"></i> Publié</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline" onclick="openDrawer('demande', 3)">Voir</button>
+                  <a href="projet-detail.html" class="admin-btn admin-btn--outline" target="_blank">Voir page</a>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Mariam Said</div>
+                <div class="admin-table__sub">Broderies artisanales Anjouan</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>Anjouan</td>
+              <td>300 000 KMF</td>
+              <td>05/04/2026</td>
+              <td><span class="status status--review">🔍 En analyse</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 4)">Voir dossier</button>
+                  <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview', 4)">Planifier</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Ibrahim Youssouf</div>
+                <div class="admin-table__sub">Conserverie de poisson Anjouan</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Investissement</span></td>
+              <td>Anjouan</td>
+              <td>3 000 000 KMF</td>
+              <td>03/04/2026</td>
+              <td><span class="status status--new">🆕 Nouveau</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 5)">Voir dossier</button>
+                  <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview', 5)">Planifier</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Ali Mlamali</div>
+                <div class="admin-table__sub">Album de musique twarab</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>Diaspora (France)</td>
+              <td>500 000 KMF</td>
+              <td>02/04/2026</td>
+              <td><span class="status status--new">🆕 Nouveau</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 6)">Voir dossier</button>
+                  <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview', 6)">Planifier</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">Karim Hassan</div>
+                <div class="admin-table__sub">Épicerie en ligne Comores</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Investissement</span></td>
+              <td>Grande Comore</td>
+              <td>2 000 000 KMF</td>
+              <td>01/04/2026</td>
+              <td><span class="status status--interview">🗓️ Entretien</span></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--primary" onclick="openDrawer('demande', 7)">Voir dossier</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /panel-demandes -->
+
+
+    <!-- ══════════════════════════════════
+         PANEL : ENTRETIENS
+    ══════════════════════════════════ -->
+    <div class="admin-panel" id="panel-entretiens">
+
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title">Entretiens planifiés</h1>
+          <p class="admin-header__sub">Gérez vos entretiens de sélection avec les candidats.</p>
+        </div>
+        <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview_new')">+ Planifier un entretien</button>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="font-weight:700;color:var(--navy);font-size:0.88rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:1rem;opacity:0.6;">À venir</div>
+
+        <div class="interview-card">
+          <div class="interview-card__date-block">
+            <div class="interview-card__day">12</div>
+            <div class="interview-card__month">Avr</div>
+          </div>
+          <div class="interview-card__info">
+            <div class="interview-card__title">Fatima Abdou — Livre de cuisine comorienne</div>
+            <div class="interview-card__meta">14h00 · 45 min · <span class="interview-card__type interview-card__type--online"><i class="ph-light ph-video-camera"></i> Google Meet</span> · <i class="ph-light ph-envelope"></i> Lien envoyé</div>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn admin-btn--primary" onclick="openDrawer('interview_detail', 1)">Détails</button>
+            <button class="admin-btn admin-btn--green" onclick="openDrawer('score', 1)">Évaluer</button>
+          </div>
+        </div>
+
+        <div class="interview-card">
+          <div class="interview-card__date-block">
+            <div class="interview-card__day">15</div>
+            <div class="interview-card__month">Avr</div>
+          </div>
+          <div class="interview-card__info">
+            <div class="interview-card__title">Ibrahim Youssouf — Conserverie de poisson</div>
+            <div class="interview-card__meta">10h30 · 60 min · <span class="interview-card__type interview-card__type--inperson"><i class="ph-light ph-map-pin"></i> Présentiel — Bureau Moroni</span></div>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn admin-btn--primary" onclick="openDrawer('interview_detail', 5)">Détails</button>
+            <button class="admin-btn admin-btn--green" onclick="openDrawer('score', 5)">Évaluer</button>
+          </div>
+        </div>
+
+        <div class="interview-card">
+          <div class="interview-card__date-block">
+            <div class="interview-card__day">18</div>
+            <div class="interview-card__month">Avr</div>
+          </div>
+          <div class="interview-card__info">
+            <div class="interview-card__title">Karim Hassan — Épicerie en ligne Comores</div>
+            <div class="interview-card__meta">16h00 · 30 min · <span class="interview-card__type interview-card__type--online"><i class="ph-light ph-video-camera"></i> Zoom</span> · <i class="ph-light ph-envelope-simple"></i> Lien à envoyer</div>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn admin-btn--primary" onclick="openDrawer('interview_detail', 7)">Détails</button>
+            <button class="admin-btn admin-btn--gold" onclick="sendInvite(7)">Envoyer lien</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel-entretiens -->
+
+
+    <!-- ══════════════════════════════════
+         PANEL : PROJETS PUBLIÉS
+    ══════════════════════════════════ -->
+    <div class="admin-panel" id="panel-projets">
+
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title">Projets publiés</h1>
+          <p class="admin-header__sub">9 projets actifs sur la plateforme.</p>
+        </div>
+        <a href="projets.html" target="_blank" class="admin-btn admin-btn--outline">Voir la page publique →</a>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Projets en cours de financement</div>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Projet</th>
+              <th>Modèle</th>
+              <th>Progression</th>
+              <th>Montant collecté</th>
+              <th>Jours restants</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="admin-table__name">📚 Livre de cuisine comorienne</div>
+                <div class="admin-table__sub">Fatima Abdou — Grande Comore</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:68%;background:var(--gold);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--gold-dark);">68%</span>
+                </div>
+              </td>
+              <td>272 000 KMF</td>
+              <td><strong>22 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline" onclick="openDrawer('demande', 1)">Voir</button>
+                  <button class="admin-btn admin-btn--danger" onclick="pauseProject(1)">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🏫 École primaire à Mohéli</div>
+                <div class="admin-table__sub">Association Éducation Mohéli — Mohéli</div>
+              </td>
+              <td><span class="badge badge-dons" style="font-size:0.72rem;"><i class="ph-light ph-handshake"></i> Dons</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:42%;background:var(--green);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--green-dark);">42%</span>
+                </div>
+              </td>
+              <td>630 000 KMF</td>
+              <td><strong>45 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline" onclick="openDrawer('demande', 3)">Voir</button>
+                  <button class="admin-btn admin-btn--danger" onclick="pauseProject(3)">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🍽️ Restaurant traditionnel Moroni</div>
+                <div class="admin-table__sub">Nassim Hamidou — Grande Comore</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Invest.</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:85%;background:var(--navy);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--navy);">85%</span>
+                </div>
+              </td>
+              <td>1 700 000 KMF</td>
+              <td><strong>8 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline" onclick="openDrawer('demande', 2)">Voir</button>
+                  <button class="admin-btn admin-btn--danger" onclick="pauseProject(2)">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🎨 Broderies artisanales Anjouan</div>
+                <div class="admin-table__sub">Mariam Said — Anjouan</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:31%;background:var(--gold);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--gold-dark);">31%</span>
+                </div>
+              </td>
+              <td>93 000 KMF</td>
+              <td><strong>58 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline">Voir</button>
+                  <button class="admin-btn admin-btn--danger" onclick="pauseProject(4)">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🐟 Conserverie de poisson Anjouan</div>
+                <div class="admin-table__sub">Ibrahim Youssouf — Anjouan</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Invest.</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:55%;background:var(--navy);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--navy);">55%</span>
+                </div>
+              </td>
+              <td>1 650 000 KMF</td>
+              <td><strong>30 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline">Voir</button>
+                  <button class="admin-btn admin-btn--danger" onclick="pauseProject(5)">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🌿 Jardin communautaire Moroni</div>
+                <div class="admin-table__sub">Association Verte Comores — Grande Comore</div>
+              </td>
+              <td><span class="badge badge-dons" style="font-size:0.72rem;"><i class="ph-light ph-handshake"></i> Dons</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:77%;background:var(--green);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--green-dark);">77%</span>
+                </div>
+              </td>
+              <td>385 000 KMF</td>
+              <td><strong>14 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline">Voir</button>
+                  <button class="admin-btn admin-btn--danger" onclick="pauseProject(6)">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🎵 Album de musique twarab</div>
+                <div class="admin-table__sub">Ali Mlamali — Diaspora (France)</div>
+              </td>
+              <td><span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:52%;background:var(--gold);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--gold-dark);">52%</span>
+                </div>
+              </td>
+              <td>260 000 KMF</td>
+              <td><strong>35 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline">Voir</button>
+                  <button class="admin-btn admin-btn--danger">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🛒 Épicerie en ligne Comores</div>
+                <div class="admin-table__sub">Karim Hassan — Grande Comore</div>
+              </td>
+              <td><span class="badge badge-invest" style="font-size:0.72rem;"><i class="ph-light ph-trend-up"></i> Invest.</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:62%;background:var(--navy);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--navy);">62%</span>
+                </div>
+              </td>
+              <td>1 240 000 KMF</td>
+              <td><strong>21 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline">Voir</button>
+                  <button class="admin-btn admin-btn--danger">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="admin-table__name">🌊 Nettoyage des plages de Mohéli</div>
+                <div class="admin-table__sub">EcoMohéli — Mohéli</div>
+              </td>
+              <td><span class="badge badge-dons" style="font-size:0.72rem;"><i class="ph-light ph-handshake"></i> Dons</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div style="flex:1;height:6px;background:var(--border-solid);border-radius:50px;overflow:hidden;">
+                    <div style="height:100%;width:90%;background:var(--green);border-radius:50px;"></div>
+                  </div>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--green-dark);">90%</span>
+                </div>
+              </td>
+              <td>225 000 KMF</td>
+              <td><strong>5 j.</strong></td>
+              <td>
+                <div class="admin-actions">
+                  <button class="admin-btn admin-btn--outline">Voir</button>
+                  <button class="admin-btn admin-btn--danger">Suspendre</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /panel-projets -->
+
+
+    <!-- ══════════════════════════════════
+         PANEL : ANNONCES
+    ══════════════════════════════════ -->
+    <div class="admin-panel" id="panel-annonces">
+
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title">Annonces</h1>
+          <p class="admin-header__sub">Publiez des actualités visibles sur la plateforme.</p>
+        </div>
+        <button class="admin-btn admin-btn--gold" onclick="openDrawer('new_annonce')">+ Nouvelle annonce</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:2rem;align-items:start;">
+
+        <!-- Liste des annonces -->
+        <div>
+          <div style="font-weight:700;color:var(--navy);font-size:0.82rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:1rem;opacity:0.6;">Annonces publiées</div>
+
+          <div class="announcement-card">
+            <div class="announcement-card__date">10 Avril 2026 · Plateforme</div>
+            <div class="announcement-card__title"><i class="ph-light ph-confetti"></i> FaidaKomori atteint 9 projets actifs !</div>
+            <div class="announcement-card__body">Nous sommes fiers d'annoncer que 9 projets comoriens sont actuellement en cours de financement sur notre plateforme. Merci à tous les porteurs de projet et aux soutiens pour leur confiance.</div>
+            <div class="announcement-card__footer">
+              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 1)">✏️ Modifier</button>
+              <button class="admin-btn admin-btn--danger">Dépublier</button>
+            </div>
+          </div>
+
+          <div class="announcement-card">
+            <div class="announcement-card__date">05 Avril 2026 · Partenariat</div>
+            <div class="announcement-card__title">🏛️ Nouveau partenariat avec l'ANPI Comores</div>
+            <div class="announcement-card__body">FaidaKomori officialise son partenariat avec l'ANPI (Agence Nationale pour la Promotion des Investissements). Les porteurs de projet financés peuvent désormais créer leur entreprise gratuitement via ce partenariat.</div>
+            <div class="announcement-card__footer">
+              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 2)">✏️ Modifier</button>
+              <button class="admin-btn admin-btn--danger">Dépublier</button>
+            </div>
+          </div>
+
+          <div class="announcement-card">
+            <div class="announcement-card__date">28 Mars 2026 · Événement</div>
+            <div class="announcement-card__title">📅 Webinaire : Comment financer votre projet aux Comores</div>
+            <div class="announcement-card__body">Rejoignez-nous le 20 avril à 18h (heure de Moroni) pour un webinaire gratuit sur le financement participatif aux Comores. Inscription gratuite via WhatsApp.</div>
+            <div class="announcement-card__footer">
+              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 3)">✏️ Modifier</button>
+              <button class="admin-btn admin-btn--danger">Dépublier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulaire nouvelle annonce -->
+        <div>
+          <div style="background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border-solid);padding:1.5rem;">
+            <div style="font-weight:700;color:var(--navy);margin-bottom:1.25rem;font-size:1rem;">📢 Publier une annonce</div>
+            <div class="interview-form">
+              <div>
+                <label>Titre de l'annonce</label>
+                <input type="text" placeholder="Ex : Nouveau partenariat avec..." />
+              </div>
+              <div>
+                <label>Catégorie</label>
+                <select>
+                  <option>Plateforme</option>
+                  <option>Partenariat</option>
+                  <option>Événement</option>
+                  <option>Succès projet</option>
+                  <option>Important</option>
+                </select>
+              </div>
+              <div>
+                <label>Contenu de l'annonce</label>
+                <textarea rows="5" placeholder="Rédigez votre annonce ici..."></textarea>
+              </div>
+              <div>
+                <label>Date de publication</label>
+                <input type="date" value="2026-04-10" />
+              </div>
+              <button class="admin-btn admin-btn--gold" style="width:100%;padding:0.75rem;font-size:0.9rem;" onclick="publishAnnonce()">
+                📢 Publier l'annonce
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /panel-annonces -->
+
+    <!-- ══════════════════════════════════
+         PANEL : VERSEMENTS
+    ══════════════════════════════════ -->
+    <div class="admin-panel" id="panel-versements">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title"><i class="ph-light ph-money"></i> Demandes de versement</h1>
+          <p class="admin-header__sub">Gérez les demandes de versement des porteurs de projet.</p>
+        </div>
+        <button class="btn btn-outline-navy btn-sm" onclick="loadVersements()">
+          <i class="ph-light ph-arrow-clockwise"></i> Actualiser
+        </button>
+      </div>
+
+      <!-- Info processus -->
+      <div style="background:rgba(10,123,108,0.07);border:1px solid rgba(10,123,108,0.15);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem;font-size:0.85rem;color:var(--text-muted);">
+        <strong style="color:var(--ocean);">Processus de versement :</strong>
+        <ol style="margin:0.5rem 0 0 1.2rem;line-height:1.8;">
+          <li>Le porteur soumet une demande avec le montant et l'objet.</li>
+          <li>Vous approuvez la demande (<strong>approved</strong>) — notifie le porteur.</li>
+          <li>Vous effectuez le virement ou achetez les matériaux ensemble (<strong>versed</strong>).</li>
+          <li>La commission FaidaKomori (3%) est déduite du montant versé.</li>
+        </ol>
+      </div>
+
+      <div id="versements-list">
+        <div class="admin-empty"><i class="ph-light ph-money" style="font-size:2.5rem;opacity:0.3;"></i><p>Chargement…</p></div>
+      </div>
+    </div><!-- /panel-versements -->
+
+    <!-- ════ Panel : Top Donateurs ════ -->
+    <div class="admin-panel" id="panel-top-donors">
+      <div class="admin-header" style="margin-bottom:1.75rem;">
+        <div>
+          <h2 class="admin-panel__title"><i class="ph-light ph-trophy"></i> Top Donateurs</h2>
+          <p class="admin-panel__sub">Les personnes qui ont le plus contribué à la plateforme. Célébrez-les !</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="loadTopDonors()">
+          <i class="ph-light ph-arrows-clockwise"></i> Actualiser
+        </button>
+      </div>
+      <div id="top-donors-list">
+        <div class="admin-empty"><i class="ph-light ph-trophy" style="font-size:2.5rem;opacity:0.3;"></i><p>Chargement…</p></div>
+      </div>
+    </div><!-- /panel-top-donors -->
+
+    <!-- Drawer versement -->
+    <div class="drawer-overlay" id="drawer-versement-overlay" style="display:none;" onclick="closeVersementDrawer()"></div>
+    <aside class="project-drawer" id="drawer-versement" style="display:none;">
+      <div class="drawer-header">
+        <h2 class="drawer-title" id="dv-title"><i class="ph-light ph-money"></i> Demande de versement</h2>
+        <button class="drawer-close" onclick="closeVersementDrawer()">✕</button>
+      </div>
+      <div class="drawer-body">
+        <!-- Infos porteur -->
+        <div style="background:var(--sand);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.25rem;">
+          <p style="font-size:0.82rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Porteur de projet</p>
+          <p style="margin:0;font-weight:600;" id="dv-porteur"></p>
+          <p style="margin:0;font-size:0.85rem;color:var(--text-muted);" id="dv-contact"></p>
+          <div style="margin-top:0.75rem;padding:0.75rem;background:#fff;border-radius:var(--radius-sm);border:1px solid var(--border-solid);">
+            <p style="font-size:0.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;">Coordonnées de paiement</p>
+            <p id="dv-paiement-tel" style="margin:0;font-size:0.88rem;"></p>
+            <p id="dv-paiement-banque" style="margin:0;font-size:0.88rem;"></p>
+            <p id="dv-paiement-rib" style="margin:0;font-size:0.88rem;"></p>
+          </div>
+        </div>
+
+        <!-- Détails versement -->
+        <div style="background:rgba(232,160,32,0.06);border:1px solid rgba(232,160,32,0.2);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.25rem;">
+          <p style="font-size:0.82rem;font-weight:700;color:var(--gold-dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Demande</p>
+          <p style="font-size:1.4rem;font-weight:800;color:var(--navy);margin:0;" id="dv-montant"></p>
+          <p style="font-size:0.88rem;color:var(--text-muted);margin:0.25rem 0 0;" id="dv-motif"></p>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin:0.25rem 0 0;" id="dv-date"></p>
+        </div>
+
+        <!-- Collecte projet -->
+        <div style="background:rgba(10,123,108,0.07);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.5rem;">
+          <p style="font-size:0.82rem;font-weight:700;color:var(--ocean);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.4rem;">Projet concerné</p>
+          <p style="margin:0;font-weight:600;" id="dv-projet"></p>
+          <p style="margin:0;font-size:0.85rem;color:var(--text-muted);" id="dv-collecte"></p>
+        </div>
+
+        <!-- Action -->
+        <div id="dv-action-section">
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label" for="dv-montant-verse">Montant à verser (KMF)</label>
+            <input type="number" id="dv-montant-verse" class="form-input" placeholder="Montant après commission" />
+            <p class="form-hint">Commission 3% = <span id="dv-commission"></span> KMF. Net porteur = <span id="dv-net"></span> KMF.</p>
+          </div>
+          <div class="form-group" style="margin-bottom:1.25rem;">
+            <label class="form-label" for="dv-note">Note pour le porteur</label>
+            <textarea id="dv-note" class="form-textarea" style="min-height:80px;" placeholder="Informations sur le virement, rendez-vous pour achats…"></textarea>
+          </div>
+          <div style="display:grid;gap:0.75rem;">
+            <button class="btn btn-primary" onclick="processVersement('approved')">
+              <i class="ph-light ph-check-circle"></i> Approuver la demande
+            </button>
+            <button class="btn btn-ocean" onclick="processVersement('versed')">
+              <i class="ph-light ph-money"></i> Marquer comme versé
+            </button>
+            <button class="btn btn-outline-navy" style="color:#B91C1C;border-color:#B91C1C;" onclick="processVersement('refused')">
+              <i class="ph-light ph-x-circle"></i> Refuser
+            </button>
+          </div>
+        </div>
+        <div id="dv-done-section" style="display:none;text-align:center;padding:1rem;">
+          <i class="ph-light ph-check-circle" style="font-size:3rem;color:var(--green);"></i>
+          <p style="font-weight:600;color:var(--navy);margin-top:0.5rem;">Traité</p>
+        </div>
+      </div>
+    </aside>
+
+  </main><!-- /admin-main -->
+</div><!-- /admin-layout -->
+
+
+<!-- ══════════════════════════════════════════
+     OVERLAY
+══════════════════════════════════════════ -->
+<div class="admin-overlay" id="adminOverlay" onclick="closeDrawer()"></div>
+
+
+<!-- ══════════════════════════════════════════
+     DRAWER — Contenu dynamique
+══════════════════════════════════════════ -->
+<div class="admin-drawer" id="adminDrawer">
+  <button class="admin-drawer__close" onclick="closeDrawer()">✕</button>
+  <div id="adminDrawerContent"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TOAST NOTIFICATION
+══════════════════════════════════════════ -->
+<div class="admin-toast admin-toast--success" id="adminToast">
+  <span id="adminToastText"></span>
+</div>
+
+
+<script>
+  /* ── Guard admin ── */
+  if (!requireAdminAccess()) { /* arrêt */ }
+
+  /* ── Infos admin sidebar ── */
+  const _adminUser = API.getUser();
+  if (_adminUser) {
+    const logoEl = document.querySelector('.admin-sidebar__logo');
+    if (logoEl) {
+      const nameSpan = document.createElement('div');
+      nameSpan.style.cssText = 'font-size:0.78rem;color:rgba(255,255,255,0.55);font-family:var(--font-body);font-weight:400;margin-top:0.3rem;';
+      nameSpan.textContent = _adminUser.prenom + ' ' + _adminUser.nom;
+      logoEl.appendChild(nameSpan);
+    }
+  }
+
+  /* ── Logout ── */
+  document.getElementById('admin-logout').addEventListener('click', () => {
+    API.clearSession();
+    window.location.href = 'login.html';
+  });
+
+  /* ── Charger les stats depuis l'API ── */
+  async function loadAdminStats() {
+    try {
+      const s = await API.admin.stats();
+      const statCards = document.querySelectorAll('#panel-dashboard .admin-stat-card');
+      if (statCards[0]) statCards[0].querySelector('.admin-stat-card__value').textContent = s.pendingProjects;
+      if (statCards[1]) statCards[1].querySelector('.admin-stat-card__value').textContent = s.pendingProjects;
+      if (statCards[2]) statCards[2].querySelector('.admin-stat-card__value').textContent = s.totalProjects;
+      if (statCards[3]) statCards[3].querySelector('.admin-stat-card__value').textContent = s.publishedProjects;
+
+      // Badge sidebar "Demandes"
+      document.querySelectorAll('.admin-nav-item__badge').forEach((b, i) => {
+        if (i === 0) b.textContent = s.pendingProjects;
+      });
+    } catch (err) {
+      console.warn('[Admin] Stats non chargées :', err.message);
+    }
+  }
+
+  /* ── Actions câblées sur l'API réelle ── */
+  async function approveProject(id) {
+    const note = document.querySelector('#adminDrawerContent textarea')?.value || '';
+    try {
+      await API.admin.updateStatus(id, 'approved', note);
+      closeDrawer();
+      showToast('Projet #' + id + ' approuvé — le porteur est notifié.', 'success');
+      loadAdminStats();
+    } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
+  }
+
+  async function rejectProject(id) {
+    const note = document.querySelector('#adminDrawerContent textarea')?.value || '';
+    try {
+      await API.admin.updateStatus(id, 'rejected', note);
+      closeDrawer();
+      showToast('Projet #' + id + ' refusé — le candidat est notifié.', 'warning');
+      loadAdminStats();
+    } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
+  }
+
+  async function publishProject(id) {
+    try {
+      await API.admin.updateStatus(id, 'published');
+      closeDrawer();
+      showToast('Projet #' + id + ' publié sur la plateforme !', 'success');
+      loadAdminStats();
+    } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
+  }
+
+  async function setReview(id) {
+    try {
+      await API.admin.updateStatus(id, 'review');
+      closeDrawer();
+      showToast('Projet #' + id + ' passé en examen.', 'success');
+    } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
+  }
+
+  /* ── Navigation entre panels ── */
+  function switchPanel(id) {
+    document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
+    const panel = document.getElementById('panel-' + id);
+    if (panel) panel.classList.add('active');
+    const navItem = document.querySelector(`[data-panel="${id}"]`);
+    if (navItem) navItem.classList.add('active');
+    // Fermer sidebar mobile après navigation
+    document.getElementById('adminSidebar').classList.remove('open');
+  }
+
+  document.querySelectorAll('[data-panel]').forEach(btn => {
+    btn.addEventListener('click', () => switchPanel(btn.dataset.panel));
+  });
+
+  /* ── Mobile sidebar ── */
+  document.getElementById('adminMobileToggle').addEventListener('click', () => {
+    document.getElementById('adminSidebar').classList.toggle('open');
+  });
+
+  /* ── Drawer system ── */
+  const drawerContents = {
+    demande: (id) => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title"><i class="ph-light ph-clipboard-text"></i> Dossier de candidature #${id}</div>
+        <div class="admin-drawer__sub">Détail complet de la demande</div>
+      </div>
+      <div class="admin-drawer__section">
+        <div class="admin-drawer__section-title">Informations porteur</div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Nom</div><div class="admin-drawer__field-value">${['','Fatima Abdou','Nassim Hamidou','Assoc. Éducation Mohéli','Mariam Said','Ibrahim Youssouf','Ali Mlamali','Karim Hassan'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Île</div><div class="admin-drawer__field-value">${['','Grande Comore','Grande Comore','Mohéli','Anjouan','Anjouan','Diaspora (France)','Grande Comore'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Email</div><div class="admin-drawer__field-value">porteur${id}@example.km</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">WhatsApp</div><div class="admin-drawer__field-value">+269 XXX XXXX</div></div>
+      </div>
+      <div class="admin-drawer__section">
+        <div class="admin-drawer__section-title">Détails du projet</div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Titre</div><div class="admin-drawer__field-value">${['','Livre de cuisine comorienne','Restaurant Moroni','École primaire Mohéli','Broderies Anjouan','Conserverie de poisson','Album twarab','Épicerie en ligne'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Modèle</div><div class="admin-drawer__field-value">${['','<i class="ph-light ph-package"></i> Prévente','<i class="ph-light ph-trend-up"></i> Investissement','<i class="ph-light ph-handshake"></i> Dons','<i class="ph-light ph-package"></i> Prévente','<i class="ph-light ph-trend-up"></i> Investissement','<i class="ph-light ph-package"></i> Prévente','<i class="ph-light ph-trend-up"></i> Investissement'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Montant</div><div class="admin-drawer__field-value">${['','400 000 KMF','2 000 000 KMF','1 500 000 KMF','300 000 KMF','3 000 000 KMF','500 000 KMF','2 000 000 KMF'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Date dépôt</div><div class="admin-drawer__field-value">${['','08/04/2026','07/04/2026','06/04/2026','05/04/2026','03/04/2026','02/04/2026','01/04/2026'][id]}</div></div>
+      </div>
+      <div class="admin-drawer__section">
+        <div class="admin-drawer__section-title">Description du projet</div>
+        <p style="font-size:0.875rem;color:var(--text-muted);line-height:1.7;">Le porteur de projet décrit son initiative, ses objectifs et l'impact attendu sur la communauté comorienne. Le financement sera utilisé pour acheter le matériel nécessaire et lancer l'activité.</p>
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap;">
+        <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="openDrawer('interview',${id})">🗓️ Planifier entretien</button>
+        <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})"><i class="ph-light ph-check-circle"></i> Approuver</button>
+        <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})"><i class="ph-light ph-x-circle"></i> Refuser</button>
+      </div>
+    `,
+
+    interview: (id) => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title">🗓️ Planifier un entretien</div>
+        <div class="admin-drawer__sub">Dossier #${id} — ${['','Fatima Abdou','Nassim Hamidou','Assoc. Éducation Mohéli','Mariam Said','Ibrahim Youssouf','Ali Mlamali','Karim Hassan'][id]}</div>
+      </div>
+      <div class="interview-form">
+        <div>
+          <label>Type d'entretien</label>
+          <select id="interviewType" onchange="updateLinkField()">
+            <option value="google_meet"><i class="ph-light ph-video-camera"></i> Google Meet (en ligne)</option>
+            <option value="zoom"><i class="ph-light ph-video-camera"></i> Zoom (en ligne)</option>
+            <option value="whatsapp"><i class="ph-light ph-device-mobile"></i> WhatsApp Video</option>
+            <option value="phone">📞 Appel téléphonique</option>
+            <option value="inperson"><i class="ph-light ph-map-pin"></i> Présentiel — Moroni</option>
+          </select>
+        </div>
+        <div id="meetLinkField">
+          <label>Lien de réunion</label>
+          <input type="url" id="meetLink" placeholder="https://meet.google.com/xxx-yyyy-zzz" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div>
+            <label>Date</label>
+            <input type="date" value="2026-04-15" />
+          </div>
+          <div>
+            <label>Heure (locale Moroni)</label>
+            <input type="time" value="14:00" />
+          </div>
+        </div>
+        <div>
+          <label>Durée estimée</label>
+          <select>
+            <option>30 minutes</option>
+            <option selected>45 minutes</option>
+            <option>1 heure</option>
+            <option>1h30</option>
+          </select>
+        </div>
+        <div>
+          <label>Notes pour l'entretien (questions clés)</label>
+          <textarea placeholder="Ex : Vérifier les projections financières, demander les licences, clarifier le modèle de distribution..."></textarea>
+        </div>
+        <div style="display:flex;gap:0.75rem;">
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="scheduleInterview(${id})"><i class="ph-light ph-check-circle"></i> Confirmer & envoyer invitation</button>
+          <button class="admin-btn admin-btn--outline" onclick="closeDrawer()">Annuler</button>
+        </div>
+      </div>
+    `,
+
+    interview_detail: (id) => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title">🗓️ Détail de l'entretien</div>
+        <div class="admin-drawer__sub">${['','Fatima Abdou','Nassim Hamidou','Assoc. Éducation','Mariam Said','Ibrahim Youssouf','Ali Mlamali','Karim Hassan'][id]}</div>
+      </div>
+      <div class="admin-drawer__section">
+        <div class="admin-drawer__section-title">Informations entretien</div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Date</div><div class="admin-drawer__field-value">${id===1?'12 Avril 2026':id===5?'15 Avril 2026':'18 Avril 2026'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Heure</div><div class="admin-drawer__field-value">${id===1?'14h00':id===5?'10h30':'16h00'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Type</div><div class="admin-drawer__field-value">${id===1?'<i class="ph-light ph-video-camera"></i> Google Meet':id===5?'📍 Présentiel':'<i class="ph-light ph-video-camera"></i> Zoom'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Durée</div><div class="admin-drawer__field-value">${id===1?'45 min':id===5?'60 min':'30 min'}</div></div>
+        ${id!==5?`<div class="admin-drawer__field"><div class="admin-drawer__field-label">Lien</div><div class="admin-drawer__field-value" style="word-break:break-all;font-size:0.8rem;">${id===1?'https://meet.google.com/fkm-2026-${id}':'https://zoom.us/j/9876543${id}'}</div></div>`:'<div class="admin-drawer__field"><div class="admin-drawer__field-label">Lieu</div><div class="admin-drawer__field-value">Bureau FaidaKomori, Moroni</div></div>'}
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap;">
+        <button class="admin-btn admin-btn--green" style="flex:1;" onclick="openDrawer('score',${id})"><i class="ph-light ph-chart-bar"></i> Évaluer le dossier</button>
+        <button class="admin-btn admin-btn--outline" onclick="openDrawer('interview',${id})">✏️ Modifier</button>
+      </div>
+    `,
+
+    score: (id) => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title"><i class="ph-light ph-chart-bar"></i> Grille d'évaluation</div>
+        <div class="admin-drawer__sub">100 points — ${['','Fatima Abdou','Nassim Hamidou','Assoc. Éducation','Mariam Said','Ibrahim Youssouf','Ali Mlamali','Karim Hassan'][id]}</div>
+      </div>
+      <div class="score-grid" id="scoreGrid">
+        <div class="score-item">
+          <label>Viabilité du projet <span id="s1val">20</span>/25</label>
+          <input type="range" min="0" max="25" value="20" oninput="updateScore(this,'s1val')">
+        </div>
+        <div class="score-item">
+          <label>Profil du porteur <span id="s2val">18</span>/25</label>
+          <input type="range" min="0" max="25" value="18" oninput="updateScore(this,'s2val')">
+        </div>
+        <div class="score-item">
+          <label>Impact social/économique <span id="s3val">22</span>/25</label>
+          <input type="range" min="0" max="25" value="22" oninput="updateScore(this,'s3val')">
+        </div>
+        <div class="score-item">
+          <label>Faisabilité financière <span id="s4val">17</span>/25</label>
+          <input type="range" min="0" max="25" value="17" oninput="updateScore(this,'s4val')">
+        </div>
+        <div class="score-total">
+          <span>Score total</span>
+          <span class="score-total__value" id="scoreTotal">77</span>
+          <span style="opacity:0.6;font-size:0.82rem;">/ 100</span>
+        </div>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <label style="font-size:0.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:0.5rem;">Commentaire de l'évaluateur</label>
+        <textarea class="interview-form" style="width:100%;padding:0.7rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.875rem;font-family:var(--font-body);min-height:90px;resize:vertical;" placeholder="Ex : Projet solide, porteur motivé. Revoir les projections de vente au mois 3..."></textarea>
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap;">
+        <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})">✅ Approuver le projet</button>
+        <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})"><i class="ph-light ph-x-circle"></i> Refuser</button>
+      </div>
+    `,
+
+    publish: (id) => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title"><i class="ph-light ph-rocket-launch"></i> Publier le projet</div>
+        <div class="admin-drawer__sub">Ce projet sera visible sur la page publique</div>
+      </div>
+      <div class="admin-drawer__section">
+        <div class="admin-drawer__section-title">Récapitulatif</div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Projet</div><div class="admin-drawer__field-value">${['','Livre de cuisine','Restaurant Moroni','École Mohéli','Broderies Anjouan','Conserverie','Album twarab','Épicerie en ligne'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Porteur</div><div class="admin-drawer__field-value">${['','Fatima Abdou','Nassim Hamidou','Assoc. Éducation Mohéli','Mariam Said','Ibrahim Youssouf','Ali Mlamali','Karim Hassan'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Modèle</div><div class="admin-drawer__field-value">${['','<i class="ph-light ph-package"></i> Prévente','<i class="ph-light ph-trend-up"></i> Investissement','<i class="ph-light ph-handshake"></i> Dons','<i class="ph-light ph-package"></i> Prévente','<i class="ph-light ph-trend-up"></i> Investissement','<i class="ph-light ph-package"></i> Prévente','<i class="ph-light ph-trend-up"></i> Investissement'][id]}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Montant cible</div><div class="admin-drawer__field-value">${['','400 000 KMF','2 000 000 KMF','1 500 000 KMF','300 000 KMF','3 000 000 KMF','500 000 KMF','2 000 000 KMF'][id]}</div></div>
+      </div>
+      <div class="interview-form" style="display:grid;gap:1rem;margin-bottom:1.25rem;">
+        <div>
+          <label style="font-size:0.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:0.35rem;">Durée de la collecte</label>
+          <select style="width:100%;padding:0.7rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.875rem;font-family:var(--font-body);">
+            <option>30 jours</option>
+            <option selected>45 jours</option>
+            <option>60 jours</option>
+            <option>90 jours</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:0.35rem;">Message personnalisé au porteur (facultatif)</label>
+          <textarea style="width:100%;padding:0.7rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.875rem;font-family:var(--font-body);min-height:80px;resize:vertical;" placeholder="Félicitations ! Votre projet a été sélectionné..."></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button class="admin-btn admin-btn--green" style="flex:1;padding:0.75rem;" onclick="publishProject(${id})"><i class="ph-light ph-rocket-launch"></i> Publier maintenant</button>
+        <button class="admin-btn admin-btn--outline" onclick="closeDrawer()">Annuler</button>
+      </div>
+    `,
+
+    new_annonce: () => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title">📢 Nouvelle annonce</div>
+        <div class="admin-drawer__sub">Elle sera visible sur la plateforme</div>
+      </div>
+      <div class="interview-form">
+        <div>
+          <label>Titre</label>
+          <input type="text" placeholder="Titre de l'annonce" />
+        </div>
+        <div>
+          <label>Catégorie</label>
+          <select>
+            <option>Plateforme</option>
+            <option>Partenariat</option>
+            <option>Événement</option>
+            <option>Succès projet</option>
+            <option>Important</option>
+          </select>
+        </div>
+        <div>
+          <label>Contenu</label>
+          <textarea rows="6" placeholder="Rédigez votre annonce..."></textarea>
+        </div>
+        <div>
+          <label>Date de publication</label>
+          <input type="date" value="2026-04-10" />
+        </div>
+        <div style="display:flex;gap:0.75rem;">
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="publishAnnonce()">📢 Publier</button>
+          <button class="admin-btn admin-btn--outline" onclick="closeDrawer()">Annuler</button>
+        </div>
+      </div>
+    `,
+
+    edit_annonce: (id) => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title">✏️ Modifier l'annonce #${id}</div>
+        <div class="admin-drawer__sub">Modifiez et re-publiez</div>
+      </div>
+      <div class="interview-form">
+        <div>
+          <label>Titre</label>
+          <input type="text" value="${['','FaidaKomori atteint 9 projets actifs !','Nouveau partenariat avec l\u2019ANPI Comores','Webinaire : Comment financer votre projet'][id]}" />
+        </div>
+        <div>
+          <label>Catégorie</label>
+          <select>
+            <option ${id===1?'selected':''}>Plateforme</option>
+            <option ${id===2?'selected':''}>Partenariat</option>
+            <option ${id===3?'selected':''}>Événement</option>
+            <option>Succès projet</option>
+            <option>Important</option>
+          </select>
+        </div>
+        <div>
+          <label>Contenu</label>
+          <textarea rows="6">Contenu de l'annonce #${id}...</textarea>
+        </div>
+        <div>
+          <label>Date</label>
+          <input type="date" value="2026-04-${String(id*5).padStart(2,'0')}" />
+        </div>
+        <div style="display:flex;gap:0.75rem;">
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="saveAnnonce(${id})">💾 Enregistrer</button>
+          <button class="admin-btn admin-btn--danger" onclick="closeDrawer()">Annuler</button>
+        </div>
+      </div>
+    `,
+
+    interview_new: () => `
+      <div class="admin-drawer__header">
+        <div class="admin-drawer__title">🗓️ Planifier un entretien</div>
+        <div class="admin-drawer__sub">Choisissez le candidat et les modalités</div>
+      </div>
+      <div class="interview-form">
+        <div>
+          <label>Candidat</label>
+          <select>
+            <option>Mariam Said — Broderies Anjouan</option>
+            <option>Ibrahim Youssouf — Conserverie poisson</option>
+            <option>Ali Mlamali — Album twarab</option>
+            <option>Karim Hassan — Épicerie en ligne</option>
+          </select>
+        </div>
+        <div>
+          <label>Type d'entretien</label>
+          <select>
+            <option><i class="ph-light ph-video-camera"></i> Google Meet</option>
+            <option><i class="ph-light ph-video-camera"></i> Zoom</option>
+            <option><i class="ph-light ph-device-mobile"></i> WhatsApp Video</option>
+            <option>📞 Appel téléphonique</option>
+            <option><i class="ph-light ph-map-pin"></i> Présentiel — Moroni</option>
+          </select>
+        </div>
+        <div>
+          <label>Lien de réunion (si en ligne)</label>
+          <input type="url" placeholder="https://meet.google.com/..." />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div>
+            <label>Date</label>
+            <input type="date" />
+          </div>
+          <div>
+            <label>Heure</label>
+            <input type="time" />
+          </div>
+        </div>
+        <div>
+          <label>Durée</label>
+          <select>
+            <option>30 minutes</option>
+            <option>45 minutes</option>
+            <option>1 heure</option>
+          </select>
+        </div>
+        <div>
+          <label>Notes préparatoires</label>
+          <textarea placeholder="Questions à poser, points à vérifier..."></textarea>
+        </div>
+        <div style="display:flex;gap:0.75rem;">
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="scheduleInterview(0)"><i class="ph-light ph-check-circle"></i> Planifier & envoyer</button>
+          <button class="admin-btn admin-btn--outline" onclick="closeDrawer()">Annuler</button>
+        </div>
+      </div>
+    `
+  };
+
+  function openDrawer(type, id) {
+    const fn = drawerContents[type];
+    if (!fn) return;
+    document.getElementById('adminDrawerContent').innerHTML = fn(id);
+    document.getElementById('adminDrawer').classList.add('open');
+    document.getElementById('adminOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // Init score if score panel
+    if (type === 'score') updateTotalScore();
+  }
+
+  function closeDrawer() {
+    document.getElementById('adminDrawer').classList.remove('open');
+    document.getElementById('adminOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Score calculator ── */
+  function updateScore(input, spanId) {
+    document.getElementById(spanId).textContent = input.value;
+    updateTotalScore();
+  }
+  function updateTotalScore() {
+    const inputs = document.querySelectorAll('#scoreGrid input[type="range"]');
+    let total = 0;
+    inputs.forEach(i => total += parseInt(i.value));
+    const el = document.getElementById('scoreTotal');
+    if (el) el.textContent = total;
+  }
+
+  /* ── Actions locales (non-API) ── */
+  function scheduleInterview(id) {
+    closeDrawer();
+    showToast('🗓️ Entretien planifié ! Invitation envoyée au candidat.', 'success');
+  }
+  function publishAnnonce() {
+    closeDrawer();
+    showToast('📢 Annonce publiée avec succès !', 'success');
+  }
+  function saveAnnonce(id) {
+    closeDrawer();
+    showToast('💾 Annonce #' + id + ' mise à jour.', 'success');
+  }
+  function sendInvite(id) {
+    showToast('Lien Zoom envoyé au candidat #' + id, 'success');
+  }
+  async function pauseProject(id) {
+    try {
+      await API.admin.updateStatus(id, 'approved');
+      showToast('⏸️ Projet #' + id + ' suspendu.', 'warning');
+    } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
+  }
+
+  /* ══════════════════════════════════════════════
+     VERSEMENTS — Logique admin
+  ══════════════════════════════════════════════ */
+  let currentVersement = null;
+
+  async function loadVersements() {
+    const container = document.getElementById('versements-list');
+    if (!container) return;
+    try {
+      const { versements } = await API.admin.versements();
+
+      // Badge sidebar
+      const pending = versements.filter(v => v.status === 'pending').length;
+      const badge   = document.getElementById('versements-badge');
+      if (badge) { badge.textContent = pending; badge.style.display = pending > 0 ? 'inline' : 'none'; }
+
+      if (!versements.length) {
+        container.innerHTML = `<div class="admin-empty"><i class="ph-light ph-money" style="font-size:2.5rem;opacity:0.3;display:block;margin:0 auto 0.75rem;"></i><p>Aucune demande de versement pour le moment.</p></div>`;
+        return;
+      }
+
+      const statusMap = {
+        pending:  { label:'En attente', bg:'rgba(232,160,32,0.1)',  color:'var(--gold-dark)' },
+        approved: { label:'Approuvé',   bg:'rgba(0,200,83,0.08)',   color:'var(--green-deep)' },
+        refused:  { label:'Refusé',     bg:'rgba(220,38,38,0.06)',  color:'#B91C1C' },
+        versed:   { label:'Versé',      bg:'rgba(10,123,108,0.08)', color:'var(--ocean)' },
+      };
+
+      container.innerHTML = versements.map(v => {
+        const s = statusMap[v.status] || { label:v.status, bg:'', color:'' };
+        const pct = v.montant > 0 ? Math.round(((v.montant_collecte||0) / v.montant) * 100) : 0;
+        return `
+          <div class="admin-project-card" style="cursor:pointer;border-left:4px solid ${s.color};" onclick='openVersementDrawer(${JSON.stringify(v)})'>
+            <div class="admin-project-card__main">
+              <div class="admin-project-card__header">
+                <strong>${v.nom_projet || 'Projet #' + v.project_id}</strong>
+                <span style="font-size:0.75rem;font-weight:700;color:${s.color};background:${s.bg};padding:0.2rem 0.7rem;border-radius:50px;">${s.label}</span>
+              </div>
+              <div class="admin-project-card__meta">
+                ${v.prenom || ''} ${v.nom || ''} · ${v.email || ''} · ${v.tel || ''}
+              </div>
+              <div style="margin-top:0.5rem;display:flex;gap:1rem;font-size:0.85rem;flex-wrap:wrap;">
+                <span><strong style="color:var(--navy);">${parseInt(v.montant_demande||0).toLocaleString('fr-FR')} KMF</strong> demandés</span>
+                <span style="color:var(--text-muted);">${v.motif || ''}</span>
+                <span style="color:var(--text-muted);">Collecté : ${parseInt(v.montant_collecte||0).toLocaleString('fr-FR')} / ${parseInt(v.montant||0).toLocaleString('fr-FR')} KMF (${pct}%)</span>
+              </div>
+            </div>
+            <div style="flex-shrink:0;font-size:0.78rem;color:var(--text-muted);">${new Date(v.created_at).toLocaleDateString('fr-FR')}</div>
+          </div>`;
+      }).join('');
+    } catch (err) {
+      container.innerHTML = `<div class="admin-empty"><p style="color:#B91C1C;">Erreur : ${err.message}</p></div>`;
+    }
+  }
+
+  function openVersementDrawer(v) {
+    currentVersement = v;
+    const m = parseInt(v.montant_demande || 0);
+    const commission  = Math.round(m * 0.03);
+    const net         = m - commission;
+
+    document.getElementById('dv-title').innerHTML    = `<i class="ph-light ph-money"></i> Demande #${v.id}`;
+    document.getElementById('dv-porteur').textContent = `${v.prenom || ''} ${v.nom || ''}`;
+    document.getElementById('dv-contact').textContent = `${v.email || ''} · ${v.tel || ''}`;
+    document.getElementById('dv-paiement-tel').innerHTML    = v.paiement_tel    ? `<i class="ph-light ph-device-mobile"></i> ${v.paiement_tel}` : '<span style="color:var(--text-muted);font-style:italic;">Non renseigné</span>';
+    document.getElementById('dv-paiement-banque').textContent = v.paiement_banque ? `Banque : ${v.paiement_banque}` : '';
+    document.getElementById('dv-paiement-rib').textContent    = v.paiement_rib    ? `RIB : ${v.paiement_rib}` : '';
+    document.getElementById('dv-montant').textContent = `${m.toLocaleString('fr-FR')} KMF`;
+    document.getElementById('dv-motif').textContent   = v.motif || '';
+    document.getElementById('dv-date').textContent    = `Demandé le ${new Date(v.created_at).toLocaleDateString('fr-FR')}`;
+    document.getElementById('dv-projet').textContent  = v.nom_projet || '';
+    document.getElementById('dv-collecte').textContent = `${parseInt(v.montant_collecte||0).toLocaleString('fr-FR')} KMF collectés sur ${parseInt(v.montant||0).toLocaleString('fr-FR')} KMF objectif`;
+    document.getElementById('dv-montant-verse').value = net;
+    document.getElementById('dv-commission').textContent = commission.toLocaleString('fr-FR');
+    document.getElementById('dv-net').textContent        = net.toLocaleString('fr-FR');
+    document.getElementById('dv-note').value = '';
+
+    const isDone = ['refused','versed'].includes(v.status);
+    document.getElementById('dv-action-section').style.display = isDone ? 'none' : 'block';
+    document.getElementById('dv-done-section').style.display   = isDone ? 'block' : 'none';
+
+    document.getElementById('drawer-versement').style.display        = 'flex';
+    document.getElementById('drawer-versement-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVersementDrawer() {
+    document.getElementById('drawer-versement').style.display        = 'none';
+    document.getElementById('drawer-versement-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // Mettre à jour le calcul net quand on change le montant
+  document.getElementById('dv-montant-verse')?.addEventListener('input', function() {
+    const m = parseInt(this.value) || 0;
+    const commission = Math.round(m * 0.03);
+    document.getElementById('dv-commission').textContent = commission.toLocaleString('fr-FR');
+    document.getElementById('dv-net').textContent = (m - commission).toLocaleString('fr-FR');
+  });
+
+  async function processVersement(status) {
+    if (!currentVersement) return;
+    const montantVerse = parseInt(document.getElementById('dv-montant-verse').value) || currentVersement.montant_demande;
+    const note         = document.getElementById('dv-note').value.trim();
+    try {
+      await API.admin.processVersement(currentVersement.id, { status, note_admin: note, montant_verse: montantVerse });
+      closeVersementDrawer();
+      const labels = { approved:'Demande approuvée — le porteur est notifié.', refused:'Demande refusée.', versed:'Versement marqué comme effectué !' };
+      showToast(labels[status] || 'Traité.', 'success');
+      loadVersements();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'warning');
+    }
+  }
+
+  // Charger versements quand on clique sur le panel
+  document.querySelector('[data-panel="versements"]')?.addEventListener('click', loadVersements);
+
+  // ── Top Donateurs ──────────────────────────────────────────
+  async function loadTopDonors() {
+    const container = document.getElementById('top-donors-list');
+    if (!container) return;
+    container.innerHTML = '<div class="admin-empty"><i class="ph-light ph-circle-notch" style="font-size:2rem;opacity:0.4;"></i><p>Chargement…</p></div>';
+    try {
+      const { donors } = await API.admin.topDonors();
+      if (!donors.length) {
+        container.innerHTML = '<div class="admin-empty"><i class="ph-light ph-trophy" style="font-size:2.5rem;opacity:0.3;"></i><p>Aucune contribution enregistrée pour l\'instant.</p></div>';
+        return;
+      }
+      const medals = ['🥇', '🥈', '🥉'];
+      container.innerHTML = `
+        <div style="display:grid;gap:0.75rem;max-width:600px;">
+          ${donors.map((d, i) => `
+            <div style="display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:#fff;border-radius:var(--radius);border:1.5px solid var(--border-solid);${i < 3 ? 'border-color:rgba(232,160,32,0.35);background:rgba(232,160,32,0.04);' : ''}">
+              <div style="font-size:${i < 3 ? '1.8rem' : '1.1rem'};width:2.5rem;text-align:center;flex-shrink:0;">
+                ${medals[i] || `<span style="font-weight:700;color:var(--text-muted);">#${i+1}</span>`}
+              </div>
+              <div style="flex:1;">
+                <div style="font-weight:700;color:var(--navy);font-size:0.95rem;">${d.nom}</div>
+                <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.1rem;">${d.count} contribution${d.count > 1 ? 's' : ''}</div>
+              </div>
+              <div style="font-family:var(--font-heading);font-weight:800;color:var(--gold-dark);font-size:1.1rem;text-align:right;">
+                ${d.total.toLocaleString('fr-FR')} <span style="font-size:0.75rem;font-weight:500;">KMF</span>
+              </div>
+            </div>`).join('')}
+        </div>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:1.25rem;"><i class="ph-light ph-eye-slash"></i> Les contributions anonymes ne sont pas comptabilisées dans ce classement.</p>`;
+    } catch (err) {
+      container.innerHTML = `<div class="admin-empty"><p style="color:#B91C1C;">Erreur : ${err.message}</p></div>`;
+    }
+  }
+  document.querySelector('[data-panel="top-donors"]')?.addEventListener('click', loadTopDonors);
+
+  /* ── Initialisation ── */
+  loadAdminStats();
+
+  function updateLinkField() {
+    const type = document.getElementById('interviewType').value;
+    const field = document.getElementById('meetLinkField');
+    if (!field) return;
+    if (type === 'inperson' || type === 'phone') {
+      field.style.display = 'none';
+    } else {
+      field.style.display = '';
+      const link = document.getElementById('meetLink');
+      if (!link) return;
+      const placeholders = {
+        google_meet: 'https://meet.google.com/xxx-yyyy-zzz',
+        zoom: 'https://zoom.us/j/123456789',
+        whatsapp: '+269 XXX XXXX (WhatsApp Video)'
+      };
+      link.placeholder = placeholders[type] || '';
+    }
+  }
+
+  /* ── Toast ── */
+  function showToast(msg, type = 'success') {
+    const toast = document.getElementById('adminToast');
+    document.getElementById('adminToastText').textContent = msg;
+    toast.className = 'admin-toast admin-toast--' + type + ' show';
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  /* ── Keyboard close ── */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+</script>
+</body>
+</html>

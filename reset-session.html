@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Déconnexion — FaidaKomori</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #050d1a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 2rem;
+    }
+    .box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      max-width: 420px;
+      width: 100%;
+    }
+    .icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.5rem; margin: 0 0 0.75rem; color: #fff; }
+    p  { color: rgba(255,255,255,0.55); font-size: 0.95rem; line-height: 1.7; margin: 0 0 2rem; }
+    .btn {
+      display: inline-block;
+      background: #00C853;
+      color: #fff;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .btn-admin {
+      background: linear-gradient(135deg, #E8A020, #C47F10);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="icon">🔓</div>
+    <h1>Session réinitialisée !</h1>
+    <p>Votre ancienne session a été effacée. Vous pouvez maintenant vous connecter avec votre compte admin.</p>
+    <a href="login.html" class="btn" id="btn-login">Se connecter</a>
+    <div id="status" style="font-size:0.82rem;color:rgba(255,255,255,0.4);margin-top:0.5rem;"></div>
+  </div>
+
+  <script>
+    // Effacer toute la session immédiatement
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Afficher confirmation
+    document.getElementById('status').textContent = '✓ Session effacée avec succès';
+
+    // Redirection automatique vers login après 2 secondes
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 2000);
+  </script>
+</body>
+</html>

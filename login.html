@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion — FaidaKomori</title>
+  <meta name="description" content="Connectez-vous ou créez votre compte FaidaKomori. Un seul compte pour déposer vos projets et soutenir ceux des autres." />
+  <meta name="theme-color" content="#00C853" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+    :root {
+      --navy:       #0D2244;
+      --navy-deep:  #081729;
+      --green:      #00C853;
+      --green-dark: #00A344;
+      --green-deep: #007B33;
+      --gold:       #E8A020;
+      --white:      #FFFFFF;
+      --off-white:  #FAFAF8;
+      --sand:       #FFF2EA;
+      --text:       #111827;
+      --text-muted: #6B7280;
+      --border:     #E5E7EB;
+      --red:        #DC2626;
+      --font-h:     'Playfair Display', Georgia, serif;
+      --font-b:     'DM Sans', system-ui, sans-serif;
+      --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out:   cubic-bezier(0.0, 0, 0.2, 1);
+      --r-sm:  8px;
+      --r:     14px;
+      --r-lg:  22px;
+      --r-xl:  32px;
+    }
+
+    body {
+      font-family: var(--font-b);
+      color: var(--text);
+      background: var(--navy-deep);
+      min-height: 100dvh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* ── Grain overlay ─────────────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ════════════════════════════════════════════════
+       LAYOUT — Split
+    ════════════════════════════════════════════════ */
+    .auth-split {
+      display: flex;
+      width: 100%;
+      min-height: 100dvh;
+    }
+
+    /* ── Left panel — branding ────────────────────── */
+    .auth-left {
+      width: 45%;
+      min-height: 100dvh;
+      background: var(--navy-deep);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2.5rem 3rem 3rem;
+      flex-shrink: 0;
+    }
+
+    /* Background glow orbs */
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -15%;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,83,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .auth-left::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      left: -10%;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,160,32,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .auth-left__content { position: relative; z-index: 1; }
+    .auth-left__footer  { position: relative; z-index: 1; }
+
+    /* Logo */
+    .auth-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      margin-bottom: 3.5rem;
+    }
+    .auth-logo img {
+      width: 36px;
+      height: 36px;
+    }
+    .auth-logo-text {
+      font-family: var(--font-h);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .auth-logo-text span { color: var(--green); }
+
+    /* Eyebrow */
+    .auth-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: 50px;
+      background: rgba(0,200,83,0.12);
+      border: 1px solid rgba(0,200,83,0.25);
+      color: var(--green);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Headline */
+    .auth-headline {
+      font-family: var(--font-h);
+      font-size: clamp(1.9rem, 3vw, 2.6rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .auth-headline em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .auth-sub {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      max-width: 38ch;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Feature list */
+    .auth-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 3rem;
+    }
+    .auth-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.9rem 1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--r);
+      transition: background 0.2s var(--ease-out);
+    }
+    .auth-feature:hover { background: rgba(255,255,255,0.07); }
+    .auth-feature__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .auth-feature__icon--green { background: rgba(0,200,83,0.15); color: var(--green); }
+    .auth-feature__icon--gold  { background: rgba(232,160,32,0.15); color: var(--gold); }
+    .auth-feature__icon--blue  { background: rgba(99,102,241,0.15); color: #818CF8; }
+    .auth-feature__text strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.1rem;
+    }
+    .auth-feature__text span {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+
+    /* Footer links */
+    .auth-left__footer-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .auth-left__footer-links a {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .auth-left__footer-links a:hover { color: rgba(255,255,255,0.6); }
+
+    /* ── Right panel — form ───────────────────────── */
+    .auth-right {
+      flex: 1;
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    .auth-right::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green), var(--gold));
+    }
+
+    .auth-form-wrap {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* Mobile: top bar */
+    .auth-mobile-top {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      background: var(--navy-deep);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Card (outer shell / inner core — double bezel) ──── */
+    .auth-card-shell {
+      background: rgba(13,34,68,0.04);
+      border: 1px solid rgba(13,34,68,0.08);
+      border-radius: var(--r-xl);
+      padding: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .auth-card-inner {
+      background: var(--white);
+      border-radius: calc(var(--r-xl) - 5px);
+      padding: 2.25rem 2rem;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.8),
+                  0 8px 32px rgba(13,34,68,0.08);
+    }
+
+    /* ── Tabs ─────────────────────────────────────── */
+    .auth-tabs-wrap {
+      display: flex;
+      gap: 0;
+      background: var(--off-white);
+      border-radius: 50px;
+      padding: 4px;
+      margin-bottom: 2rem;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border-radius: 50px;
+      border: none;
+      background: none;
+      font-family: var(--font-b);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-out);
+    }
+    .auth-tab-btn.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(13,34,68,0.1);
+    }
+    .auth-tab-btn:not(.active):hover { color: var(--navy); }
+
+    /* ── Form ─────────────────────────────────────── */
+    .auth-form { display: none; }
+    .auth-form.active {
+      display: block;
+      animation: fadeSlideUp 0.35s var(--ease) both;
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+    .form-label span { color: var(--red); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-family: var(--font-b);
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.2s var(--ease-out),
+                  box-shadow 0.2s var(--ease-out);
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(0,200,83,0.12);
+    }
+    .form-input.error { border-color: var(--red); }
+    .form-input.error:focus { box-shadow: 0 0 0 3px rgba(220,38,38,0.1); }
+
+    .form-error {
+      font-size: 0.76rem;
+      color: var(--red);
+      margin-top: 0.3rem;
+      display: none;
+    }
+    .form-error.show { display: block; }
+
+    .form-hint { font-size: 0.76rem; color: var(--text-muted); margin-top: 0.3rem; }
+
+    .toggle-pwd-btn {
+      position: absolute;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      transition: color 0.15s;
+    }
+    .toggle-pwd-btn:hover { color: var(--navy); }
+
+    /* ── Password strength ───────────────────────── */
+    .pwd-strength-wrap { margin-top: 0.5rem; display: none; }
+    .pwd-strength-bar-bg {
+      height: 4px;
+      background: var(--border);
+      border-radius: 50px;
+      overflow: hidden;
+    }
+    .pwd-strength-bar {
+      height: 100%;
+      border-radius: 50px;
+      transition: width 0.3s var(--ease-out), background 0.3s;
+      width: 0;
+    }
+    .pwd-strength-lbl {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      display: block;
+    }
+
+    /* ── Message ─────────────────────────────────── */
+    .auth-message {
+      display: none;
+      padding: 0.8rem 1rem;
+      border-radius: var(--r-sm);
+      font-size: 0.86rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      animation: fadeSlideUp 0.25s var(--ease) both;
+    }
+
+    /* ── Checkbox ────────────────────────────────── */
+    .form-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+    }
+    .form-check input { margin-top: 2px; flex-shrink: 0; accent-color: var(--green); }
+
+    /* ── Buttons ─────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      font-family: var(--font-b);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s var(--ease-out),
+                  box-shadow 0.2s var(--ease-out),
+                  background 0.2s var(--ease-out);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-full { width: 100%; }
+    .btn-lg { padding: 0.9rem 1.75rem; font-size: 0.95rem; }
+
+    .btn-green {
+      background: var(--green);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(0,200,83,0.3);
+    }
+    .btn-green:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,200,83,0.38);
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(13,34,68,0.2);
+    }
+    .btn-navy:hover {
+      background: #1A3A6B;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(13,34,68,0.28);
+    }
+
+    .btn-icon-wrap {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: transform 0.2s var(--ease-out);
+    }
+    .btn:hover .btn-icon-wrap { transform: translate(2px, -1px) scale(1.05); }
+
+    .btn-link {
+      background: none;
+      border: none;
+      font-family: var(--font-b);
+      font-size: 0.82rem;
+      color: var(--green-deep);
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      transition: text-decoration-color 0.2s;
+    }
+    .btn-link:hover { text-decoration-color: var(--green-deep); }
+
+    /* ── Divider ─────────────────────────────────── */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Back link ───────────────────────────────── */
+    .auth-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 1.75rem;
+      transition: color 0.2s;
+    }
+    .auth-back:hover { color: var(--navy); }
+
+    /* ── Trust badges ────────────────────────────── */
+    .auth-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      margin-top: 1.5rem;
+    }
+    .auth-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .auth-trust-item i { color: var(--green); font-size: 0.9rem; }
+
+    /* ────────────────────────────────────────────────────────
+       RESPONSIVE
+    ──────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .auth-left { display: none; }
+      .auth-right { background: var(--navy-deep); padding: 0; align-items: stretch; }
+      .auth-mobile-top { display: flex; }
+      .auth-form-wrap {
+        max-width: 100%;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .auth-card-shell { margin-bottom: 0; flex: 1; }
+      .auth-card-inner { border-radius: calc(var(--r-xl) - 5px); }
+      .auth-right::before { display: none; }
+      body { background: var(--navy-deep); }
+    }
+
+    @media (max-width: 480px) {
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .auth-card-inner { padding: 1.5rem 1.25rem; }
+    }
+
+    .ph-light { font-size: 1.1em; vertical-align: middle; line-height: 1; }
+    .btn-icon-wrap .ph-light { font-size: 0.9em; }
+  </style>
+</head>
+<body>
+
+<div class="auth-split">
+
+  <!-- ═══════════════════════════════════════════
+       PANNEAU GAUCHE — Brand / Story
+  ═══════════════════════════════════════════ -->
+  <div class="auth-left">
+    <div class="auth-left__content">
+
+      <!-- Logo -->
+      <a href="index.html" class="auth-logo">
+        <img src="img/logo-fk-icon.svg" alt="FaidaKomori" />
+        <span class="auth-logo-text">Faida<span>Komori</span></span>
+      </a>
+
+      <!-- Eyebrow -->
+      <div class="auth-eyebrow">
+        <i class="ph-light ph-flag" style="font-size:0.8rem;"></i>
+        Plateforme #1 des Comores
+      </div>
+
+      <!-- Headline -->
+      <h1 class="auth-headline">
+        Un compte,<br/><em>toutes vos</em><br/>opportunités.
+      </h1>
+
+      <p class="auth-sub">
+        Déposez vos projets, soutenez ceux des autres, suivez vos contributions — tout depuis un seul espace personnel.
+      </p>
+
+      <!-- Feature list -->
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature__icon auth-feature__icon--green">
+            <i class="ph-light ph-rocket-launch"></i>
+          </div>
+          <div class="auth-feature__text">
+            <strong>Portez vos projets</strong>
+            <span>Soumettez préventes, campagnes de dons ou levées d'investissement.</span>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature__icon auth-feature__icon--gold">
+            <i class="ph-light ph-hand-coins"></i>
+          </div>
+          <div class="auth-feature__text">
+            <strong>Soutenez l'économie locale</strong>
+            <span>Contribuez aux projets de votre île — suivi de livraison & historique inclus.</span>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature__icon auth-feature__icon--blue">
+            <i class="ph-light ph-chart-pie-slice"></i>
+          </div>
+          <div class="auth-feature__text">
+            <strong>Portfolio d'investissements</strong>
+            <span>Suivez vos parts dans chaque entreprise et vos rendements attendus.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="auth-left__footer">
+      <div class="auth-left__footer-links">
+        <a href="index.html">Accueil</a>
+        <a href="projets.html">Projets</a>
+        <a href="#">Mentions légales</a>
+        <a href="#">Contact</a>
+      </div>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;">© 2025 FaidaKomori · Union des Comores 🇰🇲</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANNEAU DROIT — Formulaire
+  ═══════════════════════════════════════════ -->
+  <div class="auth-right">
+
+    <!-- Mobile top bar -->
+    <div class="auth-mobile-top">
+      <a href="index.html" class="auth-logo" style="margin-bottom:0;">
+        <img src="img/logo-fk-icon.svg" alt="FK" style="width:28px;height:28px;" />
+        <span class="auth-logo-text" style="font-size:1.15rem;">Faida<span>Komori</span></span>
+      </a>
+      <a href="index.html" style="font-size:0.8rem;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:0.3rem;text-decoration:none;">
+        <i class="ph-light ph-arrow-left" style="font-size:0.9rem;"></i> Accueil
+      </a>
+    </div>
+
+    <div class="auth-form-wrap">
+
+      <!-- Desktop back link -->
+      <a href="index.html" class="auth-back" style="display:none;display:inline-flex;">
+        <i class="ph-light ph-arrow-left"></i> Retour à l'accueil
+      </a>
+
+      <!-- Double-bezel card -->
+      <div class="auth-card-shell">
+        <div class="auth-card-inner">
+
+          <!-- Tabs -->
+          <div class="auth-tabs-wrap">
+            <button class="auth-tab-btn active" data-auth-tab="login">Se connecter</button>
+            <button class="auth-tab-btn" data-auth-tab="register">Créer un compte</button>
+          </div>
+
+          <!-- Message global -->
+          <div id="auth-message" class="auth-message"></div>
+
+          <!-- ══ FORMULAIRE CONNEXION ══════════════════════ -->
+          <form class="auth-form active" id="form-login" autocomplete="on" novalidate>
+
+            <div class="form-group">
+              <label class="form-label" for="login-email">Email <span>*</span></label>
+              <input class="form-input" type="email" id="login-email" name="email"
+                     placeholder="vous@exemple.com" autocomplete="email" required />
+              <div class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="login-password">Mot de passe <span>*</span></label>
+              <div style="position:relative;">
+                <input class="form-input" type="password" id="login-password" name="password"
+                       placeholder="••••••••" autocomplete="current-password" required
+                       style="padding-right:3rem;" />
+                <button type="button" class="toggle-pwd-btn" data-target="login-password" aria-label="Afficher/masquer">
+                  <i class="ph-light ph-eye"></i>
+                </button>
+              </div>
+              <div class="form-error"></div>
+            </div>
+
+            <button type="submit" class="btn btn-navy btn-full btn-lg" id="btn-login" style="margin-top:0.75rem;">
+              Se connecter
+              <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
+            </button>
+
+            <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:1.25rem;">
+              Pas encore de compte ?
+              <button type="button" class="btn-link" data-auth-tab="register">Créer mon compte</button>
+            </p>
+
+          </form>
+
+          <!-- ══ FORMULAIRE INSCRIPTION ════════════════════ -->
+          <form class="auth-form" id="form-register" autocomplete="on" novalidate>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="reg-prenom">Prénom <span>*</span></label>
+                <input class="form-input" type="text" id="reg-prenom" name="prenom"
+                       placeholder="Votre prénom" autocomplete="given-name" required />
+                <div class="form-error"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="reg-nom">Nom <span>*</span></label>
+                <input class="form-input" type="text" id="reg-nom" name="nom"
+                       placeholder="Votre nom" autocomplete="family-name" required />
+                <div class="form-error"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-email">Email <span>*</span></label>
+              <input class="form-input" type="email" id="reg-email" name="email"
+                     placeholder="vous@exemple.com" autocomplete="email" required />
+              <div class="form-error"></div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="reg-tel">WhatsApp / Tél.</label>
+                <input class="form-input" type="tel" id="reg-tel" name="tel"
+                       placeholder="+269 321 00 00" autocomplete="tel" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="reg-ile">Île / Région</label>
+                <select class="form-select" id="reg-ile" name="ile" autocomplete="address-level2">
+                  <option value="">-- Choisir --</option>
+                  <option value="Grande Comore">Grande Comore</option>
+                  <option value="Anjouan">Anjouan</option>
+                  <option value="Mohéli">Mohéli</option>
+                  <option value="Diaspora">Diaspora</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-password">Mot de passe <span>*</span></label>
+              <div style="position:relative;">
+                <input class="form-input" type="password" id="reg-password" name="password"
+                       placeholder="Au moins 8 caractères" autocomplete="new-password" required
+                       style="padding-right:3rem;" />
+                <button type="button" class="toggle-pwd-btn" data-target="reg-password" aria-label="Afficher/masquer">
+                  <i class="ph-light ph-eye"></i>
+                </button>
+              </div>
+              <div class="form-error"></div>
+              <div class="pwd-strength-wrap" id="pwd-strength">
+                <div class="pwd-strength-bar-bg">
+                  <div class="pwd-strength-bar" id="pwd-strength-bar"></div>
+                </div>
+                <span class="pwd-strength-lbl" id="pwd-strength-label"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-password2">Confirmer le mot de passe <span>*</span></label>
+              <input class="form-input" type="password" id="reg-password2"
+                     placeholder="Répéter le mot de passe" autocomplete="new-password" required />
+              <div class="form-error"></div>
+            </div>
+
+            <label class="form-check" style="margin-bottom:1.25rem;align-items:flex-start;gap:0.6rem;">
+              <input type="checkbox" id="reg-cgv" required style="margin-top:2px;flex-shrink:0;accent-color:var(--green);" />
+              <span style="font-size:0.82rem;color:var(--text-muted);">
+                J'accepte les <a href="#" style="color:var(--green-deep);font-weight:600;">Conditions d'utilisation</a>
+                et la <a href="#" style="color:var(--green-deep);font-weight:600;">Politique de confidentialité</a>
+              </span>
+            </label>
+
+            <button type="submit" class="btn btn-green btn-full btn-lg" id="btn-register">
+              Créer mon compte
+              <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
+            </button>
+
+            <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:1.25rem;">
+              Déjà inscrit ?
+              <button type="button" class="btn-link" data-auth-tab="login">Se connecter</button>
+            </p>
+
+          </form>
+
+        </div><!-- /auth-card-inner -->
+      </div><!-- /auth-card-shell -->
+
+      <!-- Trust badges -->
+      <div class="auth-trust">
+        <div class="auth-trust-item">
+          <i class="ph-light ph-lock"></i> Sécurisé HTTPS
+        </div>
+        <div class="auth-trust-item">
+          <i class="ph-light ph-shield-check"></i> Données protégées
+        </div>
+        <div class="auth-trust-item">
+          <i class="ph-light ph-flag"></i> Plateforme comorienne
+        </div>
+      </div>
+
+    </div><!-- /auth-form-wrap -->
+  </div><!-- /auth-right -->
+
+</div><!-- /auth-split -->
+
+<script src="js/api.js"></script>
+<script src="js/db-local.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Rediriger si déjà connecté
+  if (API.isLoggedIn()) {
+    const redirect   = new URLSearchParams(window.location.search).get('redirect');
+    const loggedUser = API.getUser();
+    if (redirect === 'admin' && loggedUser?.role === 'admin') {
+      window.location.href = 'admin.html';
+    } else {
+      window.location.href = 'mon-espace.html';
+    }
+    return;
+  }
+
+  // ── Onglets ───────────────────────────────────────────────
+  function switchTab(name) {
+    document.querySelectorAll('.auth-tab-btn').forEach(t =>
+      t.classList.toggle('active', t.dataset.authTab === name)
+    );
+    document.querySelectorAll('.auth-form').forEach(f =>
+      f.classList.toggle('active', f.id === `form-${name}`)
+    );
+    hideMessage();
+  }
+
+  document.querySelectorAll('[data-auth-tab]').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.authTab));
+  });
+
+  // Pré-ouvrir l'onglet via ?tab=register
+  const tabParam = new URLSearchParams(window.location.search).get('tab');
+  if (tabParam === 'register') switchTab('register');
+
+  // ── Messages ───────────────────────────────────────────────
+  function showMessage(msg, type = 'error') {
+    const el = document.getElementById('auth-message');
+    el.textContent = msg;
+    el.style.display = 'block';
+    el.style.background = type === 'error' ? 'rgba(220,38,38,0.08)' : 'rgba(0,200,83,0.10)';
+    el.style.color       = type === 'error' ? '#B91C1C' : '#007B33';
+    el.style.border      = type === 'error' ? '1px solid rgba(220,38,38,0.2)' : '1px solid rgba(0,200,83,0.25)';
+    el.style.borderRadius = '8px';
+  }
+  function hideMessage() {
+    const el = document.getElementById('auth-message');
+    el.style.display = 'none';
+  }
+
+  // ── Afficher / masquer mot de passe ────────────────────────
+  document.querySelectorAll('.toggle-pwd-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      input.type  = input.type === 'password' ? 'text' : 'password';
+      btn.innerHTML = input.type === 'password'
+        ? '<i class="ph-light ph-eye"></i>'
+        : '<i class="ph-light ph-eye-slash"></i>';
+    });
+  });
+
+  // ── Force du mot de passe ──────────────────────────────────
+  const pwdInput    = document.getElementById('reg-password');
+  const strengthBar = document.getElementById('pwd-strength-bar');
+  const strengthLbl = document.getElementById('pwd-strength-label');
+
+  pwdInput?.addEventListener('input', () => {
+    const v = pwdInput.value;
+    document.getElementById('pwd-strength').style.display = v ? 'block' : 'none';
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+
+    const levels = [
+      { pct: '25%', color: '#DC2626', label: 'Très faible' },
+      { pct: '50%', color: '#F59E0B', label: 'Faible' },
+      { pct: '75%', color: '#3B82F6', label: 'Moyen' },
+      { pct: '100%', color: '#10B981', label: 'Fort ✓' },
+    ];
+    const lvl = levels[Math.max(0, score - 1)];
+    strengthBar.style.width      = lvl.pct;
+    strengthBar.style.background = lvl.color;
+    strengthLbl.textContent      = lvl.label;
+    strengthLbl.style.color      = lvl.color;
+  });
+
+  // ── Validation inline ──────────────────────────────────────
+  function fieldError(input, msg) {
+    input.classList.add('error');
+    const err = input.parentElement.querySelector('.form-error') ||
+                input.closest('.form-group')?.querySelector('.form-error');
+    if (err) { err.textContent = msg; err.classList.add('show'); }
+  }
+  function fieldOk(input) {
+    input.classList.remove('error');
+    const err = input.parentElement.querySelector('.form-error') ||
+                input.closest('.form-group')?.querySelector('.form-error');
+    if (err) err.classList.remove('show');
+  }
+
+  // ── LOGIN ──────────────────────────────────────────────────
+  document.getElementById('form-login').addEventListener('submit', async e => {
+    e.preventDefault();
+    hideMessage();
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const btn      = document.getElementById('btn-login');
+
+    if (!email || !password) {
+      return showMessage('Veuillez remplir tous les champs.');
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ph-light ph-circle-notch"></i> Connexion…';
+
+    try {
+      const { token, user } = await API.auth.login(email, password);
+      API.setSession(token, user);
+
+      showMessage('Connexion réussie ! Redirection…', 'success');
+      const redirect = new URLSearchParams(window.location.search).get('redirect');
+      setTimeout(() => {
+        if (redirect === 'admin' && user.role === 'admin') window.location.href = 'admin.html';
+        else window.location.href = 'mon-espace.html';
+      }, 700);
+    } catch (err) {
+      showMessage(err.message || 'Identifiants incorrects.');
+      btn.disabled = false;
+      btn.innerHTML = 'Se connecter <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>';
+    }
+  });
+
+  // ── REGISTER ───────────────────────────────────────────────
+  document.getElementById('form-register').addEventListener('submit', async e => {
+    e.preventDefault();
+    hideMessage();
+
+    const prenom   = document.getElementById('reg-prenom').value.trim();
+    const nom      = document.getElementById('reg-nom').value.trim();
+    const email    = document.getElementById('reg-email').value.trim();
+    const tel      = document.getElementById('reg-tel').value.trim();
+    const ile      = document.getElementById('reg-ile').value;
+    const password = document.getElementById('reg-password').value;
+    const password2= document.getElementById('reg-password2').value;
+    const cgv      = document.getElementById('reg-cgv').checked;
+    const btn      = document.getElementById('btn-register');
+
+    let valid = true;
+
+    if (!prenom) { fieldError(document.getElementById('reg-prenom'), 'Prénom requis.'); valid = false; }
+    else fieldOk(document.getElementById('reg-prenom'));
+
+    if (!nom) { fieldError(document.getElementById('reg-nom'), 'Nom requis.'); valid = false; }
+    else fieldOk(document.getElementById('reg-nom'));
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      fieldError(document.getElementById('reg-email'), 'Email invalide.'); valid = false;
+    } else fieldOk(document.getElementById('reg-email'));
+
+    if (password.length < 8) {
+      fieldError(document.getElementById('reg-password'), 'Minimum 8 caractères.'); valid = false;
+    } else fieldOk(document.getElementById('reg-password'));
+
+    if (password !== password2) {
+      fieldError(document.getElementById('reg-password2'), 'Les mots de passe ne correspondent pas.'); valid = false;
+    } else fieldOk(document.getElementById('reg-password2'));
+
+    if (!cgv) {
+      showMessage('Vous devez accepter les conditions d\'utilisation.');
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ph-light ph-circle-notch"></i> Création…';
+
+    try {
+      const { token, user } = await API.auth.register({ prenom, nom, email, tel, ile, password });
+      API.setSession(token, user);
+
+      showMessage('Compte créé avec succès ! Redirection…', 'success');
+      setTimeout(() => { window.location.href = 'mon-espace.html'; }, 800);
+    } catch (err) {
+      showMessage(err.message || 'Erreur lors de la création du compte.');
+      btn.disabled = false;
+      btn.innerHTML = 'Créer mon compte <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>';
+    }
+  });
+
+});
+</script>
+</body>
+</html>

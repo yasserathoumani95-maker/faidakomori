@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projets en cours — FaidaKomori</title>
+  <meta name="description" content="Découvrez tous les projets comoriens à financer sur FaidaKomori. Filtrez par type, secteur ou île." />
+  <meta property="og:title"       content="Projets en cours — FaidaKomori" />
+  <meta property="og:description" content="Découvrez tous les projets comoriens à financer sur FaidaKomori." />
+  <meta property="og:type"        content="website" />
+  <meta name="theme-color"        content="#00C853" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"/>
+  <style>
+    .ph-light { font-size:1.1em; vertical-align:middle; line-height:1; }
+    .btn-icon-wrap .ph-light { font-size:0.95em; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="index.html" class="navbar__logo">
+          <img src="img/logo-fk-icon.svg" alt="FaidaKomori logo" class="navbar__logo-img" />Faida<span>Komori</span>
+        </a>
+        <ul class="navbar__links">
+          <li><a href="index.html#comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="index.html#modeles">Les 3 modèles</a></li>
+          <li><a href="projets.html">Projets</a></li>
+          <li><a href="deposer.html" class="btn btn-primary btn-sm">Déposer mon projet</a></li>
+        </ul>
+        <button class="navbar__hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="navbar__mobile">
+      <a href="index.html#comment-ca-marche">Comment ça marche</a>
+      <a href="index.html#modeles">Les 3 modèles</a>
+      <a href="projets.html">Projets</a>
+      <a href="deposer.html" class="btn btn-primary btn-sm">Déposer mon projet</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container" style="text-align:center;">
+      <span class="section-label">Tous les projets</span>
+      <h1 class="page-hero__title" style="text-align:center;">Projets en cours de financement</h1>
+      <p class="page-hero__sub" style="text-align:center;margin-left:auto;margin-right:auto;max-width:600px;">Découvrez et soutenez les projets comoriens qui ont besoin de vous. Chaque don, chaque prévente, chaque investissement compte.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       PROJETS
+  ══════════════════════════════════════════ -->
+  <section class="section section--sand">
+    <div class="container">
+
+      <!-- Filtres -->
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">Tous les projets</button>
+        <button class="filter-btn" data-filter="prevente" style="border-color:var(--gold);"><i class="ph-light ph-package"></i> Prévente</button>
+        <button class="filter-btn" data-filter="dons" style="border-color:var(--ocean);"><i class="ph-light ph-handshake"></i> Dons</button>
+        <button class="filter-btn" data-filter="investissement"><i class="ph-light ph-trend-up"></i> Investissement</button>
+      </div>
+
+      <!-- Filtres secondaires -->
+      <div class="filters" style="margin-top:-1rem;">
+        <span style="font-size:0.82rem;font-weight:600;color:var(--text-muted);align-self:center;margin-right:0.25rem;">Par île :</span>
+        <button class="filter-btn" data-filter="all" style="font-size:0.8rem;padding:0.4rem 0.9rem;">Toutes les îles</button>
+        <button class="filter-btn" data-filter-ile="Grande Comore" style="font-size:0.8rem;padding:0.4rem 0.9rem;">Grande Comore</button>
+        <button class="filter-btn" data-filter-ile="Anjouan" style="font-size:0.8rem;padding:0.4rem 0.9rem;">Anjouan</button>
+        <button class="filter-btn" data-filter-ile="Mohéli" style="font-size:0.8rem;padding:0.4rem 0.9rem;">Mohéli</button>
+        <button class="filter-btn" data-filter-ile="Diaspora" style="font-size:0.8rem;padding:0.4rem 0.9rem;">Diaspora</button>
+      </div>
+
+      <!-- Grille de projets -->
+      <div class="projects__grid" id="projects-grid">
+
+        <!-- Projet 1 — Prévente -->
+        <div class="project-card" data-type="prevente" data-ile="Grande Comore">
+          <div class="project-card__image project-card__image--prevente">
+            📚
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-prevente"><i class="ph-light ph-package"></i> Prévente</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Livre de cuisine comorienne</h4>
+            <p class="project-card__author">👩‍🍳 Fatima Abdou — Grande Comore</p>
+            <p class="project-card__desc">Recueil illustré de 120 recettes traditionnelles comoriennes. Chaque soutien reçoit un exemplaire dédicacé à domicile.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--prevente" data-pct="68"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--prevente">68%</span>
+                <span>272 000 / 400 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>22 jours</strong> restants</span>
+            <button onclick="openSupportModal('prevente','Livre de cuisine comorienne')" class="btn btn-primary btn-sm">Soutenir</button>
+          </div>
+        </div>
+
+        <!-- Projet 2 — Dons -->
+        <div class="project-card" data-type="dons" data-ile="Mohéli">
+          <div class="project-card__image project-card__image--dons">
+            🏫
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-dons"><i class="ph-light ph-handshake"></i> Dons</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">École primaire à Mohéli</h4>
+            <p class="project-card__author">🏛️ Association Éducation Mohéli — Mohéli</p>
+            <p class="project-card__desc">Construction d'une salle de classe supplémentaire pour accueillir 40 enfants de plus dans un village rural de Mohéli.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--dons" data-pct="42"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--dons">42%</span>
+                <span>630 000 / 1 500 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>45 jours</strong> restants</span>
+            <button onclick="openSupportModal('dons','École primaire à Mohéli')" class="btn btn-ocean btn-sm">Soutenir</button>
+          </div>
+        </div>
+
+        <!-- Projet 3 — Investissement -->
+        <div class="project-card" data-type="investissement" data-ile="Grande Comore">
+          <div class="project-card__image project-card__image--invest">
+            🍽️
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-invest"><i class="ph-light ph-trend-up"></i> Investissement</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Restaurant traditionnel Moroni</h4>
+            <p class="project-card__author">👨‍🍳 Nassim Hamidou — Grande Comore</p>
+            <p class="project-card__desc">Ouverture d'un restaurant de cuisine comorienne au cœur de Moroni. 25% des parts proposées aux investisseurs.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--invest" data-pct="85"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--invest">85%</span>
+                <span>1 700 000 / 2 000 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>8 jours</strong> restants</span>
+            <button onclick="openSupportModal('investissement','Restaurant traditionnel Moroni','25%','2 000 000')" class="btn btn-navy btn-sm">Investir</button>
+          </div>
+        </div>
+
+        <!-- Projet 4 — Prévente -->
+        <div class="project-card" data-type="prevente" data-ile="Anjouan">
+          <div class="project-card__image project-card__image--prevente">
+            🎨
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-prevente"><i class="ph-light ph-package"></i> Prévente</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Broderies artisanales Anjouan</h4>
+            <p class="project-card__author">👩‍🎨 Mariam Said — Anjouan</p>
+            <p class="project-card__desc">Collection de vêtements brodés à la main avec des motifs traditionnels anjouanais. Précommandez pour financer la première collection.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--prevente" data-pct="31"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--prevente">31%</span>
+                <span>93 000 / 300 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>58 jours</strong> restants</span>
+            <button onclick="openSupportModal('prevente','Broderies artisanales Anjouan')" class="btn btn-primary btn-sm">Précommander</button>
+          </div>
+        </div>
+
+        <!-- Projet 5 — Investissement -->
+        <div class="project-card" data-type="investissement" data-ile="Anjouan">
+          <div class="project-card__image project-card__image--invest">
+            🐟
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-invest"><i class="ph-light ph-trend-up"></i> Investissement</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Conserverie de poisson Anjouan</h4>
+            <p class="project-card__author">🏭 Ibrahim Youssouf — Anjouan</p>
+            <p class="project-card__desc">Unité de transformation et conservation du poisson pêché localement. 30% des parts à saisir pour participer à une filière en pleine croissance.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--invest" data-pct="55"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--invest">55%</span>
+                <span>1 650 000 / 3 000 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>30 jours</strong> restants</span>
+            <button onclick="openSupportModal('investissement','Conserverie de poisson Anjouan','30%','3 000 000')" class="btn btn-navy btn-sm">Investir</button>
+          </div>
+        </div>
+
+        <!-- Projet 6 — Dons -->
+        <div class="project-card" data-type="dons" data-ile="Grande Comore">
+          <div class="project-card__image project-card__image--dons">
+            🌿
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-dons"><i class="ph-light ph-handshake"></i> Dons</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Jardin communautaire Moroni</h4>
+            <p class="project-card__author">🌱 Association Verte Comores — Grande Comore</p>
+            <p class="project-card__desc">Création d'un jardin communautaire en permaculture pour fournir des légumes frais à 50 familles défavorisées de Moroni.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--dons" data-pct="77"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--dons">77%</span>
+                <span>385 000 / 500 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>14 jours</strong> restants</span>
+            <button onclick="openSupportModal('dons','Jardin communautaire Moroni')" class="btn btn-ocean btn-sm">Soutenir</button>
+          </div>
+        </div>
+
+        <!-- Projet 7 — Prévente -->
+        <div class="project-card" data-type="prevente" data-ile="Diaspora">
+          <div class="project-card__image project-card__image--prevente">
+            🎵
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-prevente"><i class="ph-light ph-package"></i> Prévente</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Album de musique twarab</h4>
+            <p class="project-card__author">🎤 Ali Mlamali — Diaspora (France)</p>
+            <p class="project-card__desc">Premier album de twarab moderne enregistré aux Comores, mêlant instruments traditionnels et production contemporaine. Projet basé à Moroni.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--prevente" data-pct="52"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--prevente">52%</span>
+                <span>260 000 / 500 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>35 jours</strong> restants</span>
+            <button onclick="openSupportModal('prevente','Album de musique twarab')" class="btn btn-primary btn-sm">Précommander</button>
+          </div>
+        </div>
+
+        <!-- Projet 8 — Investissement -->
+        <div class="project-card" data-type="investissement" data-ile="Grande Comore">
+          <div class="project-card__image project-card__image--invest">
+            🛒
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-invest"><i class="ph-light ph-trend-up"></i> Investissement</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Épicerie en ligne Comores</h4>
+            <p class="project-card__author">💻 Karim Hassan — Grande Comore</p>
+            <p class="project-card__desc">Application de livraison de courses à domicile à Moroni. Déjà 200 clients testeurs. 20% des parts disponibles pour accélérer le développement.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--invest" data-pct="62"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--invest">62%</span>
+                <span>1 240 000 / 2 000 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>21 jours</strong> restants</span>
+            <button onclick="openSupportModal('investissement','Épicerie en ligne Comores','20%','2 000 000')" class="btn btn-navy btn-sm">Investir</button>
+          </div>
+        </div>
+
+        <!-- Projet 9 — Dons -->
+        <div class="project-card" data-type="dons" data-ile="Mohéli">
+          <div class="project-card__image project-card__image--dons">
+            🌊
+            <div class="project-card__badge-wrap">
+              <span class="badge badge-dons"><i class="ph-light ph-handshake"></i> Dons</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h4 class="project-card__title">Nettoyage des plages de Mohéli</h4>
+            <p class="project-card__author">🌍 EcoMohéli — Mohéli</p>
+            <p class="project-card__desc">Organisation de 6 journées de nettoyage des plages de Mohéli avec achat de matériel, sensibilisation des communautés et recyclage des déchets.</p>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--dons" data-pct="90"></div></div>
+              <div class="progress-meta">
+                <span class="progress-pct progress-pct--dons">90%</span>
+                <span>225 000 / 250 000 KMF</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card__footer">
+            <span class="project-card__days"><strong>5 jours</strong> restants</span>
+            <button onclick="openSupportModal('dons','Nettoyage des plages de Mohéli')" class="btn btn-ocean btn-sm">Soutenir</button>
+          </div>
+        </div>
+
+      </div><!-- fin grid -->
+
+      <!-- CTA déposer -->
+      <div style="text-align:center;margin-top:3rem;padding:3rem;background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow);">
+        <div style="font-size:3rem;margin-bottom:1rem;"><i class="ph-light ph-rocket-launch" style="font-size:2.5rem;color:var(--navy);"></i></div>
+        <h3 style="color:var(--navy);margin-bottom:0.75rem;">Vous avez un projet ?</h3>
+        <p style="color:var(--text-muted);margin-bottom:1.5rem;">Rejoignez la communauté FaidaKomori et obtenez le financement dont vous avez besoin.</p>
+        <a href="deposer.html" class="btn btn-primary btn-lg">Déposer mon projet</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="footer__logo"><img src="img/logo-fk-icon.svg" alt="FaidaKomori" class="footer__logo-img" />Faida<span>Komori</span></a>
+          <p class="footer__desc">La première plateforme de financement participatif des Comores.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social">📘</a>
+            <a href="#" class="footer__social">📷</a>
+            <a href="#" class="footer__social">💬</a>
+          </div>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Navigation</h5>
+          <ul class="footer__links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="projets.html">Tous les projets</a></li>
+            <li><a href="deposer.html">Déposer un projet</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Financement</h5>
+          <ul class="footer__links">
+            <li><a href="deposer.html?type=prevente"><i class="ph-light ph-package"></i> Prévente</a></li>
+            <li><a href="deposer.html?type=dons"><i class="ph-light ph-handshake"></i> Dons</a></li>
+            <li><a href="deposer.html?type=investissement"><i class="ph-light ph-trend-up"></i> Investissement</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Contact</h5>
+          <div class="footer__contact">
+            <div class="footer__contact-item"><span><i class="ph-light ph-whatsapp-logo"></i></span><span>WhatsApp : +269 XXX XXXX</span></div>
+            <div class="footer__contact-item"><span><i class="ph-light ph-envelope"></i></span><span>contact@faidakomori.km</span></div>
+            <div class="footer__contact-item"><span><i class="ph-light ph-map-pin"></i></span><span>Moroni, Union des Comores</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2025 FaidaKomori. Tous droits réservés. 🇰🇲</span>
+        <div class="footer__legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">Conditions d'utilisation</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- OVERLAY -->
+  <div id="supportOverlay" style="display:none;position:fixed;inset:0;background:rgba(8,23,41,0.65);z-index:800;backdrop-filter:blur(4px);opacity:0;transition:opacity 0.3s;" onclick="closeSupportModal()"></div>
+
+  <!-- MODAL PRÉVENTE -->
+  <div id="modalPrevente" class="support-modal" role="dialog" aria-modal="true" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(540px,94vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:850;padding:2.5rem;overflow-y:auto;max-height:90vh;">
+    <button onclick="closeSupportModal()" style="position:absolute;top:1.25rem;right:1.25rem;width:36px;height:36px;border-radius:50%;background:var(--off-white);border:1.5px solid var(--border-solid);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold-dark);background:var(--gold-pale);border:1px solid rgba(232,160,32,0.22);padding:0.3rem 0.8rem;border-radius:50px;"><i class="ph-light ph-package"></i> Prévente</span>
+      <h3 class="modal-project-title" style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--navy);margin:0.75rem 0 0.35rem;letter-spacing:-0.02em;">Prévente</h3>
+      <p style="font-size:0.875rem;color:var(--text-muted);">Vous recevrez votre commande dès que le projet atteint son objectif et que le produit est créé.</p>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Choisir un montant (KMF)</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
+        <button class="mamount-btn" onclick="selectAmount(this,1500)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">1 500</button>
+        <button class="mamount-btn" onclick="selectAmount(this,3000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:2px solid var(--gold);background:var(--gold-pale);color:var(--navy);font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">3 000</button>
+        <button class="mamount-btn" onclick="selectAmount(this,5000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">5 000</button>
+        <button class="mamount-btn" onclick="selectAmount(this,10000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">10 000</button>
+      </div>
+      <div style="margin-top:0.75rem;display:flex;align-items:center;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);overflow:hidden;">
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.88rem;white-space:nowrap;">Autre montant</span>
+        <input type="number" min="500" placeholder="Ex : 7 500" style="flex:1;padding:0.7rem 1rem;border:none;font-size:0.88rem;font-family:var(--font-body);outline:none;" oninput="clearAmountBtns()" />
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.82rem;font-weight:600;">KMF</span>
+      </div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Mode de paiement</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payPrev" checked style="display:none;"><i class="ph-light ph-device-mobile" style="font-size:1.6rem;"></i>Huri Money</label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payPrev" style="display:none;"><i class="ph-light ph-currency-dollar-simple" style="font-size:1.6rem;color:#16a34a;"></i>M-Pesa</label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payPrev" style="display:none;"><i class="ph-light ph-bank" style="font-size:1.6rem;"></i>Virement</label>
+      </div>
+    </div>
+    <button onclick="confirmSupport()" style="width:100%;padding:0.9rem;background:var(--gold);color:var(--navy);border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font-body);"><i class="ph-light ph-package"></i> Précommander maintenant</button>
+    <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;"><i class="ph-light ph-lock"></i> Remboursement garanti si objectif non atteint</p>
+  </div>
+
+  <!-- MODAL DONS -->
+  <div id="modalDons" class="support-modal" role="dialog" aria-modal="true" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(540px,94vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:850;padding:2.5rem;overflow-y:auto;max-height:90vh;">
+    <button onclick="closeSupportModal()" style="position:absolute;top:1.25rem;right:1.25rem;width:36px;height:36px;border-radius:50%;background:var(--off-white);border:1.5px solid var(--border-solid);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--green-dark);background:var(--green-pale);border:1px solid rgba(0,200,83,0.2);padding:0.3rem 0.8rem;border-radius:50px;">🤝 Don solidaire</span>
+      <h3 class="modal-project-title" style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--navy);margin:0.75rem 0 0.35rem;letter-spacing:-0.02em;">Projet</h3>
+      <p style="font-size:0.875rem;color:var(--text-muted);">Votre don soutient directement ce projet. Chaque contribution fait une différence réelle.</p>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Choisir un montant (KMF)</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,500)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">500</button>
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,1000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:2px solid var(--green);background:var(--green-pale);color:var(--navy);font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">1 000</button>
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,2500)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">2 500</button>
+        <button class="amount-btn-dons" onclick="selectAmountDons(this,5000)" style="padding:0.7rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">5 000</button>
+      </div>
+      <div style="margin-top:0.75rem;display:flex;align-items:center;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);overflow:hidden;">
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.88rem;white-space:nowrap;">Autre montant</span>
+        <input type="number" min="100" placeholder="Ex : 3 000" style="flex:1;padding:0.7rem 1rem;border:none;font-size:0.88rem;font-family:var(--font-body);outline:none;" oninput="clearAmountBtnsDons()" />
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.82rem;font-weight:600;">KMF</span>
+      </div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem;">Message de soutien (facultatif)</p>
+      <textarea placeholder="Encouragez le porteur de projet..." style="width:100%;padding:0.75rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.875rem;font-family:var(--font-body);resize:vertical;min-height:80px;outline:none;"></textarea>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Mode de paiement</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payDons" checked style="display:none;"><i class="ph-light ph-device-mobile" style="font-size:1.6rem;"></i>Huri Money</label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payDons" style="display:none;"><i class="ph-light ph-currency-dollar-simple" style="font-size:1.6rem;color:#16a34a;"></i>M-Pesa</label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payDons" style="display:none;"><i class="ph-light ph-bank" style="font-size:1.6rem;"></i>Virement</label>
+      </div>
+    </div>
+    <button onclick="confirmSupport()" style="width:100%;padding:0.9rem;background:var(--green);color:var(--white);border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font-body);"><i class="ph-light ph-handshake"></i> Faire un don maintenant</button>
+    <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;"><i class="ph-light ph-lock"></i> Don sécurisé · 100% versé au projet</p>
+  </div>
+
+  <!-- MODAL INVESTISSEMENT -->
+  <div id="modalInvest" class="support-modal" role="dialog" aria-modal="true" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(560px,94vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:850;padding:2.5rem;overflow-y:auto;max-height:90vh;">
+    <button onclick="closeSupportModal()" style="position:absolute;top:1.25rem;right:1.25rem;width:36px;height:36px;border-radius:50%;background:var(--off-white);border:1.5px solid var(--border-solid);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--navy);background:rgba(13,34,68,0.08);border:1px solid rgba(13,34,68,0.15);padding:0.3rem 0.8rem;border-radius:50px;"><i class="ph-light ph-trend-up"></i> Investissement</span>
+      <h3 class="modal-project-title" style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--navy);margin:0.75rem 0 0.35rem;letter-spacing:-0.02em;">Projet</h3>
+      <p style="font-size:0.875rem;color:var(--text-muted);">En investissant, vous devenez co-propriétaire et participez aux bénéfices futurs selon votre part.</p>
+    </div>
+    <div style="background:rgba(13,34,68,0.04);border:1.5px solid rgba(13,34,68,0.1);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:100px;"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.25rem;">Parts disponibles</div><div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--navy);" id="investPartsTotal2">25%</div></div>
+      <div style="flex:1;min-width:100px;"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.25rem;">Votre part estimée</div><div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--green);" id="investPartCalc2">1.25%</div></div>
+      <div style="flex:1;min-width:100px;"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.25rem;">Objectif total</div><div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--navy);" id="investGoal2">2 000 000</div></div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Montant à investir (KMF)</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
+        <button class="amount-btn-invest2" onclick="selectAmountInvest2(this,25000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">25 000</button>
+        <button class="amount-btn-invest2" onclick="selectAmountInvest2(this,50000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:2px solid var(--navy);background:rgba(13,34,68,0.06);color:var(--navy);font-size:0.78rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">50 000</button>
+        <button class="amount-btn-invest2" onclick="selectAmountInvest2(this,100000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">100 000</button>
+        <button class="amount-btn-invest2" onclick="selectAmountInvest2(this,200000)" style="padding:0.7rem 0.35rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);background:var(--off-white);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);">200 000</button>
+      </div>
+      <div style="margin-top:0.75rem;display:flex;align-items:center;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);overflow:hidden;">
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.88rem;white-space:nowrap;">Montant libre</span>
+        <input id="customInvest2" type="number" min="10000" placeholder="Min. 10 000" style="flex:1;padding:0.7rem 1rem;border:none;font-size:0.88rem;font-family:var(--font-body);outline:none;" oninput="updateInvestPart2()" />
+        <span style="padding:0 1rem;color:var(--text-muted);font-size:0.82rem;font-weight:600;">KMF</span>
+      </div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Mode de paiement</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payInv2" checked style="display:none;"><i class="ph-light ph-device-mobile" style="font-size:1.6rem;"></i>Huri Money</label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payInv2" style="display:none;"><i class="ph-light ph-currency-dollar-simple" style="font-size:1.6rem;color:#16a34a;"></i>M-Pesa</label>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;font-size:0.8rem;font-weight:600;text-align:center;"><input type="radio" name="payInv2" style="display:none;"><i class="ph-light ph-bank" style="font-size:1.6rem;"></i>Virement</label>
+      </div>
+    </div>
+    <button onclick="confirmSupport()" style="width:100%;padding:0.9rem;background:var(--navy);color:var(--white);border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font-body);"><i class="ph-light ph-trend-up"></i> Investir maintenant</button>
+    <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;"><i class="ph-light ph-lock"></i> Contrat de parts fourni après validation</p>
+  </div>
+
+  <!-- MODAL SUCCÈS -->
+  <div id="modalSuccess" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(440px,90vw);background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);z-index:860;padding:2.5rem;text-align:center;">
+    <button onclick="closeSupportModal()" style="position:absolute;top:1rem;right:1rem;width:32px;height:32px;border-radius:50%;background:var(--off-white);border:1.5px solid var(--border-solid);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="margin-bottom:1rem;"><i class="ph-light ph-confetti" style="font-size:3rem;color:var(--green);"></i></div>
+    <h3 style="font-family:var(--font-heading);font-size:1.4rem;font-weight:700;color:var(--navy);margin-bottom:0.6rem;">Merci pour votre soutien !</h3>
+    <p style="color:var(--text-muted);font-size:0.88rem;line-height:1.7;margin-bottom:1.25rem;">
+      Votre contribution a bien été enregistrée. Le porteur vous contactera sur votre numéro pour finaliser le paiement. 🇰🇲
+    </p>
+    <div style="background:var(--sand);border-radius:var(--radius-sm);padding:0.85rem 1rem;margin-bottom:1.25rem;text-align:left;font-size:0.82rem;color:var(--text-muted);">
+      <i class="ph-light ph-info"></i> Connectez-vous pour <strong>suivre votre historique</strong> de contributions et recevoir des notifications de livraison.
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.6rem;">
+      <a href="mon-espace.html" id="success-espace-link" style="display:none;padding:0.8rem;background:var(--navy);color:#fff;border-radius:50px;font-size:0.9rem;font-weight:700;text-decoration:none;"><i class="ph-light ph-user-circle"></i> Voir dans Mon Espace</a>
+      <button onclick="closeSupportModal()" style="padding:0.8rem 2rem;background:var(--gold);color:var(--navy);border:none;border-radius:50px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:var(--font-body);">Continuer à explorer</button>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/db-local.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof initNavbarAuth === 'function') initNavbarAuth();
+    });
+
+    /* ═══ Chargement dynamique des projets publiés depuis l'API ═══ */
+    (async function loadApiProjects() {
+      try {
+        if (typeof API === 'undefined') return;
+        const { projects } = await API.projects.list({ limit: 20 });
+        if (!projects || !projects.length) return; // Garder les projets démo
+
+        const grid = document.getElementById('projects-grid');
+        if (!grid) return;
+
+        const typeCfg = {
+          prevente:       { icon:'ph-package',   badgeCls:'badge-prevente', imgCls:'prevente',   btnLabel:'Précommander', btnCls:'btn-primary' },
+          dons:           { icon:'ph-handshake',  badgeCls:'badge-dons',     imgCls:'dons',       btnLabel:'Soutenir',     btnCls:'btn-ocean'   },
+          investissement: { icon:'ph-trend-up',   badgeCls:'badge-invest',   imgCls:'invest',     btnLabel:'Investir',     btnCls:'btn-navy'    },
+        };
+        const typeLabel = { prevente:'Prévente', dons:'Don solidaire', investissement:'Investissement' };
+        const secteurEmoji = { culture:'🎭', agriculture:'🌾', technologie:'💻', restauration:'🍽️', artisanat:'🎨', santé:'🏥', tourisme:'✈️', environnement:'🌿', education:'📚' };
+
+        const cards = projects.map(p => {
+          const tc  = typeCfg[p.type] || typeCfg.dons;
+          const pct = p.montant > 0 ? Math.min(Math.round((p.montant_collecte / p.montant) * 100), 100) : 0;
+          const emoji = secteurEmoji[(p.secteur || '').toLowerCase()] || '📁';
+          const desc = (p.description || '').slice(0, 130) + ((p.description || '').length > 130 ? '…' : '');
+
+          return `
+            <div class="project-card reveal" data-type="${p.type}" data-ile="${p.ile || ''}">
+              <div class="project-card__image project-card__image--${tc.imgCls}">
+                ${emoji}
+                <div class="project-card__badge-wrap">
+                  <span class="badge ${tc.badgeCls}"><i class="ph-light ${tc.icon}"></i> ${typeLabel[p.type]}</span>
+                </div>
+              </div>
+              <div class="project-card__body">
+                <h4 class="project-card__title">${p.nom_projet}</h4>
+                <p class="project-card__author"><i class="ph-light ph-user-circle"></i> ${p.prenom || ''} ${p.nom || ''}${p.ile ? ' — ' + p.ile : ''}</p>
+                <p class="project-card__desc">${desc || 'Projet en cours de financement.'}</p>
+                <div class="project-card__progress">
+                  <div class="progress-bar">
+                    <div class="progress-bar__fill progress-bar__fill--${tc.imgCls}" data-pct="${pct}" style="width:${pct}%"></div>
+                  </div>
+                  <div class="progress-meta">
+                    <span class="progress-pct progress-pct--${tc.imgCls}">${pct}%</span>
+                    <span>${parseInt(p.montant_collecte || 0).toLocaleString('fr-FR')} / ${parseInt(p.montant || 0).toLocaleString('fr-FR')} KMF</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-card__footer">
+                <span class="project-card__days"><strong>${p.duree || 30} j</strong> restants · ${p.nb_contributeurs || 0} soutien(s)</span>
+                <a href="projet-detail.html?id=${p.id}" class="btn ${tc.btnCls} btn-sm">${tc.btnLabel} <i class="ph-light ph-arrow-right"></i></a>
+              </div>
+            </div>`;
+        }).join('');
+
+        // Supprimer les cartes démo, injecter les vraies cartes en tête
+        grid.querySelectorAll('.project-card').forEach(c => c.remove());
+        grid.insertAdjacentHTML('afterbegin', `
+          <div class="project-card project-card--banner" style="grid-column:1/-1;background:rgba(0,200,83,0.07);border:1.5px dashed rgba(0,200,83,0.3);border-radius:var(--radius);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+            <i class="ph-light ph-rocket-launch" style="font-size:1.3rem;color:var(--green-deep);flex-shrink:0;"></i>
+            <p style="font-size:0.83rem;color:var(--green-deep);font-weight:600;margin:0;">${projects.length} projet${projects.length > 1 ? 's' : ''} en ligne sur FaidaKomori — Soutenez les entrepreneurs comoriens !</p>
+          </div>
+          ${cards}`);
+
+        // Réinitialiser les filtres TYPE — cloner pour effacer les handlers de main.js
+        // (main.js capture projectCards au DOMContentLoaded, avant l'injection async)
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+          const clone = btn.cloneNode(true);
+          btn.parentNode.replaceChild(clone, btn);
+          clone.addEventListener('click', () => {
+            const filter = clone.dataset.filter;
+            document.querySelectorAll('.filter-btn[data-filter]').forEach(b =>
+              b.classList.remove('active', 'active-gold', 'active-ocean'));
+            if (filter === 'prevente') clone.classList.add('active-gold');
+            else if (filter === 'dons') clone.classList.add('active-ocean');
+            else clone.classList.add('active');
+
+            document.querySelectorAll('#projects-grid .project-card:not(.project-card--banner)').forEach((card, i) => {
+              const show = filter === 'all' || card.dataset.type === filter;
+              card.style.display = show ? '' : 'none';
+              if (show) {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(16px)';
+                setTimeout(() => {
+                  card.style.transition = 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+                  card.style.transitionDelay = `${i * 0.06}s`;
+                  card.style.opacity = '1';
+                  card.style.transform = 'translateY(0)';
+                }, 10);
+              }
+            });
+          });
+        });
+
+        // Filtres ÎLE — liaison pour les cartes API
+        document.querySelectorAll('.filter-btn[data-filter-ile]').forEach(btn => {
+          const clone = btn.cloneNode(true);
+          btn.parentNode.replaceChild(clone, btn);
+          clone.addEventListener('click', () => {
+            const ile = clone.dataset.filterIle;
+            document.querySelectorAll('.filter-btn[data-filter-ile], .filter-btn[data-filter="all"][style*="font-size:0.8rem"]').forEach(b =>
+              b.classList.remove('active'));
+            clone.classList.add('active');
+            document.querySelectorAll('#projects-grid .project-card:not(.project-card--banner)').forEach((card, i) => {
+              const cardIle = card.dataset.ile || '';
+              const show = cardIle.toLowerCase().includes(ile.toLowerCase()) || cardIle === ile;
+              card.style.display = show ? '' : 'none';
+              if (show) {
+                card.style.opacity = '0'; card.style.transform = 'translateY(16px)';
+                setTimeout(() => {
+                  card.style.transition = 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+                  card.style.transitionDelay = `${i * 0.06}s`;
+                  card.style.opacity = '1'; card.style.transform = 'translateY(0)';
+                }, 10);
+              }
+            });
+          });
+        });
+
+      } catch (err) {
+        // API indisponible → garder les cartes démo silencieusement
+      }
+    })();
+
+    // ── Modals support ──
+    function openSupportModal(type, title, parts, goal, projectId) {
+      window._currentProjectId = projectId || null;
+      window._currentModalType = type;
+
+      document.querySelectorAll('.support-modal').forEach(m => m.style.display = 'none');
+      const overlay = document.getElementById('supportOverlay');
+      overlay.style.display = 'block';
+      setTimeout(() => overlay.style.opacity = '1', 10);
+      document.body.style.overflow = 'hidden';
+
+      // Pré-remplir le nom si connecté
+      const loggedUser = typeof API !== 'undefined' ? API.getUser() : null;
+
+      if (type === 'prevente') {
+        const m = document.getElementById('modalPrevente');
+        m.querySelector('.modal-project-title').textContent = title || '';
+        if (loggedUser && !document.getElementById('prevCoords')) {
+          m.querySelector('button[onclick="confirmSupport()"]').insertAdjacentHTML('beforebegin', `
+            <div style="margin-bottom:1rem;">
+              <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem;"><i class="ph-light ph-device-mobile"></i> Votre numéro mobile money *</p>
+              <input id="prevCoords" type="tel" placeholder="+269 321 00 00 (Huri Money / M-Pesa)" style="width:100%;padding:0.7rem 1rem;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);font-size:0.88rem;font-family:var(--font-body);box-sizing:border-box;" />
+            </div>`);
+        } else if (!loggedUser && !document.getElementById('prevCoords')) {
+          m.querySelector('button[onclick="confirmSupport()"]').insertAdjacentHTML('beforebegin', `
+            <div style="margin-bottom:1rem;">
+              <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem;"><i class="ph-light ph-device-mobile"></i> Votre numéro mobile money *</p>
+              <input id="prevCoords" type="tel" placeholder="+269 321 00 00" style="width:100%;padding:0.7rem 1rem;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);font-size:0.88rem;font-family:var(--font-body);box-sizing:border-box;" />
+            </div>`);
+        }
+        m.style.display = 'block';
+      } else if (type === 'dons') {
+        const m = document.getElementById('modalDons');
+        m.querySelector('.modal-project-title').textContent = title || '';
+        if (!document.getElementById('donsCoords')) {
+          m.querySelector('button[onclick="confirmSupport()"]').insertAdjacentHTML('beforebegin', `
+            <div style="margin-bottom:1rem;">
+              <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem;"><i class="ph-light ph-device-mobile"></i> Votre numéro mobile money *</p>
+              <input id="donsCoords" type="tel" placeholder="+269 321 00 00" style="width:100%;padding:0.7rem 1rem;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);font-size:0.88rem;font-family:var(--font-body);box-sizing:border-box;" />
+            </div>`);
+        }
+        m.style.display = 'block';
+      } else if (type === 'investissement') {
+        const m = document.getElementById('modalInvest');
+        m.querySelector('.modal-project-title').textContent = title || '';
+        if (parts) document.getElementById('investPartsTotal2').textContent = parts;
+        if (goal)  document.getElementById('investGoal2').textContent = goal;
+        if (!document.getElementById('investCoords')) {
+          m.querySelector('button[onclick="confirmSupport()"]').insertAdjacentHTML('beforebegin', `
+            <div style="margin-bottom:1rem;">
+              <p style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem;"><i class="ph-light ph-device-mobile"></i> Votre numéro mobile money *</p>
+              <input id="investCoords" type="tel" placeholder="+269 321 00 00" style="width:100%;padding:0.7rem 1rem;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);font-size:0.88rem;font-family:var(--font-body);box-sizing:border-box;" />
+            </div>`);
+        }
+        m.style.display = 'block';
+      }
+    }
+    function closeSupportModal() {
+      document.querySelectorAll('.support-modal, #modalSuccess').forEach(m => m.style.display = 'none');
+      const overlay = document.getElementById('supportOverlay');
+      overlay.style.opacity = '0';
+      setTimeout(() => { overlay.style.display = 'none'; }, 300);
+      document.body.style.overflow = '';
+    }
+    /* Numéro mobile requis dans chaque modal (champ ajouté plus bas) */
+    async function confirmSupport() {
+      // Récupérer le projet courant (stocké sur le bouton qui a ouvert le modal)
+      const projectId = window._currentProjectId || null;
+      const modalType = window._currentModalType || 'dons';
+
+      // Lecture du montant selon le modal actif
+      let montant = 0;
+      let coords  = '';
+      let methode = 'huri';
+      let message = '';
+      let anonyme = false;
+
+      if (modalType === 'prevente') {
+        montant = parseInt(document.querySelector('#modalPrevente input[type=number]')?.value) || 0;
+        coords  = document.getElementById('prevCoords')?.value?.trim() || '';
+        methode = document.querySelector('input[name="payPrev"]:checked')?.closest('label')?.textContent?.trim().toLowerCase().includes('m-pesa') ? 'mpesa' : 'huri';
+      } else if (modalType === 'dons') {
+        montant = parseInt(document.querySelector('#modalDons input[type=number]')?.value) || 0;
+        coords  = document.getElementById('donsCoords')?.value?.trim() || '';
+        message = document.querySelector('#modalDons textarea')?.value?.trim() || '';
+        methode = document.querySelector('input[name="payDons"]:checked')?.closest('label')?.textContent?.trim().toLowerCase().includes('m-pesa') ? 'mpesa' : 'huri';
+      } else if (modalType === 'investissement') {
+        montant = parseInt(document.getElementById('customInvest2')?.value) || 0;
+        coords  = document.getElementById('investCoords')?.value?.trim() || '';
+        methode = document.querySelector('input[name="payInv2"]:checked')?.closest('label')?.textContent?.trim().toLowerCase().includes('m-pesa') ? 'mpesa' : 'huri';
+      }
+
+      if (!montant || montant < 100) { alert('Veuillez saisir un montant valide (min. 100 KMF).'); return; }
+      if (!coords)                   { alert('Veuillez saisir votre numéro mobile money.'); return; }
+
+      const nom = typeof API !== 'undefined' && API.getUser()
+        ? `${API.getUser().prenom} ${API.getUser().nom}`.trim()
+        : '';
+
+      try {
+        if (typeof API !== 'undefined' && projectId) {
+          await API.projects.contribute(projectId, { montant, methode_paiement: methode, nom_contributeur: nom || null, coordonnees_paiement: coords, message: message || null, anonyme });
+        }
+        document.querySelectorAll('.support-modal').forEach(m => m.style.display = 'none');
+        document.getElementById('modalSuccess').style.display = 'block';
+        // Montrer "Mon Espace" si connecté
+        const spaceLink = document.getElementById('success-espace-link');
+        if (spaceLink && typeof API !== 'undefined' && API.isLoggedIn()) {
+          spaceLink.style.display = 'block';
+        }
+      } catch (err) {
+        alert(err.message || 'Erreur lors de la soumission.');
+      }
+    }
+    function selectAmount(btn, amount) {
+      document.querySelectorAll('.mamount-btn').forEach(b => { b.style.border='1.5px solid var(--border-solid)'; b.style.background='var(--off-white)'; b.style.fontWeight='600'; });
+      btn.style.border='2px solid var(--gold)'; btn.style.background='var(--gold-pale)'; btn.style.fontWeight='700';
+    }
+    function clearAmountBtns() {
+      document.querySelectorAll('.mamount-btn').forEach(b => { b.style.border='1.5px solid var(--border-solid)'; b.style.background='var(--off-white)'; });
+    }
+    function selectAmountDons(btn, amount) {
+      document.querySelectorAll('.amount-btn-dons').forEach(b => { b.style.border='1.5px solid var(--border-solid)'; b.style.background='var(--off-white)'; b.style.fontWeight='600'; });
+      btn.style.border='2px solid var(--green)'; btn.style.background='var(--green-pale)'; btn.style.fontWeight='700';
+    }
+    function clearAmountBtnsDons() {
+      document.querySelectorAll('.amount-btn-dons').forEach(b => { b.style.border='1.5px solid var(--border-solid)'; b.style.background='var(--off-white)'; });
+    }
+    function selectAmountInvest2(btn, amount) {
+      document.querySelectorAll('.amount-btn-invest2').forEach(b => { b.style.border='1.5px solid var(--border-solid)'; b.style.background='var(--off-white)'; b.style.fontWeight='600'; });
+      btn.style.border='2px solid var(--navy)'; btn.style.background='rgba(13,34,68,0.06)'; btn.style.fontWeight='700';
+      updateInvestPartDisplay2(amount);
+    }
+    function updateInvestPart2() {
+      const val = parseInt(document.getElementById('customInvest2').value) || 0;
+      document.querySelectorAll('.amount-btn-invest2').forEach(b => { b.style.border='1.5px solid var(--border-solid)'; b.style.background='var(--off-white)'; });
+      updateInvestPartDisplay2(val);
+    }
+    function updateInvestPartDisplay2(amount) {
+      const goalText = document.getElementById('investGoal2').textContent.replace(/\s/g,'');
+      const goal = parseInt(goalText) || 2000000;
+      const partsText = document.getElementById('investPartsTotal2').textContent;
+      const partsNum = parseFloat(partsText) / 100 || 0.25;
+      const pct = ((amount / goal) * partsNum * 100).toFixed(2);
+      const el = document.getElementById('investPartCalc2');
+      if (el) el.textContent = pct + '%';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSupportModal(); });
+
+    // Filtre par île (secondaire)
+    document.querySelectorAll('[data-filter-ile]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ile = btn.dataset.filterIle;
+        document.querySelectorAll('[data-filter-ile]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.project-card[data-ile]').forEach(card => {
+          card.style.display = card.dataset.ile === ile ? '' : 'none';
+        });
+        // Réinitialiser le filtre type
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(b => {
+          b.classList.remove('active','active-gold','active-ocean');
+        });
+        document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

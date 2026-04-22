@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Déposer mon projet — FaidaKomori</title>
+  <meta name="description" content="Déposez votre candidature sur FaidaKomori. Prévente, dons ou investissement — notre équipe vous répond sous 72h." />
+  <meta property="og:title"       content="Déposer mon projet — FaidaKomori" />
+  <meta property="og:description" content="Déposez votre candidature en 4 étapes. Notre équipe vous contacte sous 72h." />
+  <meta property="og:type"        content="website" />
+  <meta name="theme-color"        content="#00C853" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"/>
+  <style>
+    .ph-light { font-size:1.1em; vertical-align:middle; line-height:1; }
+    .type-card__icon .ph-light, .type-card__icon i { font-size:2.2rem; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="index.html" class="navbar__logo">
+          <img src="img/logo-fk-icon.svg" alt="FaidaKomori logo" class="navbar__logo-img" />Faida<span>Komori</span>
+        </a>
+        <ul class="navbar__links">
+          <li><a href="index.html#comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="index.html#modeles">Les 3 modèles</a></li>
+          <li><a href="projets.html">Projets</a></li>
+          <li><a href="deposer.html" class="btn btn-primary btn-sm">Déposer mon projet</a></li>
+        </ul>
+        <button class="navbar__hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="navbar__mobile">
+      <a href="index.html#comment-ca-marche">Comment ça marche</a>
+      <a href="index.html#modeles">Les 3 modèles</a>
+      <a href="projets.html">Projets</a>
+      <a href="deposer.html" class="btn btn-primary btn-sm">Déposer mon projet</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container" style="text-align:center;">
+      <span class="section-label" style="display:inline-flex;">Candidature</span>
+      <h1 class="page-hero__title" style="text-align:center;">Déposez votre projet</h1>
+      <p class="page-hero__sub" style="text-align:center;margin-left:auto;margin-right:auto;max-width:580px;">Remplissez ce formulaire en 4 étapes. Notre équipe vous contactera dans les <strong style="color:var(--gold);">72h</strong> par WhatsApp.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FORMULAIRE
+  ══════════════════════════════════════════ -->
+  <section class="section section--sand">
+    <div class="container">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="stepper__step active" data-step="0">
+          <div class="stepper__num">1</div>
+          <span class="stepper__label">Modèle</span>
+        </div>
+        <div class="stepper__line"></div>
+        <div class="stepper__step" data-step="1">
+          <div class="stepper__num">2</div>
+          <span class="stepper__label">Vous</span>
+        </div>
+        <div class="stepper__line"></div>
+        <div class="stepper__step" data-step="2">
+          <div class="stepper__num">3</div>
+          <span class="stepper__label">Votre projet</span>
+        </div>
+        <div class="stepper__line"></div>
+        <div class="stepper__step" data-step="3">
+          <div class="stepper__num">4</div>
+          <span class="stepper__label">Compte & Envoi</span>
+        </div>
+      </div>
+
+      <!-- Formulaire -->
+      <form id="candidature-form" novalidate>
+        <input type="hidden" id="selected-type" name="type" />
+
+        <!-- ── ÉTAPE 1 : Choisir le modèle ────────────── -->
+        <div class="form-step active" id="step-0">
+          <div class="form-card">
+            <h3 class="form-card__title">Choisissez votre modèle de financement</h3>
+            <p class="form-card__sub">Sélectionnez le modèle qui correspond le mieux à votre projet. Vous pouvez changer d'avis lors de l'entretien avec notre équipe.</p>
+
+            <div class="type-cards">
+              <div class="type-card type-card--prevente" data-type="prevente">
+                <div class="type-card__icon"><i class="ph-light ph-package"></i></div>
+                <div class="type-card__title">Prévente</div>
+                <div class="type-card__desc">Vente anticipée de votre produit pour financer sa création</div>
+              </div>
+              <div class="type-card type-card--dons" data-type="dons">
+                <div class="type-card__icon"><i class="ph-light ph-handshake"></i></div>
+                <div class="type-card__title">Dons & Soutien</div>
+                <div class="type-card__desc">Collecte solidaire pour un projet social ou culturel</div>
+              </div>
+              <div class="type-card" data-type="investissement">
+                <div class="type-card__icon"><i class="ph-light ph-trend-up"></i></div>
+                <div class="type-card__title">Investissement</div>
+                <div class="type-card__desc">Parts de votre entreprise en échange d'un financement</div>
+              </div>
+            </div>
+
+            <p class="form-error type-error" style="font-size:0.9rem;margin-bottom:1rem;">Veuillez sélectionner un modèle pour continuer.</p>
+
+            <!-- Récapitulatif des modèles -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem;">
+              <div style="background:rgba(232,160,32,0.08);border-radius:var(--radius);padding:1rem;font-size:0.82rem;color:var(--text-muted);">
+                <strong style="color:var(--gold-dark);"><i class="ph-light ph-package"></i> Prévente :</strong><br/>
+                Remboursement si objectif non atteint. Idéal pour créateurs et artisans.
+              </div>
+              <div style="background:rgba(10,123,108,0.08);border-radius:var(--radius);padding:1rem;font-size:0.82rem;color:var(--text-muted);">
+                <strong style="color:var(--ocean);"><i class="ph-light ph-handshake"></i> Dons :</strong><br/>
+                Soutien solidaire. Idéal pour associations, ONG, projets éducatifs.
+              </div>
+              <div style="background:rgba(13,34,68,0.08);border-radius:var(--radius);padding:1rem;font-size:0.82rem;color:var(--text-muted);">
+                <strong style="color:var(--navy);"><i class="ph-light ph-trend-up"></i> Investissement :</strong><br/>
+                Parts en contrepartie. Idéal pour entrepreneurs à fort potentiel.
+              </div>
+            </div>
+
+            <div class="form-nav" style="justify-content:flex-end;">
+              <button type="button" class="btn btn-primary btn-lg" data-next>
+                Suivant — Vos informations <i class="ph-light ph-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ÉTAPE 2 : Informations personnelles ────── -->
+        <div class="form-step" id="step-1">
+          <div class="form-card">
+            <h3 class="form-card__title">Vos informations personnelles</h3>
+            <p class="form-card__sub">Ces informations nous permettront de vous contacter et de personnaliser notre accompagnement.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="prenom">Prénom <span>*</span></label>
+                <input type="text" id="prenom" name="prenom" class="form-input" placeholder="Ex : Fatima" required />
+                <p class="form-error">Ce champ est obligatoire.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="nom">Nom <span>*</span></label>
+                <input type="text" id="nom" name="nom" class="form-input" placeholder="Ex : Abdou" required />
+                <p class="form-error">Ce champ est obligatoire.</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ile">Île / Région <span>*</span></label>
+              <select id="ile" name="ile" class="form-select" required>
+                <option value="">-- Choisissez votre île --</option>
+                <option value="Grande Comore">Grande Comore (Ngazidja)</option>
+                <option value="Anjouan">Anjouan (Ndzuani)</option>
+                <option value="Mohéli">Mohéli (Mwali)</option>
+                <option value="Diaspora">Diaspora (projet basé aux Comores)</option>
+              </select>
+              <p class="form-error">Ce champ est obligatoire.</p>
+            </div>
+
+            <!-- Téléphone avec indicatif pays -->
+            <div class="form-group">
+              <label class="form-label" for="tel-numero">
+                Téléphone / WhatsApp <span>*</span>
+              </label>
+              <div class="phone-field">
+                <select id="tel-indicatif" class="phone-field__code" aria-label="Indicatif pays">
+                  <option value="+269" data-max="7"  data-ph="321 1234"      selected>🇰🇲 +269</option>
+                  <option value="+33"  data-max="9"  data-ph="6 12 34 56 78">🇫🇷 +33</option>
+                  <option value="+32"  data-max="9"  data-ph="4 78 12 34 56">🇧🇪 +32</option>
+                  <option value="+41"  data-max="9"  data-ph="78 123 45 67" >🇨🇭 +41</option>
+                  <option value="+262" data-max="9"  data-ph="6 92 12 34 56">🇷🇪 +262</option>
+                  <option value="+212" data-max="9"  data-ph="6 12 34 56 78">🇲🇦 +212</option>
+                  <option value="+966" data-max="9"  data-ph="5X XXX XXXX"  >🇸🇦 +966</option>
+                  <option value="+1"   data-max="10" data-ph="XXX XXX XXXX" >🇺🇸 +1</option>
+                </select>
+                <input type="tel" id="tel-numero" class="form-input phone-field__num"
+                       placeholder="321 1234" maxlength="7"
+                       inputmode="numeric" pattern="[0-9 ]+" required />
+                <input type="hidden" id="tel" name="tel" />
+              </div>
+              <p class="form-hint"><i class="ph-light ph-whatsapp-logo"></i> Nous vous contacterons via ce numéro dans les 72h.</p>
+              <p class="form-error" id="tel-error">Numéro invalide pour cet indicatif.</p>
+            </div>
+
+            <!-- Email obligatoire (sert aussi à créer le compte) -->
+            <div class="form-group">
+              <label class="form-label" for="email">Email <span>*</span></label>
+              <input type="email" id="email" name="email" class="form-input"
+                     placeholder="votre@email.com" required autocomplete="email" />
+              <p class="form-hint"><i class="ph-light ph-info"></i> Utilisé pour créer votre espace FaidaKomori.</p>
+              <p class="form-error">Adresse email invalide.</p>
+            </div>
+
+            <!-- Pièce d'identité obligatoire -->
+            <div class="form-group">
+              <label class="form-label" for="doc-identite">
+                Pièce d'identité <span>*</span>
+                <span class="section-required-badge"><i class="ph-light ph-shield-check"></i> Obligatoire</span>
+              </label>
+              <div class="file-upload-zone" id="doc-identite-zone">
+                <input type="file" id="doc-identite" name="doc_identite"
+                       accept=".pdf,.jpg,.jpeg,.png"
+                       class="file-upload-input" aria-label="Pièce d'identité" />
+                <div class="file-upload-ui">
+                  <i class="ph-light ph-identification-card file-upload-icon"></i>
+                  <span class="file-upload-label">Passeport ou Carte nationale d'identité</span>
+                  <span class="file-upload-hint">PDF, JPG ou PNG — max 5 Mo</span>
+                  <span class="file-upload-name" id="doc-identite-name"></span>
+                </div>
+              </div>
+              <p class="form-error" id="doc-identite-error">Pièce d'identité obligatoire (PDF, JPG ou PNG, max 5 Mo).</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Avez-vous déjà une entreprise enregistrée ? <span>*</span></label>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="entreprise" value="oui" required />
+                  Oui, j'ai déjà une entreprise
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="entreprise" value="non" required />
+                  Non, pas encore
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="entreprise" value="en-cours" required />
+                  En cours de création
+                </label>
+              </div>
+              <p class="form-hint">Si vous n'avez pas encore d'entreprise, FaidaKomori peut vous aider à en créer une via l'ANPI.</p>
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-outline-navy" data-prev><i class="ph-light ph-arrow-left"></i> Retour</button>
+              <button type="button" class="btn btn-primary btn-lg" data-next>Suivant — Votre projet <i class="ph-light ph-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ÉTAPE 3 : Votre projet ─────────────────── -->
+        <div class="form-step" id="step-2">
+          <div class="form-card">
+            <h3 class="form-card__title">Parlez-nous de votre projet</h3>
+            <p class="form-card__sub">Plus vous êtes précis(e), plus notre équipe pourra vous aider efficacement.</p>
+
+            <div class="form-group">
+              <label class="form-label" for="nom-projet">Nom du projet <span>*</span></label>
+              <input type="text" id="nom-projet" name="nom-projet" class="form-input" placeholder="Ex : Livre de cuisine comorienne" required />
+              <p class="form-error">Ce champ est obligatoire.</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="secteur">Secteur d'activité <span>*</span></label>
+              <select id="secteur" name="secteur" class="form-select" required>
+                <option value="">-- Choisissez un secteur --</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Pêche">Pêche</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Artisanat">Artisanat</option>
+                <option value="Culture">Culture & Arts</option>
+                <option value="Tech">Tech & Digital</option>
+                <option value="Services">Services</option>
+                <option value="Éducation">Éducation</option>
+                <option value="Santé">Santé</option>
+                <option value="Tourisme">Tourisme</option>
+                <option value="Restauration">Restauration</option>
+                <option value="Autre">Autre</option>
+              </select>
+              <p class="form-error">Ce champ est obligatoire.</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="description">Description du projet <span>*</span></label>
+              <textarea id="description" name="description" class="form-textarea" placeholder="Décrivez votre projet en quelques phrases : qu'est-ce que c'est, pourquoi vous le faites, à qui ça s'adresse..." required></textarea>
+              <p class="form-error">Ce champ est obligatoire.</p>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="montant">Montant recherché (KMF) <span>*</span></label>
+                <input type="number" id="montant" name="montant" class="form-input" placeholder="Ex : 500000" min="50000" required />
+                <p class="form-hint">Minimum recommandé : 50 000 KMF.</p>
+                <p class="form-error">Ce champ est obligatoire.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="duree">Durée de collecte souhaitée <span>*</span></label>
+                <select id="duree" name="duree" class="form-select" required>
+                  <option value="">-- Choisissez une durée --</option>
+                  <option value="30">30 jours</option>
+                  <option value="60">60 jours</option>
+                  <option value="90">90 jours</option>
+                </select>
+                <p class="form-error">Ce champ est obligatoire.</p>
+              </div>
+            </div>
+
+            <!-- Champ conditionnel — PRÉVENTE -->
+            <div class="conditional-field" data-show-for="prevente">
+              <div class="divider"></div>
+              <h4 style="color:var(--gold-dark);margin-bottom:1.25rem;"><i class="ph-light ph-package"></i> Informations Prévente</h4>
+              <div class="form-group">
+                <label class="form-label" for="produit-prevente">Quel est le produit que vous voulez créer ?</label>
+                <input type="text" id="produit-prevente" name="produit-prevente" class="form-input" placeholder="Ex : Livre de cuisine illustré, 200 pages, édition limitée" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contrepartie">Quelle est la contrepartie pour les soutiens ?</label>
+                <textarea id="contrepartie" name="contrepartie" class="form-textarea" style="min-height:80px;" placeholder="Ex : Pour 5 000 KMF → 1 livre dédicacé livré à domicile. Pour 10 000 KMF → 2 livres + citation dans les remerciements."></textarea>
+              </div>
+            </div>
+
+            <!-- Champ conditionnel — INVESTISSEMENT -->
+            <div class="conditional-field" data-show-for="investissement">
+              <div class="divider"></div>
+              <h4 style="color:var(--navy);margin-bottom:1.25rem;"><i class="ph-light ph-trend-up"></i> Informations Investissement</h4>
+              <div class="form-group">
+                <label class="form-label" for="parts-range">Quel pourcentage de parts êtes-vous prêt(e) à céder ?</label>
+                <input type="range" id="parts-range" name="parts" class="form-range" min="5" max="49" value="20" step="1" />
+                <div class="range-display"><span id="parts-display">20%</span> des parts</div>
+                <p class="form-hint">Le pourcentage final sera négocié lors de l'entretien avec notre équipe. Entre 5% et 49% maximum.</p>
+              </div>
+            </div>
+
+            <!-- Champ conditionnel — DONS -->
+            <div class="conditional-field" data-show-for="dons">
+              <div class="divider"></div>
+              <h4 style="color:var(--ocean);margin-bottom:1.25rem;"><i class="ph-light ph-handshake"></i> Impact social & culturel</h4>
+              <div class="form-group">
+                <label class="form-label" for="impact">Quel impact social ou culturel aura votre projet ?</label>
+                <textarea id="impact" name="impact" class="form-textarea" style="min-height:80px;" placeholder="Ex : Permettre à 40 enfants d'accéder à une éducation de qualité dans un village rural de Mohéli..."></textarea>
+              </div>
+            </div>
+
+            <!-- Budget justificatif PDF obligatoire -->
+            <div class="divider"></div>
+            <h4 style="color:var(--navy);margin-bottom:0.5rem;">
+              <i class="ph-light ph-calculator"></i> Estimation budgétaire
+              <span class="section-required-badge"><i class="ph-light ph-shield-check"></i> Obligatoire</span>
+            </h4>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
+              Un document PDF détaillant l'utilisation des fonds. Max <strong>5 Mo</strong>.
+            </p>
+            <div class="form-group">
+              <label class="form-label" for="budget-pdf">
+                Document budget (PDF) <span>*</span>
+              </label>
+              <div class="file-upload-zone" id="budget-pdf-zone">
+                <input type="file" id="budget-pdf" name="budget_pdf"
+                       accept=".pdf"
+                       class="file-upload-input" aria-label="Budget PDF" />
+                <div class="file-upload-ui">
+                  <i class="ph-light ph-file-pdf file-upload-icon"></i>
+                  <span class="file-upload-label">Glissez votre PDF ici ou cliquez pour sélectionner</span>
+                  <span class="file-upload-hint">PDF uniquement — max 5 Mo</span>
+                  <span class="file-upload-name" id="budget-pdf-name"></span>
+                </div>
+              </div>
+              <p class="form-error" id="budget-pdf-error">Budget obligatoire en PDF (max 5 Mo).</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="budget-description">
+                Résumé du budget
+                <span style="font-size:0.75rem;font-weight:400;color:var(--text-muted);">(optionnel, recommandé)</span>
+              </label>
+              <textarea id="budget-description" name="budget_description" class="form-textarea"
+                        style="min-height:110px;"
+                        placeholder="Ex :&#10;- 150 000 KMF → Achat matières premières&#10;- 80 000 KMF → Location équipement&#10;- 50 000 KMF → Marketing & communication&#10;- 20 000 KMF → Frais divers"></textarea>
+              <p class="form-hint">Résumez les grandes lignes. Notre équipe évaluera la cohérence avec le montant demandé.</p>
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-outline-navy" data-prev><i class="ph-light ph-arrow-left"></i> Retour</button>
+              <button type="button" class="btn btn-primary btn-lg" data-next>Suivant — Votre compte <i class="ph-light ph-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ÉTAPE 4 : Compte & Confirmation ──────────────── -->
+        <div class="form-step" id="step-3">
+
+          <!-- Bloc compte (masqué si déjà connecté) -->
+          <div class="form-card" id="account-section">
+            <h3 class="form-card__title"><i class="ph-light ph-user-circle"></i> Votre espace porteur</h3>
+            <p class="form-card__sub">Créez votre compte pour suivre votre dossier, recevoir les notifications et déposer d'autres projets facilement.</p>
+
+            <!-- Déjà connecté -->
+            <div id="already-logged-in" style="display:none;align-items:center;gap:1rem;background:rgba(0,200,83,0.08);border:1.5px solid rgba(0,200,83,0.25);border-radius:var(--radius);padding:1.25rem;">
+              <i class="ph-light ph-check-circle" style="color:var(--green);font-size:2rem;flex-shrink:0;"></i>
+              <div>
+                <strong style="color:var(--navy);display:block;" id="logged-in-name">Vous êtes connecté</strong>
+                <span style="font-size:0.85rem;color:var(--text-muted);">Ce projet sera ajouté à votre compte existant.</span>
+              </div>
+            </div>
+
+            <!-- Formulaire compte (si non connecté) -->
+            <div id="account-form-wrap">
+              <!-- Onglets -->
+              <div style="display:flex;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:1.5rem;">
+                <button type="button" id="tab-new-btn" onclick="switchAccountTab('new')"
+                  style="flex:1;padding:0.75rem 1rem;font-weight:600;font-size:0.88rem;background:var(--navy);color:#fff;border:none;cursor:pointer;font-family:var(--font-body);transition:all 0.2s;">
+                  <i class="ph-light ph-user-plus"></i> Créer mon compte
+                </button>
+                <button type="button" id="tab-login-btn" onclick="switchAccountTab('login')"
+                  style="flex:1;padding:0.75rem 1rem;font-weight:600;font-size:0.88rem;background:transparent;color:var(--text-muted);border:none;cursor:pointer;font-family:var(--font-body);transition:all 0.2s;">
+                  <i class="ph-light ph-sign-in"></i> J'ai déjà un compte
+                </button>
+              </div>
+
+              <!-- Panneau : Nouveau compte -->
+              <div id="tab-new-panel">
+                <div class="form-group">
+                  <label class="form-label" for="account-email">Email <span>*</span></label>
+                  <input type="email" id="account-email" class="form-input" placeholder="votre@email.com" autocomplete="email" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="account-password">Mot de passe <span>*</span></label>
+                    <input type="password" id="account-password" class="form-input" placeholder="8 caractères minimum" autocomplete="new-password" />
+                    <p class="form-hint">Au moins 8 caractères.</p>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="account-password2">Confirmer <span>*</span></label>
+                    <input type="password" id="account-password2" class="form-input" placeholder="Répétez votre mot de passe" autocomplete="new-password" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panneau : Connexion existante -->
+              <div id="tab-login-panel" style="display:none;">
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;"><i class="ph-light ph-info"></i> Entrez vos identifiants pour ajouter ce projet à votre compte FaidaKomori existant.</p>
+                <div class="form-group">
+                  <label class="form-label" for="login-email">Email</label>
+                  <input type="email" id="login-email" class="form-input" placeholder="votre@email.com" autocomplete="email" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="login-password">Mot de passe</label>
+                  <input type="password" id="login-password" class="form-input" placeholder="Votre mot de passe" autocomplete="current-password" />
+                </div>
+              </div>
+
+              <!-- Message d'erreur compte -->
+              <p id="account-error-msg" style="display:none;color:#DC2626;font-size:0.85rem;font-weight:600;margin-top:0.5rem;padding:0.75rem 1rem;background:rgba(220,38,38,0.06);border-radius:var(--radius-sm);border-left:3px solid #DC2626;"></p>
+            </div>
+          </div>
+
+          <!-- Récapitulatif -->
+          <div class="form-card">
+            <h3 class="form-card__title"><i class="ph-light ph-clipboard-text"></i> Récapitulatif de votre candidature</h3>
+            <p class="form-card__sub">Vérifiez vos informations avant d'envoyer votre candidature.</p>
+            <div class="recap"></div>
+
+            <div class="form-group" style="margin-top:1rem;">
+              <label class="form-check">
+                <input type="checkbox" id="cgv" required />
+                J'accepte les <a href="#" style="color:var(--navy);text-decoration:underline;">conditions d'utilisation</a> de FaidaKomori et je certifie que les informations fournies sont exactes.
+              </label>
+            </div>
+
+            <div style="background:rgba(10,123,108,0.08);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem;border-left:3px solid var(--ocean);">
+              <p style="font-size:0.88rem;color:var(--text-muted);margin:0;">
+                <i class="ph-light ph-lock"></i> <strong>Vos données sont sécurisées.</strong> FaidaKomori ne partagera jamais vos informations sans votre consentement.
+              </p>
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-outline-navy" data-prev><i class="ph-light ph-arrow-left"></i> Retour</button>
+              <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                <i class="ph-light ph-rocket-launch"></i> Envoyer ma candidature
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </form><!-- fin form -->
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       MODAL SUCCÈS
+  ══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-success">
+    <div class="modal success-modal modal-relative">
+      <span class="success-modal__icon"><i class="ph-light ph-confetti"></i></span>
+      <h3 class="modal__title">Candidature reçue !</h3>
+      <p style="color:var(--text-muted);margin-bottom:1.5rem;line-height:1.75;">
+        Merci ! Notre équipe vous contactera dans les <strong>72 heures</strong> par WhatsApp pour organiser un entretien de sélection.
+      </p>
+      <div style="background:var(--sand);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem;text-align:left;">
+        <p style="font-size:0.9rem;margin:0;color:var(--text-muted);">
+          <i class="ph-light ph-clipboard-text"></i> <strong>Prochaines étapes :</strong><br/>
+          1. Entretien WhatsApp ou en personne<br/>
+          2. Évaluation budgétaire de votre dossier<br/>
+          3. Mise en ligne de votre projet si sélectionné
+        </p>
+      </div>
+      <a href="mon-espace.html" class="btn btn-primary btn-full" id="success-espace-btn" style="margin-bottom:0.75rem;">
+        <i class="ph-light ph-user-circle"></i> Accéder à mon espace
+      </a>
+      <a href="index.html" class="btn btn-outline btn-full" id="success-home-btn">Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="footer__logo"><img src="img/logo-fk-icon.svg" alt="FaidaKomori" class="footer__logo-img" />Faida<span>Komori</span></a>
+          <p class="footer__desc">La première plateforme de financement participatif des Comores.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+            <a href="#" class="footer__social" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
+            <a href="#" class="footer__social" aria-label="WhatsApp"><i class="ph-light ph-whatsapp-logo"></i></a>
+          </div>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Navigation</h5>
+          <ul class="footer__links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="projets.html">Tous les projets</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Financement</h5>
+          <ul class="footer__links">
+            <li><a href="deposer.html?type=prevente"><i class="ph-light ph-package"></i> Prévente</a></li>
+            <li><a href="deposer.html?type=dons"><i class="ph-light ph-handshake"></i> Dons</a></li>
+            <li><a href="deposer.html?type=investissement"><i class="ph-light ph-trend-up"></i> Investissement</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="footer__col-title">Contact</h5>
+          <div class="footer__contact">
+            <div class="footer__contact-item"><span><i class="ph-light ph-whatsapp-logo"></i></span><span>WhatsApp : +269 XXX XXXX</span></div>
+            <div class="footer__contact-item"><span><i class="ph-light ph-envelope"></i></span><span>contact@faidakomori.km</span></div>
+            <div class="footer__contact-item"><span><i class="ph-light ph-map-pin"></i></span><span>Moroni, Union des Comores</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2025 FaidaKomori. Tous droits réservés. 🇰🇲</span>
+        <div class="footer__legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">Conditions d'utilisation</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/db-local.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+  /* ══════════════════════════════════════════════════════════
+     DEPOSER.HTML — Logique compte + soumission projet
+  ══════════════════════════════════════════════════════════ */
+
+  /* ═══════════════════════════════════════════════════════════
+     TÉLÉPHONE — Indicatif + validation longueur
+  ═══════════════════════════════════════════════════════════ */
+  function initPhoneField() {
+    const select  = document.getElementById('tel-indicatif');
+    const input   = document.getElementById('tel-numero');
+    const hidden  = document.getElementById('tel');
+    if (!select || !input || !hidden) return;
+
+    function updatePhone() {
+      const opt    = select.options[select.selectedIndex];
+      const max    = parseInt(opt.dataset.max) || 9;
+      const ph     = opt.dataset.ph || '';
+      input.maxLength   = max;
+      input.placeholder = ph;
+      // Réécrire la valeur combinée dans le champ caché
+      const digits = input.value.replace(/\D/g,'');
+      hidden.value = select.value + digits;
+    }
+
+    select.addEventListener('change', updatePhone);
+    input.addEventListener('input', () => {
+      // N'autoriser que les chiffres et espaces
+      input.value = input.value.replace(/[^0-9 ]/g,'');
+      updatePhone();
+    });
+    updatePhone();
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FICHIERS — Validation type + taille + UI
+  ═══════════════════════════════════════════════════════════ */
+  const FILE_MAX_BYTES = 5 * 1024 * 1024; // 5 Mo
+
+  function initFileUpload(inputId, zoneId, nameId, errorId, allowedTypes) {
+    const input  = document.getElementById(inputId);
+    const zone   = document.getElementById(zoneId);
+    const nameEl = document.getElementById(nameId);
+    const errEl  = document.getElementById(errorId);
+    if (!input || !zone) return;
+
+    function handleFile(file) {
+      if (!file) return;
+      const ext = file.name.split('.').pop().toLowerCase();
+      const ok  = allowedTypes.includes(ext) && file.size <= FILE_MAX_BYTES;
+
+      zone.classList.remove('has-file','error-state');
+      if (errEl) errEl.classList.remove('show');
+
+      if (!ok) {
+        zone.classList.add('error-state');
+        if (errEl) errEl.classList.add('show');
+        if (nameEl) nameEl.textContent = '';
+        input.value = '';
+        return;
+      }
+      zone.classList.add('has-file');
+      if (nameEl) nameEl.textContent = '✓ ' + file.name;
+    }
+
+    input.addEventListener('change', () => handleFile(input.files[0]));
+
+    // Drag & drop
+    zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('dragover');
+      handleFile(e.dataTransfer.files[0]);
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     VALIDATION TÉLÉPHONE — vérifier longueur avant soumission
+  ═══════════════════════════════════════════════════════════ */
+  function validatePhone() {
+    const select = document.getElementById('tel-indicatif');
+    const input  = document.getElementById('tel-numero');
+    const errEl  = document.getElementById('tel-error');
+    const numEl  = document.getElementById('tel-numero');
+    if (!select || !input) return true;
+    const opt    = select.options[select.selectedIndex];
+    const max    = parseInt(opt.dataset.max) || 9;
+    const digits = input.value.replace(/\D/g,'');
+    const valid  = digits.length >= Math.max(7, max - 1) && digits.length <= max;
+    if (!valid) {
+      numEl.classList.add('error');
+      if (errEl) errEl.classList.add('show');
+    } else {
+      numEl.classList.remove('error');
+      if (errEl) errEl.classList.remove('show');
+    }
+    return valid;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     VALIDATION FICHIERS — vérifier présence avant soumission
+  ═══════════════════════════════════════════════════════════ */
+  function validateFile(inputId, errorId) {
+    const input = document.getElementById(inputId);
+    const errEl = document.getElementById(errorId);
+    const zone  = input?.closest('.file-upload-zone');
+    const valid = input && input.files && input.files.length > 0;
+    if (!valid) {
+      if (zone)  zone.classList.add('error-state');
+      if (errEl) errEl.classList.add('show');
+    } else {
+      if (zone)  zone.classList.remove('error-state');
+      if (errEl) errEl.classList.remove('show');
+    }
+    return valid;
+  }
+
+  let currentAccountTab = 'new'; // 'new' | 'login'
+
+  function switchAccountTab(tab) {
+    currentAccountTab = tab;
+    const newBtn      = document.getElementById('tab-new-btn');
+    const loginBtn    = document.getElementById('tab-login-btn');
+    const newPanel    = document.getElementById('tab-new-panel');
+    const loginPanel  = document.getElementById('tab-login-panel');
+    const errorMsg    = document.getElementById('account-error-msg');
+
+    if (errorMsg) { errorMsg.style.display = 'none'; errorMsg.textContent = ''; }
+
+    if (tab === 'new') {
+      newBtn.style.background  = 'var(--navy)';   newBtn.style.color   = '#fff';
+      loginBtn.style.background = 'transparent';   loginBtn.style.color = 'var(--text-muted)';
+      newPanel.style.display   = 'block';
+      loginPanel.style.display = 'none';
+    } else {
+      loginBtn.style.background = 'var(--navy)';  loginBtn.style.color  = '#fff';
+      newBtn.style.background   = 'transparent';   newBtn.style.color   = 'var(--text-muted)';
+      loginPanel.style.display  = 'block';
+      newPanel.style.display    = 'none';
+      // Pré-remplir l'email si déjà saisi
+      const emailVal = document.getElementById('account-email')?.value?.trim();
+      if (emailVal) { const le = document.getElementById('login-email'); if (le && !le.value) le.value = emailVal; }
+    }
+  }
+
+  function showAccountError(msg) {
+    const el = document.getElementById('account-error-msg');
+    if (!el) return;
+    el.textContent     = msg;
+    el.style.display   = 'block';
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initNavbarAuth();
+
+    // ── Initialiser le champ téléphone ─────────────────────
+    initPhoneField();
+
+    // ── Initialiser les zones d'upload ─────────────────────
+    initFileUpload('doc-identite', 'doc-identite-zone', 'doc-identite-name',
+                   'doc-identite-error', ['pdf','jpg','jpeg','png']);
+    initFileUpload('budget-pdf',   'budget-pdf-zone',   'budget-pdf-name',
+                   'budget-pdf-error', ['pdf']);
+
+    // ── Validation supplémentaire sur bouton Suivant étape 2 ─
+    // Le stepper de main.js gère le data-next, on se branche dessus
+    document.querySelector('#step-1 [data-next]')?.addEventListener('click', () => {
+      validatePhone();
+      validateFile('doc-identite', 'doc-identite-error');
+    });
+    // Validation budget avant passage étape 3 → 4
+    document.querySelector('#step-2 [data-next]')?.addEventListener('click', () => {
+      validateFile('budget-pdf', 'budget-pdf-error');
+    });
+
+    // ── Afficher la section compte selon état connexion ────
+    const alreadyDiv  = document.getElementById('already-logged-in');
+    const formWrap    = document.getElementById('account-form-wrap');
+    const loggedName  = document.getElementById('logged-in-name');
+
+    function refreshAccountSection() {
+      if (API.isLoggedIn()) {
+        const u = API.getUser();
+        if (alreadyDiv)  { alreadyDiv.style.display = 'flex'; }
+        if (formWrap)    { formWrap.style.display   = 'none'; }
+        if (loggedName)  { loggedName.textContent   = `Connecté : ${u?.prenom || ''} ${u?.nom || ''} (${u?.email || ''})`; }
+      } else {
+        if (alreadyDiv)  { alreadyDiv.style.display = 'none'; }
+        if (formWrap)    { formWrap.style.display   = 'block'; }
+      }
+    }
+    refreshAccountSection();
+
+    // ── Pré-remplir l'email depuis l'étape 2 → étape 4 ───
+    document.getElementById('email')?.addEventListener('blur', () => {
+      const v = document.getElementById('email')?.value?.trim();
+      if (v) {
+        const ae = document.getElementById('account-email');
+        const le = document.getElementById('login-email');
+        if (ae && !ae.value) ae.value = v;
+        if (le && !le.value) le.value = v;
+      }
+    });
+
+    // ── Soumission du formulaire ───────────────────────────
+    const form      = document.getElementById('candidature-form');
+    const submitBtn = document.getElementById('submit-btn');
+    if (!form) return;
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      // ── Validation finale complète ─────────────────────
+      const phoneOk = validatePhone();
+      const idOk    = validateFile('doc-identite', 'doc-identite-error');
+      const budgOk  = validateFile('budget-pdf',   'budget-pdf-error');
+      if (!phoneOk || !idOk || !budgOk) {
+        showAccountError('Veuillez corriger les champs en rouge avant de continuer.');
+        return;
+      }
+
+      // Vérifier CGV
+      const cgv = document.getElementById('cgv');
+      if (cgv && !cgv.checked) {
+        const label = cgv.closest('.form-check') || cgv.parentElement;
+        label.style.color = '#DC2626';
+        setTimeout(() => label.style.color = '', 2500);
+        return;
+      }
+
+      const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+
+      // Construire le payload projet
+      const projectPayload = {
+        type:               g('selected-type'),
+        nom_projet:         g('nom-projet'),
+        description:        g('description'),
+        secteur:            g('secteur'),
+        montant:            g('montant'),
+        duree:              g('duree'),
+        nom:                g('nom'),
+        prenom:             g('prenom'),
+        tel:                g('tel'),
+        ile:                g('ile'),
+        budget_lien:        g('budget-lien'),
+        budget_description: g('budget-description'),
+        contrepartie:       g('contrepartie'),
+        parts_pourcentage:  g('parts-range'),
+        valeur_entreprise:  g('valeur-entreprise'),
+        impact:             g('impact'),
+        entreprise:         document.querySelector('input[name="entreprise"]:checked')?.value || '',
+      };
+
+      // Désactiver le bouton
+      if (submitBtn) {
+        submitBtn.disabled   = true;
+        submitBtn.innerHTML  = '<i class="ph-light ph-circle-notch"></i> Envoi en cours…';
+      }
+
+      try {
+        if (API.isLoggedIn()) {
+          // ── Déjà connecté : juste créer le projet ─────
+          await API.projects.create(projectPayload);
+
+        } else {
+          // ── Non connecté : créer/connecter compte + projet
+          const isNew    = currentAccountTab === 'new';
+          const email    = g(isNew ? 'account-email' : 'login-email');
+          const password = g(isNew ? 'account-password' : 'login-password');
+
+          if (!email || !password) {
+            showAccountError('Email et mot de passe sont obligatoires.');
+            return;
+          }
+          if (isNew) {
+            const pw2 = g('account-password2');
+            if (password.length < 8) { showAccountError('Le mot de passe doit faire au moins 8 caractères.'); return; }
+            if (password !== pw2)     { showAccountError('Les mots de passe ne correspondent pas.'); return; }
+          }
+
+          const resp = await API.deposer({
+            ...projectPayload,
+            email, password,
+            action: isNew ? 'register' : 'login',
+          });
+
+          // Auto-connexion
+          API.setSession(resp.token, resp.user);
+          refreshAccountSection();
+        }
+
+        // ── Succès ─────────────────────────────────────
+        const espaceBtn = document.getElementById('success-espace-btn');
+        const homeBtn   = document.getElementById('success-home-btn');
+
+        if (API.isLoggedIn()) {
+          if (espaceBtn) espaceBtn.style.display = 'flex';
+          if (homeBtn)   homeBtn.style.marginTop = '0';
+        } else {
+          if (espaceBtn) espaceBtn.style.display = 'none';
+        }
+
+        if (typeof openModal === 'function') openModal('modal-success');
+
+      } catch (err) {
+        // Email déjà utilisé → basculer vers onglet connexion
+        if (err.code === 'EMAIL_EXISTS') {
+          switchAccountTab('login');
+          const loginEmail = document.getElementById('login-email');
+          if (loginEmail) loginEmail.value = g('account-email');
+          showAccountError('Ce compte existe déjà. Entrez votre mot de passe pour vous connecter avec ce compte.');
+        } else {
+          showAccountError(err.message || 'Une erreur est survenue. Réessayez.');
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled  = false;
+          submitBtn.innerHTML = '<i class="ph-light ph-rocket-launch"></i> Envoyer ma candidature';
+        }
+      }
+
+    }, true); // capture = true pour court-circuiter le handler de main.js
+  });
+  </script>
+</body>
+</html>

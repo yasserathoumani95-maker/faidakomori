@@ -1,0 +1,36 @@
+# ── Dépendances Node.js ──────────────────────────────────
+node_modules/
+backend/node_modules/
+
+# ── Claude Code (outils de développement internes) ───────
+.agents/
+.claude/
+skills-lock.json
+*.claude
+
+# ── Variables d'environnement (secrets) ──────────────────
+backend/.env
+.env
+.env.local
+.env.production
+
+# ── Fichiers système ──────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── Fichiers temporaires ──────────────────────────────────
+*.tmp
+*.cache
+
+# ── IDE ───────────────────────────────────────────────────
+.vscode/
+.idea/
+
+# NOTE : backend/db/faidakomori.json EST inclus dans git
+# C'est la base de données initiale avec le compte admin.
+# Sur Render, les données sont réinitialisées à chaque déploiement.

@@ -1,0 +1,13 @@
+{
+  "name": "faidakomori",
+  "version": "1.0.0",
+  "description": "Plateforme de financement participatif des Comores",
+  "private": true,
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "cd backend && node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon espace — FaidaKomori</title>
+  <meta name="theme-color" content="#00C853" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"/>
+  <style>
+    .ph-light { font-size:1.15em; vertical-align:middle; line-height:1; }
+    .ph-icon-nav { font-size:1.25em; vertical-align:middle; }
+    .ph-icon-lg  { font-size:1.7em;  vertical-align:middle; }
+    .ph-icon-xl  { font-size:2.8em;  display:block; margin:0 auto 0.85rem; opacity:.45; }
+    .btn-icon-wrap .ph-light { font-size:0.95em; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════ -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="index.html" class="navbar__logo">
+          <img src="img/logo-fk-icon.svg" alt="FaidaKomori" class="navbar__logo-img" />Faida<span>Komori</span>
+        </a>
+        <ul class="navbar__links" id="navbar-links">
+          <li><a href="index.html#comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="projets.html">Projets</a></li>
+          <li><a href="deposer.html" class="btn btn-primary btn-sm">Déposer un projet <span class="btn-icon-wrap">→</span></a></li>
+        </ul>
+        <button class="navbar__hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="navbar__mobile" role="navigation">
+      <a href="index.html#comment-ca-marche">Comment ça marche</a>
+      <a href="projets.html">Projets</a>
+      <a href="deposer.html">Déposer un projet</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label section-label--ocean" style="display:inline-flex;">Mon espace</span>
+      <h1 class="page-hero__title" id="dashboard-greeting">Bonjour</h1>
+      <p class="page-hero__sub">Gérez vos projets, suivez vos contributions et vos notifications.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       DASHBOARD
+  ══════════════════════════════════════════ -->
+  <section class="section section--sand">
+    <div class="container">
+      <div class="dashboard-grid">
+
+        <!-- ── Sidebar ────────────────────────────────────── -->
+        <aside class="dashboard-sidebar">
+          <div class="dashboard-sidebar__user">
+            <div class="dashboard-sidebar__avatar" id="sidebar-avatar">?</div>
+            <div class="dashboard-sidebar__name" id="sidebar-name">—</div>
+            <div class="dashboard-sidebar__role" id="sidebar-role">Porteur de projet</div>
+          </div>
+          <nav class="dashboard-sidebar__nav">
+            <a href="#" class="dashboard-nav-item active" data-panel="mes-projets">
+              <i class="ph-light ph-folder ph-icon-nav"></i> Mes projets
+            </a>
+            <a href="#" class="dashboard-nav-item" data-panel="contributions">
+              <i class="ph-light ph-hand-coins ph-icon-nav"></i> Mes contributions
+            </a>
+            <a href="#" class="dashboard-nav-item" data-panel="notifications">
+              <i class="ph-light ph-bell ph-icon-nav"></i> Notifications
+              <span id="notif-badge" style="display:none;margin-left:auto;background:var(--gold);color:var(--navy);font-size:0.68rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:50px;"></span>
+            </a>
+            <a href="#" class="dashboard-nav-item" data-panel="profil">
+              <i class="ph-light ph-gear ph-icon-nav"></i> Mon profil
+            </a>
+            <a href="#" class="dashboard-nav-item" data-panel="paiement" id="nav-paiement">
+              <i class="ph-light ph-bank ph-icon-nav"></i> Paiement & Versements
+              <span id="versement-badge" style="display:none;margin-left:auto;background:var(--green);color:#fff;font-size:0.68rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:50px;">!</span>
+            </a>
+            <hr style="border:none;border-top:1px solid var(--border-solid);margin:0.5rem 0;" />
+            <a href="deposer.html" class="dashboard-nav-item">
+              <i class="ph-light ph-plus-circle ph-icon-nav"></i> Nouveau projet
+            </a>
+            <button class="dashboard-nav-item" id="btn-logout" style="width:100%;text-align:left;border:none;background:none;color:var(--text-muted);cursor:pointer;">
+              <i class="ph-light ph-sign-out ph-icon-nav"></i> Se déconnecter
+            </button>
+          </nav>
+        </aside>
+
+        <!-- ── Contenu principal ──────────────────────────── -->
+        <div class="dashboard-content">
+
+          <!-- Panel : Mes projets -->
+          <div class="dashboard-panel active" id="panel-mes-projets">
+            <div class="admin-header" style="margin-bottom:1.5rem;">
+              <div>
+                <h2 style="font-size:1.5rem;color:var(--navy);">Mes projets</h2>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.25rem;">Suivez l'avancement de vos candidatures</p>
+              </div>
+              <a href="deposer.html" class="btn btn-primary btn-sm" style="display:inline-flex;align-items:center;gap:0.4rem;">
+                <i class="ph-light ph-plus-circle"></i> Déposer un projet
+              </a>
+            </div>
+
+            <!-- CTA déposer visible si pas de projets -->
+            <div id="deposer-cta-card" style="display:none;
+                 background:linear-gradient(135deg,var(--navy-deep),var(--navy-light));
+                 border-radius:var(--radius-lg);padding:2rem;color:#fff;
+                 display:none;align-items:center;justify-content:space-between;
+                 gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+              <div>
+                <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;
+                      letter-spacing:0.12em;color:var(--green);display:block;margin-bottom:0.4rem;">
+                  🚀 Prêt à lancer votre projet ?
+                </span>
+                <h3 style="font-size:1.2rem;font-weight:700;margin:0 0 0.4rem;">
+                  Déposez votre candidature
+                </h3>
+                <p style="font-size:0.85rem;color:rgba(255,255,255,0.65);margin:0;line-height:1.6;">
+                  Prévente, dons ou investissement — notre équipe vous répond sous 72h.
+                </p>
+              </div>
+              <a href="deposer.html" class="btn btn-primary"
+                 style="flex-shrink:0;display:inline-flex;align-items:center;gap:0.5rem;
+                        background:var(--green);border:none;padding:0.75rem 1.5rem;">
+                <i class="ph-light ph-rocket-launch"></i>
+                Déposer mon projet
+                <span class="btn-icon-wrap" style="background:rgba(255,255,255,0.15);">
+                  <i class="ph-light ph-arrow-right"></i>
+                </span>
+              </a>
+            </div>
+
+            <div id="mes-projets-list">
+              <div class="dashboard-empty">
+                <div class="dashboard-empty__icon"><i class="ph-light ph-folder-open ph-icon-xl"></i></div>
+                <p>Chargement de vos projets…</p>
+              </div>
+            </div>
+
+            <!-- Section livraisons pour les porteurs de projets prévente -->
+            <div id="livraisons-section" style="display:none;margin-top:2rem;">
+              <hr style="border:none;border-top:1.5px solid var(--border-solid);margin-bottom:1.5rem;" />
+              <div class="admin-header" style="margin-bottom:1.25rem;">
+                <div>
+                  <h3 style="font-size:1.2rem;color:var(--navy);"><i class="ph-light ph-truck"></i> Gérer les livraisons</h3>
+                  <p style="color:var(--text-muted);font-size:0.85rem;">Marquez les commandes de vos acheteurs comme expédiées.</p>
+                </div>
+                <select id="livraisons-project-select" class="form-select" style="max-width:220px;" onchange="loadLivraisons(this.value)"></select>
+              </div>
+              <div id="livraisons-list">
+                <div class="dashboard-empty" style="padding:1.5rem;">
+                  <p style="color:var(--text-muted);">Sélectionnez un projet pour voir les commandes.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel : Contributions -->
+          <div class="dashboard-panel" id="panel-contributions">
+            <div class="admin-header" style="margin-bottom:1.5rem;">
+              <div>
+                <h2 style="font-size:1.5rem;color:var(--navy);">Mes contributions</h2>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.25rem;">Projets que vous avez soutenus</p>
+              </div>
+              <a href="projets.html" class="btn btn-primary btn-sm"><i class="ph-light ph-plus"></i> Soutenir un projet</a>
+            </div>
+
+            <!-- Stats résumé -->
+            <div id="contrib-stats" style="display:none;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;">
+              <div style="background:#fff;border-radius:var(--radius);padding:1rem 1.25rem;border:1.5px solid var(--border-solid);text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--navy);" id="contrib-stat-total">—</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">KMF donné(s) au total</div>
+              </div>
+              <div style="background:#fff;border-radius:var(--radius);padding:1rem 1.25rem;border:1.5px solid var(--border-solid);text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--ocean);" id="contrib-stat-count">—</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Projet(s) soutenus</div>
+              </div>
+              <div style="background:#fff;border-radius:var(--radius);padding:1rem 1.25rem;border:1.5px solid var(--border-solid);text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--gold-dark);" id="contrib-stat-pending">—</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Livraison(s) en cours</div>
+              </div>
+            </div>
+
+            <!-- Filtres -->
+            <div id="contrib-filters" style="display:none;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem;">
+              <button class="filter-btn active" data-contrib-filter="all" onclick="filterContribs('all')">Tout</button>
+              <button class="filter-btn" data-contrib-filter="prevente" onclick="filterContribs('prevente')"><i class="ph-light ph-package"></i> Prévente</button>
+              <button class="filter-btn" data-contrib-filter="dons" onclick="filterContribs('dons')"><i class="ph-light ph-handshake"></i> Dons</button>
+              <button class="filter-btn" data-contrib-filter="investissement" onclick="filterContribs('investissement')"><i class="ph-light ph-trend-up"></i> Investissement</button>
+            </div>
+
+            <div id="contributions-list">
+              <div class="dashboard-empty">
+                <div class="dashboard-empty__icon"><i class="ph-light ph-hand-coins ph-icon-xl"></i></div>
+                <p>Chargement…</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel : Notifications -->
+          <div class="dashboard-panel" id="panel-notifications">
+            <div class="admin-header" style="margin-bottom:1.5rem;">
+              <div>
+                <h2 style="font-size:1.5rem;color:var(--navy);">Notifications</h2>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="btn-mark-read">Tout marquer comme lu</button>
+            </div>
+            <div id="notifications-list">
+              <div class="dashboard-empty">
+                <div class="dashboard-empty__icon"><i class="ph-light ph-bell ph-icon-xl"></i></div>
+                <p>Chargement…</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel : Profil -->
+          <div class="dashboard-panel" id="panel-profil">
+            <div style="margin-bottom:1.5rem;">
+              <h2 style="font-size:1.5rem;color:var(--navy);">Mon profil</h2>
+            </div>
+
+            <!-- Infos -->
+            <div class="form-card" style="margin-bottom:1.5rem;">
+              <h3 class="form-card__title" style="font-size:1.1rem;">Informations personnelles</h3>
+              <p class="form-card__sub">Ces informations sont utilisées pour vous contacter.</p>
+              <div id="profil-msg" style="display:none;padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.88rem;margin-bottom:1rem;"></div>
+              <form id="form-profil" novalidate>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="profil-prenom">Prénom</label>
+                    <input class="form-input" type="text" id="profil-prenom" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profil-nom">Nom</label>
+                    <input class="form-input" type="text" id="profil-nom" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input class="form-input" type="email" id="profil-email" disabled style="opacity:0.6;cursor:not-allowed;" />
+                  <p class="form-hint">L'email ne peut pas être modifié.</p>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="profil-tel">WhatsApp</label>
+                    <input class="form-input" type="tel" id="profil-tel" placeholder="+269 321 00 00" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profil-ile">Île / Région</label>
+                    <select class="form-select" id="profil-ile">
+                      <option value="">-- Choisir --</option>
+                      <option value="Grande Comore">Grande Comore</option>
+                      <option value="Anjouan">Anjouan</option>
+                      <option value="Mohéli">Mohéli</option>
+                      <option value="Diaspora">Diaspora</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy">Enregistrer</button>
+              </form>
+            </div>
+
+            <!-- Changer mot de passe -->
+            <div class="form-card">
+              <h3 class="form-card__title" style="font-size:1.1rem;">Changer le mot de passe</h3>
+              <div id="pwd-msg" style="display:none;padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.88rem;margin-bottom:1rem;"></div>
+              <form id="form-pwd" novalidate>
+                <div class="form-group">
+                  <label class="form-label" for="pwd-ancien">Mot de passe actuel</label>
+                  <input class="form-input" type="password" id="pwd-ancien" placeholder="••••••••" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="pwd-new">Nouveau mot de passe</label>
+                    <input class="form-input" type="password" id="pwd-new" placeholder="Min. 8 caractères" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pwd-new2">Confirmer</label>
+                    <input class="form-input" type="password" id="pwd-new2" placeholder="Répéter" />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-outline-navy">Changer le mot de passe</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Panel : Paiement & Versements -->
+          <div class="dashboard-panel" id="panel-paiement">
+            <div style="margin-bottom:1.5rem;">
+              <h2 style="font-size:1.5rem;color:var(--navy);"><i class="ph-light ph-bank"></i> Paiement & Versements</h2>
+              <p style="color:var(--text-muted);font-size:0.9rem;">Ces coordonnées sont utilisées pour vous virer les fonds collectés une fois votre projet validé et l'objectif atteint.</p>
+            </div>
+
+            <!-- Info : disponible après approbation -->
+            <div id="paiement-locked-msg" style="display:none;background:rgba(232,160,32,0.08);border:1.5px solid rgba(232,160,32,0.25);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem;align-items:center;gap:0.75rem;">
+              <i class="ph-light ph-lock" style="font-size:1.5rem;color:var(--gold-dark);flex-shrink:0;"></i>
+              <p style="font-size:0.88rem;color:var(--text-muted);margin:0;">Cette section est disponible une fois que votre projet a été <strong>approuvé</strong> par notre équipe.</p>
+            </div>
+
+            <!-- Formulaire coordonnées -->
+            <div class="form-card" id="paiement-form-card" style="margin-bottom:1.5rem;display:none;">
+              <h3 class="form-card__title" style="font-size:1.1rem;"><i class="ph-light ph-device-mobile"></i> Mobile Money</h3>
+              <p class="form-card__sub">Numéro Huri Money ou M-Pesa sur lequel recevoir les fonds.</p>
+              <div id="paiement-msg" style="display:none;padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.88rem;margin-bottom:1rem;"></div>
+              <form id="form-paiement" novalidate>
+                <div class="form-group">
+                  <label class="form-label" for="p-tel">Numéro Huri Money / M-Pesa</label>
+                  <input class="form-input" type="tel" id="p-tel" placeholder="+269 321 00 00" />
+                  <p class="form-hint">Ce numéro servira exclusivement à recevoir les virements FaidaKomori.</p>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-banque">Banque (optionnel)</label>
+                  <input class="form-input" type="text" id="p-banque" placeholder="Ex : BIC Comores, Exim Bank…" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-rib">RIB / IBAN (optionnel)</label>
+                  <input class="form-input" type="text" id="p-rib" placeholder="Ex : KM46 0000 0000 0000 0000 0000 000" />
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="ph-light ph-floppy-disk"></i> Enregistrer mes coordonnées</button>
+              </form>
+            </div>
+
+            <!-- Demander un versement -->
+            <div class="form-card" id="versement-request-card" style="display:none;">
+              <h3 class="form-card__title" style="font-size:1.1rem;"><i class="ph-light ph-money"></i> Demander un versement</h3>
+              <p class="form-card__sub">Lorsque vous avez atteint votre objectif (ou une partie), demandez un versement. Notre équipe vérifiera votre demande et vous versera les fonds déduction faite de notre commission (3%).</p>
+
+              <div id="versement-msg" style="display:none;padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.88rem;margin-bottom:1rem;"></div>
+
+              <div id="versement-project-select-wrap" style="margin-bottom:1rem;">
+                <label class="form-label" for="versement-project-id">Projet concerné</label>
+                <select class="form-select" id="versement-project-id"></select>
+              </div>
+
+              <form id="form-versement" novalidate>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="v-montant">Montant demandé (KMF) <span>*</span></label>
+                    <input class="form-input" type="number" id="v-montant" placeholder="Ex : 150 000" min="1" />
+                    <p class="form-hint" id="v-montant-hint"></p>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="v-motif">Objet du versement <span>*</span></label>
+                    <input class="form-input" type="text" id="v-motif" placeholder="Ex : Achat matières premières" />
+                  </div>
+                </div>
+                <div style="background:rgba(10,123,108,0.07);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;font-size:0.83rem;color:var(--text-muted);">
+                  <i class="ph-light ph-info"></i> <strong>Important :</strong> Les versements peuvent être effectués en plusieurs tranches selon votre plan budgétaire. Notre équipe peut venir acheter les matériaux avec vous pour plus de transparence.
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="ph-light ph-paper-plane-tilt"></i> Envoyer la demande</button>
+              </form>
+            </div>
+
+            <!-- Historique des versements -->
+            <div class="form-card" id="versement-history-card" style="display:none;">
+              <h3 class="form-card__title" style="font-size:1.1rem;"><i class="ph-light ph-clock-counter-clockwise"></i> Historique des versements</h3>
+              <div id="versement-history-list"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER MINIMAL
+  ══════════════════════════════════════════ -->
+  <footer style="background:#070F1C;color:rgba(255,255,255,0.5);padding:1.5rem;text-align:center;font-size:0.82rem;">
+    <p>© 2025 FaidaKomori · La première plateforme de financement participatif des Comores</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/db-local.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', async () => {
+
+    // ── Guard auth ──────────────────────────────────────────
+    if (!requireLogin('login.html')) return;
+
+    const user = API.getUser();
+
+    // ── Navbar auth ─────────────────────────────────────────
+    initNavbarAuth();
+
+    // ── Sidebar infos ───────────────────────────────────────
+    document.getElementById('sidebar-avatar').textContent = (user.prenom[0] || '?').toUpperCase();
+    document.getElementById('sidebar-name').textContent   = `${user.prenom} ${user.nom}`;
+    document.getElementById('dashboard-greeting').textContent = `Bonjour, ${user.prenom}`;
+    if (user.role === 'admin') document.getElementById('sidebar-role').textContent = 'Administrateur';
+
+    // ── Navigation panels ───────────────────────────────────
+    document.querySelectorAll('.dashboard-nav-item[data-panel]').forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        const panel = item.dataset.panel;
+        document.querySelectorAll('.dashboard-nav-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.dashboard-panel').forEach(p => p.classList.remove('active'));
+        item.classList.add('active');
+        document.getElementById(`panel-${panel}`)?.classList.add('active');
+        if (panel === 'contributions') loadContributions();
+        if (panel === 'notifications') loadNotifications();
+        if (panel === 'profil') loadProfil();
+        if (panel === 'paiement') loadPaiement();
+      });
+    });
+
+    // ── Logout ───────────────────────────────────────────────
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      API.clearSession();
+      window.location.href = 'index.html';
+    });
+
+    // ── Livraisons (porteur) ──────────────────────────────────
+    async function loadLivraisons(projectId) {
+      if (!projectId) return;
+      const container = document.getElementById('livraisons-list');
+      if (!container) return;
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem;">Chargement…</p>';
+      try {
+        const { contributions } = await API.contributions.porteurList(projectId);
+        if (!contributions.length) {
+          container.innerHTML = `<div class="dashboard-empty" style="padding:1.25rem;"><i class="ph-light ph-users ph-icon-xl"></i><p>Aucune commande pour ce projet.</p></div>`;
+          return;
+        }
+        const statusConf = {
+          pending: { label:'En attente',  color:'var(--gold-dark)',   bg:'rgba(232,160,32,0.08)',  icon:'ph-clock' },
+          expedie: { label:'Expédié',     color:'var(--ocean)',        bg:'rgba(10,123,108,0.08)', icon:'ph-truck' },
+          recu:    { label:'Reçu',        color:'var(--green-deep)',   bg:'rgba(0,200,83,0.08)',   icon:'ph-check-circle' },
+        };
+        container.innerHTML = `
+          <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;">
+            ${contributions.length} commande(s) —
+            ${contributions.filter(c=>c.livraison_status==='pending').length} en attente ·
+            ${contributions.filter(c=>c.livraison_status==='expedie').length} expédiée(s) ·
+            ${contributions.filter(c=>c.livraison_status==='recu').length} reçue(s)
+          </div>` +
+          contributions.map(c => {
+            const sc = statusConf[c.livraison_status || 'pending'];
+            const date = new Date(c.created_at).toLocaleDateString('fr-FR');
+            const canExpedier = (c.livraison_status || 'pending') === 'pending';
+            return `
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;padding:0.85rem 1rem;background:#fff;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);margin-bottom:0.6rem;">
+                <div>
+                  <div style="font-weight:700;color:var(--navy);font-size:0.9rem;">${c.anonyme ? 'Anonyme' : (c.nom_contributeur || 'Contributeur')}</div>
+                  <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.15rem;">
+                    ${parseInt(c.montant).toLocaleString('fr-FR')} KMF · ${date}
+                    ${c.coordonnees_paiement ? `· <i class="ph-light ph-device-mobile"></i> ${c.coordonnees_paiement}` : ''}
+                  </div>
+                  ${c.message ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;font-style:italic;">"${c.message}"</div>` : ''}
+                </div>
+                <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+                  <span style="display:inline-flex;align-items:center;gap:0.35rem;background:${sc.bg};color:${sc.color};font-size:0.75rem;font-weight:700;padding:0.3rem 0.7rem;border-radius:50px;">
+                    <i class="ph-light ${sc.icon}"></i> ${sc.label}
+                  </span>
+                  ${canExpedier ? `
+                    <button class="btn btn-sm" style="background:var(--ocean);color:#fff;font-size:0.78rem;border:none;"
+                      onclick="marquerExpedie(${projectId}, ${c.id}, this)">
+                      <i class="ph-light ph-truck"></i> Marquer expédié
+                    </button>` : ''}
+                </div>
+              </div>`;
+          }).join('');
+      } catch (err) {
+        container.innerHTML = `<p style="color:#B91C1C;">${err.message}</p>`;
+      }
+    }
+    window.loadLivraisons = loadLivraisons;
+
+    async function marquerExpedie(projectId, contribId, btn) {
+      try {
+        btn.disabled = true;
+        btn.textContent = '…';
+        await API.contributions.marquerLivraison(projectId, contribId, 'expedie');
+        await loadLivraisons(projectId);
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="ph-light ph-truck"></i> Marquer expédié';
+        alert(err.message);
+      }
+    }
+    window.marquerExpedie = marquerExpedie;
+
+    // ── Charger mes projets ──────────────────────────────────
+    async function loadMesProjets() {
+      try {
+        const { projects } = await API.projects.mine();
+        const container = document.getElementById('mes-projets-list');
+
+        if (!projects.length) {
+          // Afficher la CTA card en haut du panel
+          const ctaCard = document.getElementById('deposer-cta-card');
+          if (ctaCard) ctaCard.style.display = 'flex';
+          container.innerHTML = `
+            <div class="dashboard-empty">
+              <div class="dashboard-empty__icon"><i class="ph-light ph-folder-open ph-icon-xl"></i></div>
+              <p style="color:var(--text-muted);margin-bottom:0.5rem;">Vous n'avez pas encore déposé de projet.</p>
+              <p style="font-size:0.82rem;color:var(--text-light);">
+                Cliquez sur <strong>Déposer mon projet</strong> ci-dessus pour commencer.
+              </p>
+            </div>`;
+          return;
+        }
+        // Masquer la CTA si projets présents
+        const ctaCard = document.getElementById('deposer-cta-card');
+        if (ctaCard) ctaCard.style.display = 'none';
+
+        // Projets prévente publiés → section livraisons
+        const preventePublies = projects.filter(p => p.type === 'prevente' && p.status === 'published');
+        const livraisonsSection = document.getElementById('livraisons-section');
+        const livraisonsSelect  = document.getElementById('livraisons-project-select');
+        if (preventePublies.length > 0 && livraisonsSection && livraisonsSelect) {
+          livraisonsSection.style.display = 'block';
+          livraisonsSelect.innerHTML = preventePublies.map(p =>
+            `<option value="${p.id}">${p.nom_projet}</option>`
+          ).join('');
+          await loadLivraisons(preventePublies[0].id);
+        }
+
+        const statusLabels = {
+          new:       { label: 'Nouveau',    color: 'status--new' },
+          review:    { label: 'En examen',  color: 'status--review' },
+          interview: { label: 'Entretien',  color: 'status--interview' },
+          approved:  { label: 'Approuvé',   color: 'status--approved' },
+          published: { label: 'En ligne',   color: 'status--published' },
+          rejected:  { label: 'Refusé',     color: 'status--rejected' },
+        };
+        const typeIcons = { prevente: '<i class="ph-light ph-package"></i>', dons: '<i class="ph-light ph-handshake"></i>', investissement: '<i class="ph-light ph-trend-up"></i>' };
+
+        container.innerHTML = projects.map(p => {
+          const st  = statusLabels[p.status] || { label: p.status, color: 'status--new' };
+          const pct = p.montant > 0 ? Math.min(Math.round((p.montant_collecte / p.montant) * 100), 100) : 0;
+          return `
+            <div class="dashboard-project-card">
+              <div class="dashboard-project-card__info">
+                <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;flex-wrap:wrap;">
+                  <span>${typeIcons[p.type] || '<i class="ph-light ph-folder"></i>'}</span>
+                  <strong class="dashboard-project-card__title">${p.nom_projet}</strong>
+                  <span class="status ${st.color}">${st.label}</span>
+                </div>
+                <div class="dashboard-project-card__meta">
+                  ${p.secteur ? p.secteur + ' · ' : ''}
+                  ${p.montant ? parseInt(p.montant).toLocaleString('fr-FR') + ' KMF objectif' : ''}
+                  · Soumis le ${new Date(p.created_at).toLocaleDateString('fr-FR')}
+                </div>
+                ${p.status === 'published' ? `
+                  <div style="margin-top:0.75rem;">
+                    <div class="progress-bar"><div class="progress-bar__fill progress-bar__fill--prevente" style="width:${pct}%"></div></div>
+                    <div class="progress-meta">
+                      <span>${parseInt(p.montant_collecte).toLocaleString('fr-FR')} KMF collectés</span>
+                      <span class="progress-pct progress-pct--prevente">${pct}%</span>
+                    </div>
+                  </div>` : ''}
+                ${p.note_admin ? `<div style="margin-top:0.6rem;padding:0.65rem 0.9rem;background:var(--sand);border-radius:var(--radius-sm);font-size:0.83rem;color:var(--text-muted);font-style:italic;display:flex;gap:0.5rem;align-items:flex-start;"><i class="ph-light ph-chat-circle" style="flex-shrink:0;margin-top:2px;"></i><span>${p.note_admin}</span></div>` : ''}
+              </div>
+              <div style="flex-shrink:0;">
+                ${p.status === 'published'
+                  ? `<a href="projet-detail.html?id=${p.id}" class="btn btn-outline-navy btn-sm">Voir <i class="ph-light ph-arrow-right"></i></a>`
+                  : ''}
+              </div>
+            </div>`;
+        }).join('');
+      } catch (err) {
+        document.getElementById('mes-projets-list').innerHTML = `
+          <div class="dashboard-empty"><p style="color:#B91C1C;">Erreur : ${err.message}</p></div>`;
+      }
+    }
+
+    // ── Contributions ─────────────────────────────────────────
+    let allContributions = []; // cache pour le filtrage
+
+    function filterContribs(type) {
+      document.querySelectorAll('[data-contrib-filter]').forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-contrib-filter="${type}"]`)?.classList.add('active');
+      renderContributions(type === 'all' ? allContributions : allContributions.filter(c => c.type === type));
+    }
+    window.filterContribs = filterContribs;
+
+    function renderContributions(contributions) {
+      const container = document.getElementById('contributions-list');
+      if (!contributions.length) {
+        container.innerHTML = `<div class="dashboard-empty"><div class="dashboard-empty__icon"><i class="ph-light ph-hand-coins ph-icon-xl"></i></div><p>Aucune contribution dans cette catégorie.</p></div>`;
+        return;
+      }
+
+      const livraisonColors = {
+        pending:  { bg:'rgba(232,160,32,0.09)',   color:'var(--gold-dark)',  label:'En attente d\'expédition', icon:'ph-clock' },
+        expedie:  { bg:'rgba(10,123,108,0.08)',   color:'var(--ocean)',      label:'Expédié — En cours de livraison', icon:'ph-truck' },
+        recu:     { bg:'rgba(0,200,83,0.08)',     color:'var(--green-deep)', label:'Reçu — Livraison confirmée', icon:'ph-check-circle' },
+      };
+      const typeConfig = {
+        prevente:       { icon:'ph-package',   label:'Prévente',       color:'var(--gold-dark)',  bg:'rgba(232,160,32,0.08)' },
+        dons:           { icon:'ph-handshake', label:'Don',            color:'var(--ocean)',       bg:'rgba(10,123,108,0.08)' },
+        investissement: { icon:'ph-trend-up',  label:'Investissement', color:'var(--green-deep)', bg:'rgba(0,200,83,0.08)' },
+      };
+
+      container.innerHTML = contributions.map(c => {
+        const tc = typeConfig[c.type] || typeConfig.dons;
+        const lc = livraisonColors[c.livraison_status];
+        const methodLabel = { huri:'Huri Money', mpesa:'M-Pesa', virement:'Virement', mvola:'MoVola' }[c.methode_paiement] || (c.methode_paiement || '').toUpperCase();
+
+        return `
+          <div class="dashboard-project-card" data-contrib-type="${c.type}">
+            <div class="dashboard-project-card__info" style="flex:1;">
+              <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;flex-wrap:wrap;">
+                <span style="display:inline-flex;align-items:center;gap:0.3rem;background:${tc.bg};color:${tc.color};font-size:0.73rem;font-weight:700;padding:0.2rem 0.65rem;border-radius:50px;">
+                  <i class="ph-light ${tc.icon}"></i> ${tc.label}
+                </span>
+                <strong class="dashboard-project-card__title">${c.nom_projet}</strong>
+              </div>
+              <div class="dashboard-project-card__meta">
+                <i class="ph-light ph-calendar-blank"></i> ${new Date(c.created_at).toLocaleDateString('fr-FR')}
+                &nbsp;·&nbsp; <i class="ph-light ph-device-mobile"></i> ${methodLabel}
+                ${c.anonyme ? '&nbsp;·&nbsp; <i class="ph-light ph-eye-slash"></i> Anonyme' : ''}
+              </div>
+              ${c.message ? `<div style="margin-top:0.5rem;font-size:0.83rem;color:var(--text-muted);font-style:italic;padding:0.5rem 0.75rem;background:var(--sand);border-radius:var(--radius-sm);">"${c.message}"</div>` : ''}
+
+              ${c.type === 'investissement' && c.parts_pourcentage ? `
+                <div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-muted);">
+                  <i class="ph-light ph-chart-pie-slice"></i> Part acquise : <strong style="color:var(--navy);">${c.parts_pourcentage}%</strong> de l'entreprise
+                </div>` : ''}
+
+              ${lc ? `
+                <div style="margin-top:0.65rem;display:inline-flex;align-items:center;gap:0.45rem;padding:0.4rem 0.85rem;border-radius:50px;background:${lc.bg};border:1px solid ${lc.color}20;">
+                  <i class="ph-light ${lc.icon}" style="color:${lc.color};"></i>
+                  <span style="font-size:0.78rem;font-weight:700;color:${lc.color};">${lc.label}</span>
+                </div>
+                ${c.livraison_status === 'expedie' ? `
+                  <div style="margin-top:0.6rem;">
+                    <button class="btn btn-sm" style="background:var(--ocean);color:#fff;font-size:0.78rem;border:none;"
+                      onclick="marquerRecu(${c.id}, this)">
+                      <i class="ph-light ph-check"></i> Confirmer la réception
+                    </button>
+                  </div>` : ''}` : ''}
+            </div>
+            <div style="flex-shrink:0;text-align:right;">
+              <div style="font-family:var(--font-heading);font-weight:800;color:var(--gold-dark);font-size:1.15rem;">${parseInt(c.montant).toLocaleString('fr-FR')} KMF</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    async function loadContributions() {
+      try {
+        const { contributions } = await API.user.contributions();
+        const container = document.getElementById('contributions-list');
+
+        if (!contributions.length) {
+          container.innerHTML = `
+            <div class="dashboard-empty">
+              <div class="dashboard-empty__icon"><i class="ph-light ph-hand-coins ph-icon-xl"></i></div>
+              <p style="margin-bottom:1.25rem;">Vous n'avez pas encore contribué à un projet.</p>
+              <a href="projets.html" class="btn btn-primary">Découvrir les projets</a>
+            </div>`;
+          return;
+        }
+
+        allContributions = contributions;
+
+        // Statistiques
+        const total    = contributions.reduce((s, c) => s + (parseInt(c.montant) || 0), 0);
+        const pending  = contributions.filter(c => c.livraison_status === 'pending' || c.livraison_status === 'expedie').length;
+        const statsEl  = document.getElementById('contrib-stats');
+        const filtsEl  = document.getElementById('contrib-filters');
+        if (statsEl) {
+          statsEl.style.display = 'grid';
+          statsEl.style.gridTemplateColumns = 'repeat(3,1fr)';
+          document.getElementById('contrib-stat-total').textContent  = total.toLocaleString('fr-FR');
+          document.getElementById('contrib-stat-count').textContent  = contributions.length;
+          document.getElementById('contrib-stat-pending').textContent = pending;
+        }
+        if (filtsEl) filtsEl.style.display = 'flex';
+
+        renderContributions(contributions);
+      } catch (err) {
+        document.getElementById('contributions-list').innerHTML = `<div class="dashboard-empty"><p style="color:#B91C1C;">${err.message}</p></div>`;
+      }
+    }
+
+    // Marquer une commande comme reçue (côté contributeur)
+    async function marquerRecu(contribId, btn) {
+      try {
+        btn.disabled = true;
+        btn.textContent = '…';
+        await API.contributions.marquerRecu(contribId);
+        // Recharger
+        await loadContributions();
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="ph-light ph-check"></i> Confirmer la réception';
+        alert(err.message);
+      }
+    }
+    window.marquerRecu = marquerRecu;
+
+    // ── Notifications ─────────────────────────────────────────
+    async function loadNotifications() {
+      try {
+        const { notifications } = await API.user.notifications();
+        const container = document.getElementById('notifications-list');
+        const unread = notifications.filter(n => !n.lu).length;
+        const badge  = document.getElementById('notif-badge');
+        if (unread > 0) { badge.style.display = 'inline'; badge.textContent = unread; }
+        else badge.style.display = 'none';
+
+        if (!notifications.length) {
+          container.innerHTML = `<div class="dashboard-empty"><div class="dashboard-empty__icon"><i class="ph-light ph-bell ph-icon-xl"></i></div><p>Aucune notification pour le moment.</p></div>`;
+          return;
+        }
+        container.innerHTML = notifications.map(n => `
+          <div class="announcement-card" style="${!n.lu ? 'border-left:3px solid var(--green);' : ''}">
+            <div class="announcement-card__date">${new Date(n.created_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
+            <div class="announcement-card__title" style="${!n.lu ? 'color:var(--navy);' : 'color:var(--text-muted);font-weight:500;'}">${n.message}</div>
+            ${n.lien ? `<a href="${n.lien}" style="font-size:0.82rem;color:var(--green);font-weight:600;margin-top:0.4rem;display:inline-block;">Voir <i class="ph-light ph-arrow-right"></i></a>` : ''}
+          </div>`).join('');
+      } catch (err) {
+        document.getElementById('notifications-list').innerHTML = `<div class="dashboard-empty"><p style="color:#B91C1C;">${err.message}</p></div>`;
+      }
+    }
+
+    document.getElementById('btn-mark-read').addEventListener('click', async () => {
+      await API.user.markNotifRead().catch(() => {});
+      loadNotifications();
+    });
+
+    // ── Profil ────────────────────────────────────────────────
+    async function loadProfil() {
+      try {
+        const { user } = await API.user.profile();
+        document.getElementById('profil-prenom').value = user.prenom || '';
+        document.getElementById('profil-nom').value    = user.nom    || '';
+        document.getElementById('profil-email').value  = user.email  || '';
+        document.getElementById('profil-tel').value    = user.tel    || '';
+        const ile = document.getElementById('profil-ile');
+        if (ile) ile.value = user.ile || '';
+      } catch {}
+    }
+
+    function showMsg(id, msg, type = 'success') {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display  = 'block';
+      el.textContent    = msg;
+      el.style.background = type === 'success' ? 'rgba(0,200,83,0.1)' : 'rgba(220,38,38,0.08)';
+      el.style.color    = type === 'success' ? 'var(--green-deep)' : '#B91C1C';
+      el.style.border   = type === 'success' ? '1px solid rgba(0,200,83,0.25)' : '1px solid rgba(220,38,38,0.2)';
+    }
+
+    document.getElementById('form-profil').addEventListener('submit', async e => {
+      e.preventDefault();
+      try {
+        await API.user.updateProfile({
+          prenom: document.getElementById('profil-prenom').value,
+          nom:    document.getElementById('profil-nom').value,
+          tel:    document.getElementById('profil-tel').value,
+          ile:    document.getElementById('profil-ile').value,
+        });
+        showMsg('profil-msg', 'Profil mis à jour avec succès.', 'success');
+      } catch (err) {
+        showMsg('profil-msg', err.message, 'error');
+      }
+    });
+
+    document.getElementById('form-pwd').addEventListener('submit', async e => {
+      e.preventDefault();
+      const ancien  = document.getElementById('pwd-ancien').value;
+      const nouveau = document.getElementById('pwd-new').value;
+      const confirm = document.getElementById('pwd-new2').value;
+      if (nouveau !== confirm) { showMsg('pwd-msg', 'Les mots de passe ne correspondent pas.', 'error'); return; }
+      try {
+        await API.auth.changePassword(ancien, nouveau);
+        showMsg('pwd-msg', 'Mot de passe modifié avec succès.', 'success');
+        document.getElementById('form-pwd').reset();
+      } catch (err) {
+        showMsg('pwd-msg', err.message, 'error');
+      }
+    });
+
+    // ── Notification badge sidebar ────────────────────────────
+    API.user.notifications().then(({ notifications }) => {
+      const unread = notifications.filter(n => !n.lu).length;
+      const badge  = document.getElementById('notif-badge');
+      if (unread > 0) { badge.style.display = 'inline'; badge.textContent = unread; }
+    }).catch(() => {});
+
+    // ── Paiement & Versements ─────────────────────────────────
+    let publishedProjects = []; // projets publiés de l'utilisateur
+
+    async function loadPaiement() {
+      try {
+        // Charger les projets
+        const { projects } = await API.projects.mine();
+        const approved = projects.filter(p => ['approved','published'].includes(p.status));
+        publishedProjects  = projects.filter(p => p.status === 'published');
+
+        const lockedMsg   = document.getElementById('paiement-locked-msg');
+        const formCard    = document.getElementById('paiement-form-card');
+        const versReqCard = document.getElementById('versement-request-card');
+        const versHist    = document.getElementById('versement-history-card');
+
+        if (!approved.length) {
+          // Aucun projet approuvé → afficher le message verrouillé
+          if (lockedMsg)   lockedMsg.style.display   = 'flex';
+          if (formCard)    formCard.style.display     = 'none';
+          if (versReqCard) versReqCard.style.display  = 'none';
+          if (versHist)    versHist.style.display     = 'none';
+          return;
+        }
+
+        // Projet approuvé → afficher le formulaire
+        if (lockedMsg)   lockedMsg.style.display   = 'none';
+        if (formCard)    formCard.style.display     = 'block';
+
+        // Charger les coordonnées existantes
+        const { paiement } = await API.user.getPaiement();
+        if (paiement) {
+          document.getElementById('p-tel').value    = paiement.paiement_tel    || '';
+          document.getElementById('p-banque').value = paiement.paiement_banque || '';
+          document.getElementById('p-rib').value    = paiement.paiement_rib    || '';
+        }
+
+        // Demande de versement : uniquement si projet publié
+        if (publishedProjects.length > 0) {
+          if (versReqCard) versReqCard.style.display = 'block';
+
+          // Peupler le select des projets publiés
+          const select = document.getElementById('versement-project-id');
+          if (select) {
+            select.innerHTML = publishedProjects.map(p => {
+              const pct = p.montant > 0 ? Math.round((p.montant_collecte / p.montant) * 100) : 0;
+              return `<option value="${p.id}">${p.nom_projet} — ${pct}% collecté (${parseInt(p.montant_collecte||0).toLocaleString('fr-FR')} / ${parseInt(p.montant||0).toLocaleString('fr-FR')} KMF)</option>`;
+            }).join('');
+            // Afficher le montant disponible
+            select.addEventListener('change', updateVersementHint);
+            updateVersementHint();
+          }
+
+          // Charger l'historique des versements du 1er projet publié
+          await loadVersementHistory(publishedProjects[0].id);
+          if (versHist) versHist.style.display = 'block';
+        }
+
+      } catch (err) {
+        console.error('Erreur chargement paiement:', err);
+      }
+    }
+
+    function updateVersementHint() {
+      const select = document.getElementById('versement-project-id');
+      if (!select) return;
+      const p = publishedProjects.find(p => p.id == select.value);
+      const hint = document.getElementById('v-montant-hint');
+      if (p && hint) {
+        hint.innerHTML = `Collecté : <strong>${parseInt(p.montant_collecte||0).toLocaleString('fr-FR')} KMF</strong>. Commission FaidaKomori : <strong>3%</strong>.`;
+      }
+    }
+
+    async function loadVersementHistory(projectId) {
+      try {
+        const { versements } = await API.versements.historique(projectId);
+        const container = document.getElementById('versement-history-list');
+        if (!container) return;
+        if (!versements.length) {
+          container.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem;">Aucun versement pour ce projet.</p>';
+          return;
+        }
+        const statusColors = {
+          pending:  { bg:'rgba(232,160,32,0.08)',  color:'var(--gold-dark)',  label:'En attente' },
+          approved: { bg:'rgba(0,200,83,0.08)',    color:'var(--green-deep)', label:'Approuvé' },
+          refused:  { bg:'rgba(220,38,38,0.06)',   color:'#B91C1C',           label:'Refusé' },
+          versed:   { bg:'rgba(10,123,108,0.08)',  color:'var(--ocean)',      label:'Versé' },
+        };
+        container.innerHTML = versements.map(v => {
+          const s = statusColors[v.status] || { bg:'', color:'', label:v.status };
+          return `<div style="padding:0.9rem 1rem;border-radius:var(--radius-sm);background:${s.bg};margin-bottom:0.6rem;border-left:3px solid ${s.color};">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.4rem;">
+              <strong style="color:var(--navy);">${parseInt(v.montant_verse || v.montant_demande).toLocaleString('fr-FR')} KMF</strong>
+              <span style="font-size:0.75rem;font-weight:700;color:${s.color};background:rgba(0,0,0,0.05);padding:0.2rem 0.6rem;border-radius:50px;">${s.label}</span>
+            </div>
+            ${v.motif ? `<div style="font-size:0.83rem;color:var(--text-muted);margin-top:0.3rem;">${v.motif}</div>` : ''}
+            ${v.note_admin ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;font-style:italic;"><i class="ph-light ph-chat-circle"></i> ${v.note_admin}</div>` : ''}
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem;">${new Date(v.created_at).toLocaleDateString('fr-FR')}</div>
+          </div>`;
+        }).join('');
+      } catch {}
+    }
+
+    // ── Sauvegarder coordonnées paiement ─────────────────────
+    document.getElementById('form-paiement')?.addEventListener('submit', async e => {
+      e.preventDefault();
+      try {
+        await API.user.updatePaiement({
+          paiement_tel:    document.getElementById('p-tel').value.trim(),
+          paiement_banque: document.getElementById('p-banque').value.trim(),
+          paiement_rib:    document.getElementById('p-rib').value.trim(),
+        });
+        showMsg('paiement-msg', 'Coordonnées enregistrées avec succès.', 'success');
+      } catch (err) {
+        showMsg('paiement-msg', err.message, 'error');
+      }
+    });
+
+    // ── Envoyer demande de versement ──────────────────────────
+    document.getElementById('form-versement')?.addEventListener('submit', async e => {
+      e.preventDefault();
+      const projectId = document.getElementById('versement-project-id')?.value;
+      const montant   = document.getElementById('v-montant').value;
+      const motif     = document.getElementById('v-motif').value.trim();
+      if (!montant || !motif) {
+        showMsg('versement-msg', 'Montant et objet sont obligatoires.', 'error');
+        return;
+      }
+      try {
+        await API.versements.demander(projectId, { montant_demande: parseInt(montant), motif });
+        showMsg('versement-msg', 'Demande envoyée ! Notre équipe vous contactera sous 48h.', 'success');
+        document.getElementById('form-versement').reset();
+        // Rafraîchir l'historique
+        if (projectId) await loadVersementHistory(projectId);
+      } catch (err) {
+        showMsg('versement-msg', err.message, 'error');
+      }
+    });
+
+    // ── Mettre à jour historique quand on change de projet ───
+    document.getElementById('versement-project-id')?.addEventListener('change', async e => {
+      await loadVersementHistory(e.target.value);
+    });
+
+    // ── Init ──────────────────────────────────────────────────
+    loadMesProjets();
+  });
+  </script>
+</body>
+</html>
