@@ -23,11 +23,29 @@
       "created_at": "2026-04-22T12:26:47.889Z"
     }
   ],
-  "projects": [],
+  "projects": [
+    {
+      "user_id": 2,
+      "type": "investissement",
+      "nom_projet": "YUTU",
+      "description": "BONJOUR",
+      "secteur": "Commerce",
+      "montant": 4000000,
+      "duree": 30,
+      "budget_lien": null,
+      "budget_description": null,
+      "parts_pourcentage": 20,
+      "valeur_entreprise": null,
+      "status": "new",
+      "id": 1,
+      "created_at": "2026-04-22T18:49:21.040Z"
+    }
+  ],
   "contributions": [],
   "newsletter": [],
   "notifications": [],
   "_counters": {
-    "users": 2
+    "users": 2,
+    "projects": 1
   }
 }
