@@ -5,7 +5,10 @@
    ============================================================ */
 
 const API = (() => {
-  const BASE = 'http://localhost:3001/api';
+  // URL de l'API : relative en production (Render), absolue en local
+  const BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? `http://localhost:${window.location.port || 3001}/api`
+    : '/api';
 
   function getToken() {
     return localStorage.getItem('fk_token');
