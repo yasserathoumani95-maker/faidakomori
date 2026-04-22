@@ -2605,6 +2605,67 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 }
 
 /* ══════════════════════════════════════════════════════════════
+   FILTRES PROJETS — label fixe + scroll interne
+   ══════════════════════════════════════════════════════════════ */
+
+/* Ligne "Par île :" : label à gauche, boutons scrollables à droite */
+.filter-row-ile {
+  display: flex;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: -1rem;
+  margin-bottom: 0.5rem;
+}
+.filter-ile-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.filters--ile {
+  flex: 1;
+  min-width: 0; /* crucial pour que le scroll fonctionne dans un flex child */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  flex-wrap: nowrap !important;
+  display: flex;
+  gap: 0.5rem;
+  padding-bottom: 2px;
+  margin-bottom: 0 !important; /* annule le margin-bottom de .filters qui décalerait le label */
+  /* Gradient fade-out droite = indicateur de scroll */
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}
+.filters--ile::-webkit-scrollbar { display: none; }
+
+/* Gradient fade sur le filtre principal aussi */
+.filters#filters {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  flex-wrap: nowrap !important;
+  -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  mask-image: linear-gradient(to right, black 80%, transparent 100%);
+}
+.filters#filters::-webkit-scrollbar { display: none; }
+
+@media (min-width: 769px) {
+  /* Desktop : pas de mask, tout est visible */
+  .filters#filters,
+  .filters--ile {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    overflow-x: visible;
+    flex-wrap: wrap !important;
+  }
+  .filter-row-ile { margin-top: -0.5rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════
    NAVBAR MOBILE — toujours opaque (jamais transparent sur téléphone)
    ══════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
