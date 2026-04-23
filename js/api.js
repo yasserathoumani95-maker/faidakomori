@@ -107,6 +107,8 @@ const API = (() => {
         return request('GET', `/admin/projects${qs ? '?' + qs : ''}`);
       },
       updateStatus:      (id, status, note)    => request('PATCH', `/admin/projects/${id}/status`, { status, note_admin: note }),
+      getProject:        (id)                  => request('GET',   `/admin/projects/${id}`),
+      scheduleInterview: (id, data)            => request('POST',  `/admin/projects/${id}/interview`, data),
       users:             ()                    => request('GET',   '/admin/users'),
       updateRole:        (id, role)            => request('PATCH', `/admin/users/${id}/role`, { role }),
       contributions:     ()                    => request('GET',   '/admin/contributions'),

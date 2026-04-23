@@ -73,31 +73,36 @@ function filterRows(rows, sql, args) {
     return { cond, val, hasQ };
   });
 
+  // Normalise un nom de colonne : retire le préfixe table (ex: p.status → status)
+  function col(raw) { return raw.split('.').pop().toLowerCase(); }
+
   return rows.filter(row => {
     return parsed.every(({ cond, val }) => {
-      // col = ?  ou  col = 'literal'
+      // col = ?  ou  p.col = ?
       let m;
-      if ((m = cond.match(/^(\w+)\s*=\s*\?$/i))) {
-        return row[m[1].toLowerCase()] == val;
+      if ((m = cond.match(/^[\w.]+\s*=\s*\?$/i))) {
+        const c = col(cond.split('=')[0].trim());
+        return row[c] == val;
       }
-      if ((m = cond.match(/^(\w+)\s*=\s*'([^']*)'$/i))) {
-        return String(row[m[1].toLowerCase()]||'') === m[2];
+      if ((m = cond.match(/^([\w.]+)\s*=\s*'([^']*)'$/i))) {
+        return String(row[col(m[1])]||'') === m[2];
       }
-      if ((m = cond.match(/^(\w+)\s*!=\s*\?$/i))) {
-        return row[m[1].toLowerCase()] != val;
+      if ((m = cond.match(/^([\w.]+)\s*!=\s*\?$/i))) {
+        return row[col(m[1])] != val;
       }
-      if ((m = cond.match(/^(\w+)\s*!=\s*'([^']*)'$/i))) {
-        return String(row[m[1].toLowerCase()]||'') !== m[2];
+      if ((m = cond.match(/^([\w.]+)\s*!=\s*'([^']*)'$/i))) {
+        return String(row[col(m[1])]||'') !== m[2];
       }
-      if ((m = cond.match(/^(\w+)\s+IN\s*\(([^)]+)\)/i))) {
+      if ((m = cond.match(/^([\w.]+)\s+IN\s*\(([^)]+)\)/i))) {
         const vals = m[2].split(',').map(v=>v.trim().replace(/'/g,''));
-        return vals.includes(String(row[m[1].toLowerCase()]||''));
+        return vals.includes(String(row[col(m[1])]||''));
       }
-      if ((m = cond.match(/^(\w+)\s+IS\s+NOT\s+NULL$/i))) {
-        return row[m[1].toLowerCase()] !== null && row[m[1].toLowerCase()] !== undefined;
+      if ((m = cond.match(/^([\w.]+)\s+IS\s+NOT\s+NULL$/i))) {
+        const v = row[col(m[1])];
+        return v !== null && v !== undefined;
       }
-      if ((m = cond.match(/^(\w+)\s+IS\s+NULL$/i))) {
-        const v = row[m[1].toLowerCase()];
+      if ((m = cond.match(/^([\w.]+)\s+IS\s+NULL$/i))) {
+        const v = row[col(m[1])];
         return v === null || v === undefined;
       }
       return true; // condition non reconnue → ne filtre pas

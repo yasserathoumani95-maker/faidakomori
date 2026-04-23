@@ -14,7 +14,8 @@ const { requireAuth, optionalAuth } = require('../middleware/auth');
 // ── GET /api/projects — liste publique ───────────────────────
 router.get('/', (req, res) => {
   const { type, page = 1, limit = 12 } = req.query;
-  const offset = (parseInt(page) - 1) * parseInt(limit);
+  const lim = parseInt(limit);
+  const off = (parseInt(page) - 1) * lim;
 
   let sql    = `SELECT p.*, u.nom, u.prenom FROM projects p LEFT JOIN users u ON p.user_id = u.id WHERE p.status = 'published'`;
   const args = [];
@@ -24,13 +25,12 @@ router.get('/', (req, res) => {
     args.push(type);
   }
 
-  sql += ` ORDER BY p.created_at DESC LIMIT ? OFFSET ?`;
-  args.push(parseInt(limit), offset);
+  sql += ` ORDER BY p.created_at DESC LIMIT ${lim} OFFSET ${off}`;
 
   const projects = db.prepare(sql).all(...args);
   const total    = db.prepare(`SELECT COUNT(*) AS n FROM projects WHERE status = 'published'${type ? ' AND type = ?' : ''}`).get(...(type ? [type] : [])).n;
 
-  res.json({ projects, total, page: parseInt(page), pages: Math.ceil(total / parseInt(limit)) });
+  res.json({ projects, total, page: parseInt(page), pages: Math.ceil(total / lim) });
 });
 
 // ── GET /api/projects/mine — mes projets ─────────────────────

@@ -524,6 +524,10 @@
       transition: color 0.2s;
     }
     .auth-back:hover { color: var(--navy); }
+    /* Back link masqué sur mobile (remplacé par auth-mobile-top) */
+    @media (max-width: 900px) {
+      .auth-back--desktop { display: none !important; }
+    }
 
     /* ── Trust badges ────────────────────────────── */
     .auth-trust {
@@ -550,68 +554,93 @@
        BASE — prévenir tout débordement
     ════════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { overflow-x: hidden; width: 100%; }
+    html, body { overflow-x: hidden; width: 100%; max-width: 100%; }
     img { max-width: 100%; height: auto; }
 
     /* ════════════════════════════════════════════════
        MOBILE ≤ 900px
     ════════════════════════════════════════════════ */
     @media (max-width: 900px) {
+      body {
+        background: var(--off-white) !important;
+        display: block !important;   /* reset flex to avoid layout issues */
+      }
+
+      .auth-split {
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: 100dvh !important;
+        width: 100% !important;
+      }
 
       /* Panneau branding : masqué */
       .auth-left { display: none !important; }
 
-      /* Conteneur principal : colonne unique */
-      .auth-split {
-        flex-direction: column;
-        min-height: 100dvh;
-      }
-
-      /* Panneau formulaire : prend tout l'écran */
+      /* Panneau formulaire : plein écran, colonne */
       .auth-right {
         width: 100% !important;
-        min-height: 100dvh;
-        flex: 1 1 auto;
+        min-height: 100dvh !important;
+        flex: 1 1 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
         background: var(--off-white) !important;
         padding: 0 !important;
-        align-items: center;
-        justify-content: flex-start;
-        overflow-y: auto;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
       }
       .auth-right::before { display: none !important; }
 
-      /* Barre mobile (logo + retour) : visible */
+      /* Barre mobile (logo + retour) : en haut, pleine largeur */
       .auth-mobile-top {
         display: flex !important;
-        width: 100%;
-        padding: 0.9rem 1.25rem;
-        background: var(--navy-deep);
-        flex-shrink: 0;
+        width: 100% !important;
+        flex-shrink: 0 !important;
+        padding: 0.85rem 1.25rem !important;
+        background: var(--navy-deep) !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
       }
 
-      /* Zone formulaire : pleine largeur */
+      /* Zone formulaire : occupe tout l'espace restant */
       .auth-form-wrap {
         width: 100% !important;
         max-width: 100% !important;
+        flex: 1 !important;
         padding: 1.5rem 1.25rem 3rem !important;
+        box-sizing: border-box !important;
       }
 
-      /* Card shell */
-      .auth-card-shell { border-radius: var(--r-xl); }
-      .auth-card-inner { padding: 1.75rem 1.5rem; }
+      /* Card shell & inner */
+      .auth-card-shell {
+        border-radius: var(--r-xl) !important;
+        margin-bottom: 1.25rem !important;
+      }
+      .auth-card-inner { padding: 1.75rem 1.5rem !important; }
 
-      body { background: var(--off-white) !important; }
+      /* Trust badges on mobile */
+      .auth-trust { gap: 0.75rem !important; }
+      .auth-trust-item { font-size: 0.72rem !important; }
     }
 
     /* ════════════════════════════════════════════════
        PETIT MOBILE ≤ 480px
     ════════════════════════════════════════════════ */
     @media (max-width: 480px) {
-      .form-row { grid-template-columns: 1fr !important; gap: 0.85rem !important; }
-      .auth-card-inner  { padding: 1.5rem 1rem !important; }
-      .auth-form-wrap   { padding: 1rem 1rem 2.5rem !important; }
-      .auth-mobile-top  { padding: 0.8rem 1rem !important; }
-      .auth-card-shell  { border-radius: var(--r-lg) !important; padding: 5px !important; }
+      .form-row { grid-template-columns: 1fr !important; gap: 0 !important; }
+      .auth-card-inner  { padding: 1.4rem 1.1rem !important; }
+      .auth-form-wrap   { padding: 1.1rem 1rem 2.5rem !important; }
+      .auth-mobile-top  { padding: 0.75rem 1rem !important; }
+      .auth-card-shell  {
+        border-radius: var(--r-lg) !important;
+        padding: 5px !important;
+      }
+      .auth-tabs-wrap { padding: 3px !important; }
+      .auth-tab-btn { font-size: 0.82rem !important; padding: 0.55rem 0.75rem !important; }
+      .btn-lg { padding: 0.85rem 1.25rem !important; font-size: 0.9rem !important; }
     }
 
     /* ════════════════════════════════════════════════
@@ -621,9 +650,10 @@
       input, select, textarea {
         font-size: 16px !important;
         touch-action: manipulation;
+        -webkit-appearance: none;
       }
       button, .btn {
-        min-height: 44px;
+        min-height: 44px !important;
         touch-action: manipulation;
       }
     }
@@ -726,8 +756,8 @@
 
     <div class="auth-form-wrap">
 
-      <!-- Desktop back link -->
-      <a href="index.html" class="auth-back" style="display:none;display:inline-flex;">
+      <!-- Desktop back link (masqué sur mobile, visible sur desktop) -->
+      <a href="index.html" class="auth-back auth-back--desktop">
         <i class="ph-light ph-arrow-left"></i> Retour à l'accueil
       </a>
 

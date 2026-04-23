@@ -13,6 +13,7 @@ router.use(requireAdmin);
 router.get('/stats', (req, res) => {
   const totalProjects     = db.prepare(`SELECT COUNT(*) AS n FROM projects`).get().n;
   const pendingProjects   = db.prepare(`SELECT COUNT(*) AS n FROM projects WHERE status IN ('new','review','interview')`).get().n;
+  const approvedProjects  = db.prepare(`SELECT COUNT(*) AS n FROM projects WHERE status IN ('approved','published')`).get().n;
   const publishedProjects = db.prepare(`SELECT COUNT(*) AS n FROM projects WHERE status = 'published'`).get().n;
   const totalUsers        = db.prepare(`SELECT COUNT(*) AS n FROM users WHERE role != 'admin'`).get().n;
   const totalCollecte     = db.prepare(`SELECT COALESCE(SUM(montant_collecte),0) AS s FROM projects WHERE status = 'published'`).get().s;
@@ -22,6 +23,7 @@ router.get('/stats', (req, res) => {
   res.json({
     totalProjects,
     pendingProjects,
+    approvedProjects,
     publishedProjects,
     totalUsers,
     totalCollecte,
@@ -33,19 +35,65 @@ router.get('/stats', (req, res) => {
 // ── GET /api/admin/projects — tous les projets ───────────────
 router.get('/projects', (req, res) => {
   const { status, page = 1, limit = 20 } = req.query;
-  const offset = (parseInt(page) - 1) * parseInt(limit);
+  const lim = parseInt(limit);
+  const off = (parseInt(page) - 1) * lim;
 
   let sql  = `SELECT p.*, u.nom, u.prenom, u.email, u.tel FROM projects p LEFT JOIN users u ON p.user_id = u.id`;
   const args = [];
 
   if (status) { sql += ` WHERE p.status = ?`; args.push(status); }
-  sql += ` ORDER BY p.created_at DESC LIMIT ? OFFSET ?`;
-  args.push(parseInt(limit), offset);
+  sql += ` ORDER BY p.created_at DESC LIMIT ${lim} OFFSET ${off}`;
 
   const projects = db.prepare(sql).all(...args);
   const total    = db.prepare(`SELECT COUNT(*) AS n FROM projects${status ? ' WHERE status = ?' : ''}`).get(...(status ? [status] : [])).n;
 
-  res.json({ projects, total, page: parseInt(page), pages: Math.ceil(total / parseInt(limit)) });
+  res.json({ projects, total, page: parseInt(page), pages: Math.ceil(total / lim) });
+});
+
+// ── GET /api/admin/projects/:id — détail d'un projet ─────────
+router.get('/projects/:id', (req, res) => {
+  const project = db.prepare(`
+    SELECT p.*, u.nom, u.prenom, u.email, u.tel, u.ile
+    FROM projects p
+    LEFT JOIN users u ON p.user_id = u.id
+    WHERE p.id = ?
+  `).get(req.params.id);
+  if (!project) return res.status(404).json({ error: 'Projet introuvable.' });
+  res.json({ project });
+});
+
+// ── POST /api/admin/projects/:id/interview — planifier entretien
+router.post('/projects/:id/interview', (req, res) => {
+  const { date, heure, type_entretien, lien, duree, notes } = req.body;
+  if (!date || !heure) return res.status(400).json({ error: 'Date et heure obligatoires.' });
+
+  const project = db.prepare(`SELECT * FROM projects WHERE id = ?`).get(req.params.id);
+  if (!project) return res.status(404).json({ error: 'Projet introuvable.' });
+
+  const interviewData = JSON.stringify({ date, heure, type_entretien, lien, duree, notes });
+
+  db.prepare(`
+    UPDATE projects SET status = 'interview', note_admin = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+  `).run(interviewData, project.id);
+
+  if (project.user_id) {
+    const typeLabel = {
+      google_meet: 'Google Meet', zoom: 'Zoom',
+      whatsapp: 'WhatsApp Video', phone: 'Appel téléphonique', inperson: 'Présentiel (Moroni)'
+    }[type_entretien] || type_entretien || 'entretien';
+
+    const dateObj = new Date(date);
+    const dateFormatted = dateObj.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    let msg = `🗓️ Entretien planifié pour votre projet "${project.nom_projet}" le ${dateFormatted} à ${heure} via ${typeLabel}.`;
+    if (lien) msg += ` Lien : ${lien}`;
+    if (notes) msg += ` Notes : ${notes}`;
+
+    db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`).run(
+      project.user_id, msg, '/mon-espace.html'
+    );
+  }
+
+  res.json({ success: true });
 });
 
 // ── PATCH /api/admin/projects/:id/status ─────────────────────
