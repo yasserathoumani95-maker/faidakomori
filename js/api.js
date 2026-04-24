@@ -7,7 +7,7 @@
 const API = (() => {
   // URL de l'API : relative en production (Render), absolue en local
   const BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? `http://localhost:${window.location.port || 3001}/api`
+    ? 'http://localhost:3001/api'
     : '/api';
 
   function getToken() {
@@ -64,6 +64,8 @@ const API = (() => {
       register: (data)           => request('POST', '/auth/register', data, false),
       me:       ()               => request('GET',  '/auth/me'),
       changePassword: (ancien, nouveau) => request('POST', '/auth/change-password', { ancien, nouveau }),
+      forgotPassword: (email)           => request('POST', '/auth/forgot-password', { email }, false),
+      resetPassword:  (token, password) => request('POST', '/auth/reset-password', { token, password }, false),
     },
 
     // Projects (public)
@@ -235,8 +237,8 @@ function initNavbarAuth() {
         </a>
         ${user.role === 'admin'
           ? `<a class="mobile-auth-item" href="admin.html"
-               style="color:var(--navy);font-weight:600;display:flex;align-items:center;gap:0.5rem;">
-               <i class="ph-light ph-gear"></i> Administration
+               style="color:var(--gold);font-weight:600;display:flex;align-items:center;gap:0.5rem;background:rgba(232,160,32,0.1);padding:0.5rem 0.75rem;border-radius:8px;margin-top:0.25rem;">
+               <i class="ph-light ph-shield-star"></i> Administration
              </a>`
           : ''}`;
       if (mobileDeposer) {
@@ -294,6 +296,16 @@ function initNavbarAuth() {
       </a>`;
     }
     navInner.insertBefore(wrap, hamburger);
+  }
+
+  /* ── Click toggle pour dropdown desktop (touch devices) ── */
+  const navbarUser = document.getElementById('navbar-user-menu');
+  if (navbarUser) {
+    navbarUser.addEventListener('click', (e) => {
+      navbarUser.classList.toggle('open');
+      e.stopPropagation();
+    });
+    document.addEventListener('click', () => navbarUser.classList.remove('open'));
   }
 }
 
