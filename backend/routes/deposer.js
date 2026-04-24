@@ -50,10 +50,8 @@ router.post('/', async (req, res) => {
     user = existing;
     // Mettre à jour le profil si nouvelles infos fournies
     if (nom || prenom || tel || ile) {
-      db.prepare(`UPDATE users SET
-        nom = COALESCE(?, nom), prenom = COALESCE(?, prenom),
-        tel = COALESCE(?, tel), ile = COALESCE(?, ile)
-        WHERE id = ?`).run(nom || null, prenom || null, tel || null, ile || null, user.id);
+      db.prepare(`UPDATE users SET nom = ?, prenom = ?, tel = ?, ile = ? WHERE id = ?`)
+        .run(nom || user.nom, prenom || user.prenom, tel || user.tel, ile || user.ile, user.id);
       user = db.prepare('SELECT * FROM users WHERE id = ?').get(user.id);
     }
   } else {
