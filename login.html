@@ -802,7 +802,11 @@
               <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
             </button>
 
-            <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:1.25rem;">
+            <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:1rem;">
+              <button type="button" class="btn-link" id="open-forgot">Mot de passe oublié ?</button>
+            </p>
+
+            <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
               Pas encore de compte ?
               <button type="button" class="btn-link" data-auth-tab="register">Créer mon compte</button>
             </p>
@@ -897,6 +901,29 @@
             </p>
 
           </form>
+
+          <!-- ══ FORMULAIRE MOT DE PASSE OUBLIÉ ══════════════════ -->
+          <div class="auth-form" id="form-forgot">
+
+            <button type="button" id="close-forgot" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:0;margin-bottom:1.25rem;font-family:var(--font-b);">
+              <i class="ph-light ph-arrow-left"></i> Retour à la connexion
+            </button>
+
+            <h3 style="font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem;">Mot de passe oublié ?</h3>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;line-height:1.6;">Entrez votre email — nous vous enverrons un lien pour créer un nouveau mot de passe.</p>
+
+            <div class="form-group">
+              <label class="form-label" for="forgot-email">Email <span>*</span></label>
+              <input class="form-input" type="email" id="forgot-email" placeholder="vous@exemple.com" autocomplete="email" />
+              <div class="form-error"></div>
+            </div>
+
+            <button type="button" class="btn btn-green btn-full btn-lg" id="btn-forgot" style="margin-top:0.5rem;">
+              Envoyer le lien
+              <span class="btn-icon-wrap"><i class="ph-light ph-paper-plane-tilt"></i></span>
+            </button>
+
+          </div>
 
         </div><!-- /auth-card-inner -->
       </div><!-- /auth-card-shell -->
@@ -1021,6 +1048,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.closest('.form-group')?.querySelector('.form-error');
     if (err) err.classList.remove('show');
   }
+
+  // ── MOT DE PASSE OUBLIÉ — affichage/masquage ──────────────
+  function showForgot() {
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    document.getElementById('form-forgot').classList.add('active');
+    document.querySelector('.auth-tabs-wrap').style.display = 'none';
+    hideMessage();
+  }
+  function hideForgot() {
+    switchTab('login');
+    document.querySelector('.auth-tabs-wrap').style.display = '';
+    hideMessage();
+  }
+
+  document.getElementById('open-forgot').addEventListener('click', showForgot);
+  document.getElementById('close-forgot').addEventListener('click', hideForgot);
+
+  document.getElementById('btn-forgot').addEventListener('click', async () => {
+    const email = document.getElementById('forgot-email').value.trim();
+    const btn   = document.getElementById('btn-forgot');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return showMessage('Veuillez entrer une adresse email valide.');
+    }
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ph-light ph-circle-notch"></i> Envoi…';
+    try {
+      await API.auth.forgotPassword(email);
+      showMessage('Si cet email existe, un lien de réinitialisation vous a été envoyé. Vérifiez votre boîte mail.', 'success');
+      document.getElementById('forgot-email').value = '';
+    } catch {
+      showMessage('Une erreur est survenue. Réessayez dans quelques instants.');
+    }
+    btn.disabled = false;
+    btn.innerHTML = 'Envoyer le lien <span class="btn-icon-wrap"><i class="ph-light ph-paper-plane-tilt"></i></span>';
+  });
 
   // ── LOGIN ──────────────────────────────────────────────────
   document.getElementById('form-login').addEventListener('submit', async e => {
