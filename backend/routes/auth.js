@@ -6,8 +6,10 @@
 const router  = require('express').Router();
 const bcrypt  = require('bcryptjs');
 const jwt     = require('jsonwebtoken');
+const crypto  = require('crypto');
 const db      = require('../database');
 const { signToken, JWT_SECRET, isValidEmail } = require('../utils/auth');
+const { sendWelcome, sendResetPassword } = require('../utils/mailer');
 
 // ── POST /api/auth/register ───────────────────────────────────
 router.post('/register', (req, res) => {
@@ -36,6 +38,8 @@ router.post('/register', (req, res) => {
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);
   const token = signToken(user);
+
+  sendWelcome({ to: user.email, prenom: user.prenom }).catch(() => {});
 
   res.status(201).json({
     token,
@@ -106,6 +110,49 @@ router.post('/change-password', (req, res) => {
   } catch {
     res.status(401).json({ error: 'Token invalide.' });
   }
+});
+
+// ── POST /api/auth/forgot-password ───────────────────────────
+router.post('/forgot-password', (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email requis.' });
+
+  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
+  // Répondre toujours success (sécurité : ne pas révéler si l'email existe)
+  if (!user) {
+    return res.json({ success: true });
+  }
+
+  const token   = crypto.randomBytes(32).toString('hex');
+  const expires = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // expire dans 1h
+
+  db.prepare(`UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?`)
+    .run(token, expires, user.id);
+
+  const resetUrl = `/reset-password.html?token=${token}`;
+  sendResetPassword({ to: user.email, prenom: user.prenom, resetUrl }).catch(() => {});
+  res.json({ success: true });
+});
+
+// ── POST /api/auth/reset-password ────────────────────────────
+router.post('/reset-password', (req, res) => {
+  const { token, password } = req.body;
+  if (!token || !password) return res.status(400).json({ error: 'Token et mot de passe requis.' });
+  if (password.length < 8) return res.status(400).json({ error: 'Minimum 8 caractères.' });
+
+  const user = db.prepare(`SELECT * FROM users WHERE reset_token = ?`).get(token);
+  if (!user || !user.reset_token_expires) {
+    return res.status(400).json({ error: 'Lien invalide ou déjà utilisé.' });
+  }
+  if (new Date(user.reset_token_expires) < new Date()) {
+    return res.status(400).json({ error: 'Ce lien a expiré. Faites une nouvelle demande.' });
+  }
+
+  const hash = bcrypt.hashSync(password, 12);
+  db.prepare(`UPDATE users SET password_hash = ?, reset_token = ?, reset_token_expires = ? WHERE id = ?`)
+    .run(hash, null, null, user.id);
+
+  res.json({ success: true, message: 'Mot de passe réinitialisé avec succès !' });
 });
 
 module.exports = router;

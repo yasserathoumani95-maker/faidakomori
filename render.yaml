@@ -12,3 +12,11 @@ services:
         value: production
       - key: JWT_SECRET
         generateValue: true
+      - key: SITE_URL
+        value: https://faidakomori.onrender.com
+      - key: EMAIL_USER
+        value: athoumaniyas@gmail.com
+      - key: ADMIN_EMAIL
+        value: athoumaniyas@gmail.com
+      - key: EMAIL_PASS
+        sync: false

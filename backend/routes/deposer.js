@@ -8,6 +8,7 @@ const router  = require('express').Router();
 const bcrypt  = require('bcryptjs');
 const db      = require('../database');
 const { signToken, isValidEmail } = require('../utils/auth');
+const { sendProjetRecu, sendAdminNouveauProjet } = require('../utils/mailer');
 
 // ── POST /api/deposer ─────────────────────────────────────────
 router.post('/', async (req, res) => {
@@ -97,7 +98,7 @@ router.post('/', async (req, res) => {
   const project = db.prepare('SELECT * FROM projects WHERE id = ?').get(projResult.lastInsertRowid);
 
   // ── Notifier les admins ──────────────────────────────────
-  const admins = db.prepare(`SELECT id FROM users WHERE role = 'admin'`).all();
+  const admins = db.prepare(`SELECT id, email FROM users WHERE role = 'admin'`).all();
   admins.forEach(a => {
     db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`)
       .run(
@@ -105,7 +106,17 @@ router.post('/', async (req, res) => {
         `Nouveau projet : "${nom_projet}" (${type}) — ${user.prenom} ${user.nom}`,
         `/admin.html`
       );
+    sendAdminNouveauProjet({
+      to: a.email,
+      nomProjet: nom_projet,
+      porteurNom: `${user.prenom} ${user.nom}`,
+      type,
+      montant,
+    }).catch(() => {});
   });
+
+  // ── Email de confirmation au porteur ─────────────────────
+  sendProjetRecu({ to: user.email, prenom: user.prenom, nomProjet: nom_projet, type }).catch(() => {});
 
   // ── Retourner token + user + projet ─────────────────────
   const token = signToken(user);
