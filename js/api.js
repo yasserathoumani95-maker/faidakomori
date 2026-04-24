@@ -128,6 +128,9 @@ const API = (() => {
 
     // Newsletter
     newsletter: (email) => request('POST', '/newsletter', { email }, false),
+
+    // Entretien
+    acceptInterview: (projectId, accepted) => request('POST', `/projects/${projectId}/accept-interview`, { accepted }),
   };
 })();
 

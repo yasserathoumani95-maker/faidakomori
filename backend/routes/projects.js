@@ -264,4 +264,34 @@ router.get('/:id/versements', requireAuth, (req, res) => {
   res.json({ versements });
 });
 
+// ── POST /api/projects/:id/accept-interview ───────────────────
+// L'utilisateur accepte ou refuse l'entretien planifié
+router.post('/:id/accept-interview', requireAuth, (req, res) => {
+  const { accepted } = req.body; // true = accepté, false = refusé
+  const project = db.prepare(`SELECT * FROM projects WHERE id = ? AND user_id = ?`).get(req.params.id, req.user.id);
+  if (!project) return res.status(404).json({ error: 'Projet introuvable.' });
+  if (project.status !== 'interview') return res.status(400).json({ error: 'Aucun entretien en attente.' });
+
+  const reponse = accepted ? 'accepted' : 'refused';
+  let noteAdmin = {};
+  try { noteAdmin = JSON.parse(project.note_admin || '{}'); } catch {}
+  noteAdmin.reponse_porteur = reponse;
+  db.prepare(`UPDATE projects SET note_admin = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`)
+    .run(JSON.stringify(noteAdmin), project.id);
+
+  // Notifier les admins
+  const admins = db.prepare(`SELECT id, email FROM users WHERE role = 'admin'`).all();
+  const porteur = db.prepare(`SELECT nom, prenom FROM users WHERE id = ?`).get(req.user.id);
+  const porteurNom = porteur ? `${porteur.prenom} ${porteur.nom}` : 'Le porteur';
+  const emoji = accepted ? '✅' : '❌';
+  const msgAdmin = `${emoji} ${porteurNom} a ${accepted ? 'accepté' : 'refusé'} l'entretien pour le projet "${project.nom_projet}".`;
+
+  admins.forEach(a => {
+    db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`)
+      .run(a.id, msgAdmin, '/admin.html');
+  });
+
+  res.json({ success: true });
+});
+
 module.exports = router;

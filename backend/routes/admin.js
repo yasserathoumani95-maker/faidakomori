@@ -6,6 +6,7 @@
 const router = require('express').Router();
 const db     = require('../database');
 const { requireAdmin } = require('../middleware/auth');
+const { sendStatutProjet, sendEntretienPlanifie } = require('../utils/mailer');
 
 router.use(requireAdmin);
 
@@ -91,6 +92,15 @@ router.post('/projects/:id/interview', (req, res) => {
     db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`).run(
       project.user_id, msg, '/mon-espace.html'
     );
+
+    const porteur = db.prepare(`SELECT email, prenom FROM users WHERE id = ?`).get(project.user_id);
+    if (porteur) {
+      sendEntretienPlanifie({
+        to: porteur.email, prenom: porteur.prenom,
+        nomProjet: project.nom_projet,
+        date, heure, typeEntretien: type_entretien, lien, duree, notes,
+      }).catch(() => {});
+    }
   }
 
   res.json({ success: true });
@@ -112,7 +122,7 @@ router.patch('/projects/:id/status', (req, res) => {
     UPDATE projects SET status = ?, note_admin = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
   `).run(status, note_admin || null, project.id);
 
-  // Notifier le porteur
+  // Notifier le porteur (in-app + email)
   if (project.user_id) {
     const messages = {
       review:    `Votre projet "${project.nom_projet}" est en cours d'examen.`,
@@ -125,6 +135,15 @@ router.patch('/projects/:id/status', (req, res) => {
       db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`).run(
         project.user_id, messages[status], `/mon-espace.html`
       );
+    }
+
+    const porteur = db.prepare(`SELECT email, prenom FROM users WHERE id = ?`).get(project.user_id);
+    if (porteur && ['review','approved','published','rejected'].includes(status)) {
+      sendStatutProjet({
+        to: porteur.email, prenom: porteur.prenom,
+        nomProjet: project.nom_projet,
+        status, noteAdmin: note_admin,
+      }).catch(() => {});
     }
   }
 
