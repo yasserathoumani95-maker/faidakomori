@@ -6,7 +6,7 @@
   <title>Mon espace — FaidaKomori</title>
   <meta name="theme-color" content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=5" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -36,6 +36,7 @@
     /* ── Carte projet cliquable ──────────────────────────── */
     .dashboard-project-card {
       cursor: pointer;
+      touch-action: manipulation;
       transition: box-shadow .18s, transform .18s;
     }
     .dashboard-project-card:hover {
@@ -146,49 +147,30 @@
     }
     .timeline-step.done .timeline-line { background: #00C853; }
 
-    /* Animation bottom-sheet — DOIT être au niveau racine (bug iOS Safari) */
-    @keyframes sheetIn {
-      from { transform: translateY(100%); }
-      to   { transform: translateY(0); }
-    }
-
     /* ═══════════════════════════════════════════════════════
-       RESPONSIVE MON-ESPACE
+       RESPONSIVE MON-ESPACE — mobile ≤ 768px
        ═══════════════════════════════════════════════════════ */
-
-    /* ── Tous les mobiles ≤ 768px ────────────────────────── */
     @media (max-width: 768px) {
 
-      /* ── Bottom-sheet modal ──────────────────────────── */
+      /* ── Modal : simple, centré, sans animation ────────── */
       .projet-modal-overlay {
-        align-items: flex-end;
-        justify-content: flex-start;
-        padding: 0;
+        padding: 1rem;
+        align-items: center;
+        justify-content: center;
       }
       .projet-modal {
-        border-radius: 22px 22px 0 0;
         max-width: 100%;
         width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
+        max-height: 85vh;
+        overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
-        animation: sheetIn .28s ease-out;
+        border-radius: 16px;
+        animation: none !important;
       }
-      /* Poignée visuelle */
-      .projet-modal::before {
-        content: '';
-        display: block;
-        width: 36px; height: 4px;
-        background: #D1D5DB; border-radius: 2px;
-        margin: 0.75rem auto 0;
-      }
-      .projet-modal__header {
-        padding: 0.875rem 1.25rem;
-        border-bottom: 1px solid #F0F0F0;
-      }
-      .projet-modal__body { padding: 1rem 1.25rem 2.5rem; }
+      .projet-modal__header { padding: 1rem 1rem 0.75rem; }
+      .projet-modal__body   { padding: 1rem 1rem 1.5rem; }
 
-      /* ── Timeline verticale ──────────────────────────── */
+      /* ── Timeline : verticale ─────────────────────────── */
       .timeline {
         flex-direction: column;
         align-items: stretch;
@@ -201,25 +183,25 @@
       .timeline-step {
         flex-direction: row;
         align-items: center;
-        gap: 0.875rem;
+        gap: 0.75rem;
         flex: none;
         width: 100%;
         position: relative;
-        padding: 0.25rem 0 1rem;
+        padding: 0.2rem 0 0.9rem;
       }
-      .timeline-step:last-child { padding-bottom: 0.25rem; }
+      .timeline-step:last-child { padding-bottom: 0.2rem; }
 
-      /* Trait vertical entre étapes */
       .timeline-step:not(:last-child)::after {
         content: '';
         position: absolute;
         left: 12px;
-        top: 28px;
+        top: 26px;
         bottom: 0;
         width: 2px;
         background: #E5E7EB;
       }
-      .timeline-step.done:not(:last-child)::after { background: #00C853; }
+      .timeline-step.done:not(:last-child)::after    { background: #00C853; }
+      .timeline-step.rejected:not(:last-child)::after { background: #DC2626; }
 
       .timeline-step__dot {
         width: 26px; height: 26px;
@@ -228,16 +210,16 @@
         font-size: 0.72rem;
         position: relative;
         z-index: 1;
-        background: #fff;
       }
       .timeline-step__label {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 600;
         max-width: none;
         text-align: left;
+        line-height: 1.3;
       }
 
-      /* ── Panneaux : en-têtes empilés ──────────────────── */
+      /* ── En-têtes de panel ────────────────────────────── */
       .admin-header {
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -247,13 +229,14 @@
       .admin-header > button.btn {
         width: 100% !important;
         justify-content: center !important;
+        text-align: center !important;
       }
 
       /* ── Formulaires ──────────────────────────────────── */
       .form-row { flex-direction: column !important; gap: 0 !important; }
       .form-card .btn { width: 100% !important; justify-content: center !important; }
 
-      /* ── Grilles inline 3-col → 1-col ─────────────────── */
+      /* ── Stats contributions 3-col → 1-col ───────────── */
       #contrib-stats { grid-template-columns: 1fr !important; }
 
       /* ── CTA card ─────────────────────────────────────── */
@@ -261,10 +244,18 @@
         flex-direction: column !important;
         align-items: stretch !important;
       }
-      #deposer-cta-card > a { width: 100% !important; justify-content: center !important; }
+      #deposer-cta-card > a {
+        width: 100% !important;
+        justify-content: center !important;
+      }
 
-      /* ── Livraisons ───────────────────────────────────── */
-      #livraisons-section select { max-width: 100% !important; width: 100% !important; }
+      /* ── Select livraisons ────────────────────────────── */
+      #livraisons-section select {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+
+      /* ── Bouton notifications ─────────────────────────── */
       #btn-mark-read { width: 100% !important; }
     }
   </style>
