@@ -35,3 +35,4 @@ npm-debug.log*
 # NOTE : backend/db/faidakomori.json EST inclus dans git
 # C'est la base de données initiale avec le compte admin.
 # Sur Render, les données sont réinitialisées à chaque déploiement.
+backend/db/*.db
