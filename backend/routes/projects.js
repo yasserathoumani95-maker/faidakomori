@@ -80,6 +80,13 @@ router.post('/', requireAuth, (req, res) => {
     return res.status(400).json({ error: 'Type et nom du projet sont obligatoires.' });
   }
 
+  // Mettre à jour tel/ile du porteur si fournis dans le formulaire
+  if (tel || ile) {
+    const u = db.prepare(`SELECT tel, ile FROM users WHERE id = ?`).get(req.user.id);
+    db.prepare(`UPDATE users SET tel = ?, ile = ? WHERE id = ?`)
+      .run(tel || (u && u.tel), ile || (u && u.ile), req.user.id);
+  }
+
   const result = db.prepare(`
     INSERT INTO projects (user_id, type, nom_projet, description, secteur, montant, duree, status)
     VALUES (?, ?, ?, ?, ?, ?, ?, 'new')

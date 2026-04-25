@@ -409,7 +409,7 @@ const DB_LOCAL = (() => {
     if (backendOk !== null) return backendOk;
     // URL dynamique : relative en production (Render), absolue en local
     const healthUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? `http://localhost:${window.location.port || 3001}/api/health`
+      ? 'http://localhost:3001/api/health'
       : '/api/health';
     try {
       const r = await fetch(healthUrl, { signal: AbortSignal.timeout(3000) });
