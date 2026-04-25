@@ -186,36 +186,21 @@ router.post('/newsletter', (req, res) => {
 
 // ── GET /api/admin/top-donors ─────────────────────────────────
 router.get('/top-donors', (req, res) => {
-  const { readDB } = require('../database');
-  const data = readDB();
-
-  // Agréger par contributeur (utilisateur connecté ou nom saisi)
-  const donorMap = {};
-
-  data.contributions.forEach(c => {
-    if (c.anonyme) return; // ne pas compter les anonymes
-    const key = c.user_id
-      ? `user_${c.user_id}`
-      : (c.nom_contributeur || 'Anonyme');
-
-    if (!donorMap[key]) {
-      const user = c.user_id ? data.users.find(u => u.id === c.user_id) : null;
-      donorMap[key] = {
-        nom: user ? `${user.prenom} ${user.nom}` : (c.nom_contributeur || 'Contributeur'),
-        total: 0,
-        count: 0,
-        user_id: c.user_id || null
-      };
-    }
-    donorMap[key].total += parseInt(c.montant) || 0;
-    donorMap[key].count += 1;
-  });
-
-  const donors = Object.values(donorMap)
-    .sort((a, b) => b.total - a.total)
-    .slice(0, 10);
-
-  res.json({ donors });
+  // Agrège par utilisateur connecté (user_id) ou par nom saisi, hors anonymes
+  const rows = db.prepare(`
+    SELECT
+      c.user_id,
+      COALESCE(u.prenom || ' ' || u.nom, c.nom_contributeur, 'Contributeur') AS nom,
+      SUM(c.montant)  AS total,
+      COUNT(*)        AS count
+    FROM contributions c
+    LEFT JOIN users u ON c.user_id = u.id
+    WHERE c.anonyme = 0
+    GROUP BY COALESCE(CAST(c.user_id AS TEXT), c.nom_contributeur)
+    ORDER BY total DESC
+    LIMIT 10
+  `).all();
+  res.json({ donors: rows });
 });
 
 // ── GET /api/admin/versements ─────────────────────────────────

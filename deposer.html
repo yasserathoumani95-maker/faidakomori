@@ -765,6 +765,43 @@
     }
     refreshAccountSection();
 
+    // ── Pré-remplir les infos du profil si déjà connecté ─
+    if (API.isLoggedIn()) {
+      API.user.profile().then(({ user }) => {
+        if (user.prenom) {
+          const el = document.getElementById('prenom');
+          if (el && !el.value) el.value = user.prenom;
+        }
+        if (user.nom) {
+          const el = document.getElementById('nom');
+          if (el && !el.value) el.value = user.nom;
+        }
+        if (user.email) {
+          const el = document.getElementById('email');
+          if (el && !el.value) el.value = user.email;
+        }
+        if (user.ile) {
+          const el = document.getElementById('ile');
+          if (el) el.value = user.ile;
+        }
+        if (user.tel) {
+          // Le numéro est stocké au format "+269 3211234" ou "+2693211234"
+          const raw = user.tel.replace(/\s/g, '');
+          const prefixes = ['+269', '+33', '+261', '+971', '+1'];
+          const match = prefixes.find(p => raw.startsWith(p));
+          if (match) {
+            const sel = document.getElementById('tel-indicatif');
+            const num = document.getElementById('tel-numero');
+            if (sel) sel.value = match;
+            if (num) num.value = raw.slice(match.length);
+            // Mettre à jour le champ caché
+            const hiddenTel = document.getElementById('tel');
+            if (hiddenTel) hiddenTel.value = user.tel;
+          }
+        }
+      }).catch(() => {});
+    }
+
     // ── Pré-remplir l'email depuis l'étape 2 → étape 4 ───
     document.getElementById('email')?.addEventListener('blur', () => {
       const v = document.getElementById('email')?.value?.trim();
