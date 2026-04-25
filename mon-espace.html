@@ -158,16 +158,41 @@
     }
 
     @media (max-width: 480px) {
-      .projet-modal-overlay { padding: 0.5rem; }
-      .projet-modal { border-radius: 14px; }
-      .projet-modal__header { flex-direction: column-reverse; align-items: flex-start; gap: 0.5rem; }
-      .projet-modal__close { align-self: flex-end; }
+      /* ── Modal : bottom-sheet sur mobile ───────────────── */
+      .projet-modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+        justify-content: stretch;
+      }
+      .projet-modal {
+        border-radius: 20px 20px 0 0;
+        max-width: 100%;
+        width: 100%;
+        max-height: 88dvh;
+        animation: sheetIn .28s cubic-bezier(0.32,0.72,0,1);
+      }
+      @keyframes sheetIn {
+        from { transform: translateY(100%); }
+        to   { transform: translateY(0); }
+      }
+      .projet-modal__header { padding: 1.25rem 1.25rem 0.875rem; }
+      .projet-modal__body   { padding: 1.25rem; }
 
-      /* Timeline → vertical sur très petit écran */
+      /* Poignée visuelle en haut de la sheet */
+      .projet-modal::before {
+        content: '';
+        display: block;
+        width: 40px; height: 4px;
+        background: #D1D5DB;
+        border-radius: 2px;
+        margin: 0.75rem auto -0.25rem;
+      }
+
+      /* Timeline → vertical */
       .timeline {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.6rem;
+        align-items: stretch;
+        gap: 0;
         margin: 0.75rem 0;
       }
       .timeline::before { display: none; }
@@ -175,28 +200,32 @@
         flex-direction: row;
         align-items: center;
         gap: 0.75rem;
+        flex: none;
         width: 100%;
+        padding: 0.35rem 0;
+        position: relative;
       }
       .timeline-step__dot {
-        width: 28px; height: 28px;
+        width: 26px; height: 26px;
         flex-shrink: 0;
         margin-bottom: 0;
+        font-size: 0.7rem;
+        z-index: 1;
       }
       .timeline-step__label {
-        font-size: 0.82rem;
+        font-size: 0.85rem;
         max-width: none;
         text-align: left;
       }
       /* Trait vertical entre les étapes */
       .timeline-line {
         position: absolute;
-        left: 13px;
-        top: 28px;
-        right: auto;
-        width: 2px;
-        height: 0.6rem;
+        left: 12px; top: 100%;
+        right: auto; width: 2px; height: 0.7rem;
         background: #E5E7EB;
+        transform: none;
       }
+      .timeline-step:last-child .timeline-line { display: none; }
       .timeline-step.done .timeline-line { background: #00C853; }
     }
   </style>
@@ -921,7 +950,8 @@
 
       // Ouvrir
       document.getElementById('projet-modal-overlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
+      // iOS Safari : bloquer le scroll uniquement sur desktop
+      if (window.innerWidth > 480) document.body.style.overflow = 'hidden';
     }
     window.ouvrirProjet = ouvrirProjet;
 

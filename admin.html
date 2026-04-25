@@ -28,6 +28,8 @@
       display: grid;
       grid-template-columns: 260px 1fr;
       min-height: 100vh;
+      /* Faux-column : fond marine permanent sur la colonne gauche */
+      background: var(--navy-deep);
     }
 
     /* ── Sidebar ── */
@@ -42,6 +44,7 @@
       top: 0;
       height: 100vh;
       overflow-y: auto;
+      align-self: start; /* sticky fonctionne correctement */
     }
     .admin-sidebar__logo {
       font-family: var(--font-heading);
@@ -653,12 +656,13 @@
     .admin-empty__icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
     .admin-empty__text { font-size: 0.95rem; }
 
-    /* ── Desktop : topbar visible, sidebar sous la topbar ───── */
+    /* ── Desktop : topbar visible, sidebar sans hauteur fixe ── */
     @media (min-width: 769px) {
       .admin-topbar__hamburger { display: none; }
       .admin-sidebar {
         top: 56px;
-        height: calc(100vh - 56px);
+        height: auto;          /* la colonne est colorée par .admin-layout background */
+        min-height: calc(100vh - 56px);
       }
       .admin-main { padding-top: 2rem; }
     }
