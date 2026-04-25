@@ -12,7 +12,7 @@ const { signToken, JWT_SECRET, isValidEmail } = require('../utils/auth');
 const { sendWelcome, sendResetPassword } = require('../utils/mailer');
 
 // ── POST /api/auth/register ───────────────────────────────────
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { nom, prenom, email, password, tel, ile } = req.body;
 
   if (!nom || !prenom || !email || !password) {
@@ -25,18 +25,18 @@ router.post('/register', (req, res) => {
     return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères.' });
   }
 
-  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase());
+  const existing = await db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase());
   if (existing) {
     return res.status(409).json({ error: 'Cette adresse email est déjà utilisée.' });
   }
 
-  const hash = bcrypt.hashSync(password, 12);
-  const result = db.prepare(`
+  const hash   = bcrypt.hashSync(password, 12);
+  const result = await db.prepare(`
     INSERT INTO users (nom, prenom, email, password_hash, role, tel, ile)
     VALUES (?, ?, ?, ?, 'user', ?, ?)
   `).run(nom.trim(), prenom.trim(), email.toLowerCase(), hash, tel || null, ile || null);
 
-  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);
+  const user  = await db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);
   const token = signToken(user);
 
   sendWelcome({ to: user.email, prenom: user.prenom }).catch(() => {});
@@ -48,14 +48,14 @@ router.post('/register', (req, res) => {
 });
 
 // ── POST /api/auth/login ──────────────────────────────────────
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email et mot de passe requis.' });
   }
 
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
+  const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
   if (!user) {
     return res.status(401).json({ error: 'Identifiants incorrects.' });
   }
@@ -73,14 +73,16 @@ router.post('/login', (req, res) => {
 });
 
 // ── GET /api/auth/me ──────────────────────────────────────────
-router.get('/me', (req, res) => {
+router.get('/me', async (req, res) => {
   const header = req.headers['authorization'];
   if (!header || !header.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Non authentifié.' });
   }
   try {
     const payload = jwt.verify(header.slice(7), JWT_SECRET);
-    const user    = db.prepare('SELECT id, nom, prenom, email, tel, ile, role, created_at FROM users WHERE id = ?').get(payload.id);
+    const user    = await db.prepare(
+      'SELECT id, nom, prenom, email, tel, ile, role, created_at FROM users WHERE id = ?'
+    ).get(payload.id);
     if (!user) return res.status(404).json({ error: 'Utilisateur introuvable.' });
     res.json({ user });
   } catch {
@@ -89,15 +91,13 @@ router.get('/me', (req, res) => {
 });
 
 // ── POST /api/auth/change-password ───────────────────────────
-router.post('/change-password', (req, res) => {
-  const { requireAuth } = require('../middleware/auth');
+router.post('/change-password', async (req, res) => {
   const { ancien, nouveau } = req.body;
   const header = req.headers['authorization'];
   if (!header) return res.status(401).json({ error: 'Non authentifié.' });
   try {
-    const jwt = require('jsonwebtoken');
     const payload = jwt.verify(header.slice(7), JWT_SECRET);
-    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(payload.id);
+    const user = await db.prepare('SELECT * FROM users WHERE id = ?').get(payload.id);
     if (!bcrypt.compareSync(ancien, user.password_hash)) {
       return res.status(400).json({ error: 'Ancien mot de passe incorrect.' });
     }
@@ -105,7 +105,7 @@ router.post('/change-password', (req, res) => {
       return res.status(400).json({ error: 'Le nouveau mot de passe doit faire au moins 8 caractères.' });
     }
     const hash = bcrypt.hashSync(nouveau, 12);
-    db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, payload.id);
+    await db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, payload.id);
     res.json({ success: true });
   } catch {
     res.status(401).json({ error: 'Token invalide.' });
@@ -113,20 +113,18 @@ router.post('/change-password', (req, res) => {
 });
 
 // ── POST /api/auth/forgot-password ───────────────────────────
-router.post('/forgot-password', (req, res) => {
+router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email requis.' });
 
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
+  const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
   // Répondre toujours success (sécurité : ne pas révéler si l'email existe)
-  if (!user) {
-    return res.json({ success: true });
-  }
+  if (!user) return res.json({ success: true });
 
   const token   = crypto.randomBytes(32).toString('hex');
   const expires = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // expire dans 1h
 
-  db.prepare(`UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?`)
+  await db.prepare(`UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?`)
     .run(token, expires, user.id);
 
   const resetUrl = `/reset-password.html?token=${token}`;
@@ -135,12 +133,12 @@ router.post('/forgot-password', (req, res) => {
 });
 
 // ── POST /api/auth/reset-password ────────────────────────────
-router.post('/reset-password', (req, res) => {
+router.post('/reset-password', async (req, res) => {
   const { token, password } = req.body;
   if (!token || !password) return res.status(400).json({ error: 'Token et mot de passe requis.' });
   if (password.length < 8) return res.status(400).json({ error: 'Minimum 8 caractères.' });
 
-  const user = db.prepare(`SELECT * FROM users WHERE reset_token = ?`).get(token);
+  const user = await db.prepare(`SELECT * FROM users WHERE reset_token = ?`).get(token);
   if (!user || !user.reset_token_expires) {
     return res.status(400).json({ error: 'Lien invalide ou déjà utilisé.' });
   }
@@ -149,7 +147,7 @@ router.post('/reset-password', (req, res) => {
   }
 
   const hash = bcrypt.hashSync(password, 12);
-  db.prepare(`UPDATE users SET password_hash = ?, reset_token = ?, reset_token_expires = ? WHERE id = ?`)
+  await db.prepare(`UPDATE users SET password_hash = ?, reset_token = ?, reset_token_expires = ? WHERE id = ?`)
     .run(hash, null, null, user.id);
 
   res.json({ success: true, message: 'Mot de passe réinitialisé avec succès !' });
