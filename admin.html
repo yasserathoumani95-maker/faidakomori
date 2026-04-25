@@ -83,7 +83,7 @@
       gap: 0.7rem;
       padding: 0.65rem 0.75rem;
       border-radius: var(--radius-sm);
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.72);
       font-size: 0.875rem;
       font-weight: 500;
       transition: all var(--duration-sm) var(--ease-out);
@@ -94,9 +94,17 @@
       width: 100%;
       text-align: left;
     }
-    .admin-nav-item:hover { background: rgba(255,255,255,0.08); color: var(--white); }
-    .admin-nav-item.active { background: rgba(232,160,32,0.15); color: var(--gold); font-weight: 600; }
-    .admin-nav-item__icon { font-size: 1.05rem; width: 22px; text-align: center; flex-shrink: 0; }
+    .admin-nav-item:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+    .admin-nav-item.active { background: rgba(232,160,32,0.18); color: var(--gold); font-weight: 600; }
+    .admin-nav-item__icon {
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+      flex-shrink: 0;
+      opacity: 0.9;
+    }
+    .admin-nav-item:hover .admin-nav-item__icon,
+    .admin-nav-item.active .admin-nav-item__icon { opacity: 1; }
     .admin-nav-item__badge {
       margin-left: auto;
       background: var(--gold);
@@ -765,12 +773,12 @@
       <button class="admin-nav-item" data-panel="demandes">
         <span class="admin-nav-item__icon"><i class="ph-light ph-tray"></i></span>
         Demandes reçues
-        <span class="admin-nav-item__badge">7</span>
+        <span class="admin-nav-item__badge" id="demandes-badge" style="display:none;">0</span>
       </button>
       <button class="admin-nav-item" data-panel="entretiens">
         <span class="admin-nav-item__icon"><i class="ph-light ph-calendar"></i></span>
         Entretiens planifiés
-        <span class="admin-nav-item__badge">3</span>
+        <span class="admin-nav-item__badge" id="entretiens-badge" style="display:none;">0</span>
       </button>
 
       <div class="admin-sidebar__label">Gestion</div>
@@ -1527,9 +1535,11 @@
       set('stat-approved',  s.approvedProjects);
       set('stat-published', s.publishedProjects);
 
-      document.querySelectorAll('.admin-nav-item__badge').forEach((b, i) => {
-        if (i === 0) b.textContent = s.pendingProjects;
-      });
+      const demandesBadge = document.getElementById('demandes-badge');
+      if (demandesBadge) {
+        demandesBadge.textContent = s.pendingProjects;
+        demandesBadge.style.display = s.pendingProjects > 0 ? '' : 'none';
+      }
     } catch (err) {
       console.warn('[Admin] Stats non chargées :', err.message);
     }
@@ -1626,6 +1636,12 @@
         : `<div class="admin-empty"><i class="ph-light ph-calendar-blank" style="font-size:2.5rem;opacity:0.3;display:block;margin-bottom:0.75rem;"></i><p>Aucun entretien planifié pour le moment.</p></div>`;
 
       if (container) container.innerHTML = html;
+
+      const entretiensBadge = document.getElementById('entretiens-badge');
+      if (entretiensBadge) {
+        entretiensBadge.textContent = projects.length;
+        entretiensBadge.style.display = projects.length > 0 ? '' : 'none';
+      }
       if (dashList) dashList.innerHTML = projects.length
         ? projects.slice(0,2).map(renderCard).join('')
         : `<p style="color:var(--text-muted);font-size:0.875rem;">Aucun entretien planifié.</p>`;

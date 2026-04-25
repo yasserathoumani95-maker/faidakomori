@@ -145,6 +145,32 @@
       z-index: 0;
     }
     .timeline-step.done .timeline-line { background: #00C853; }
+
+    /* ── Responsive mon-espace ───────────────────────────── */
+    @media (max-width: 768px) {
+      /* Modal pleine largeur sur mobile */
+      .projet-modal {
+        border-radius: 16px;
+        max-width: 100%;
+      }
+      .projet-modal__header { padding: 1.25rem 1.25rem 0.875rem; }
+      .projet-modal__body   { padding: 1.25rem; }
+
+      /* Timeline : dots plus petits, labels plus courts */
+      .timeline { margin: 1rem 0; }
+      .timeline-step__dot { width: 24px; height: 24px; font-size: 0.65rem; }
+      .timeline-step__label { font-size: 0.62rem; max-width: 52px; }
+      .timeline-line { top: 12px; }
+      .timeline::before { top: 12px; }
+    }
+
+    @media (max-width: 480px) {
+      /* Overlay : padding minimal */
+      .projet-modal-overlay { padding: 0.5rem; }
+      .projet-modal { border-radius: 14px; }
+      .projet-modal__header { flex-direction: column-reverse; align-items: flex-start; gap: 0.5rem; }
+      .projet-modal__close { align-self: flex-end; }
+    }
   </style>
 </head>
 <body>
@@ -742,24 +768,28 @@
         `<i class="ph-light ph-calendar-blank"></i> Soumis le ${new Date(p.created_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}`;
 
       // ── Timeline ──────────────────────────────────────────────
-      const STEPS = [
-        { key:'deposited',  label:'Déposé'           },
-        { key:'review',     label:'En cours d\'étude' },
-        { key:'validated',  label:'Validé'            },
-        { key:'online',     label:'En ligne'          },
-      ];
+      const rejected = p.status === 'rejected';
+      const STEPS = rejected
+        ? [
+            { label: 'Déposé' },
+            { label: 'En cours d\'étude' },
+            { label: 'Refusé' },
+          ]
+        : [
+            { label: 'Déposé' },
+            { label: 'En cours d\'étude' },
+            { label: 'Validé' },
+            { label: 'En ligne' },
+          ];
 
-      // Niveau atteint par statut
       const levelMap = {
         new:       1,
         review:    2,
-        interview: 2, // substep de review
+        interview: 2,
         approved:  3,
         published: 4,
-        rejected:  2, // bloqué en examen
       };
-      const level    = levelMap[p.status] ?? 1;
-      const rejected = p.status === 'rejected';
+      const level = rejected ? 3 : (levelMap[p.status] ?? 1);
 
       const timelineHtml = `
         <div style="margin-bottom:1.25rem;">
