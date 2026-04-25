@@ -221,6 +221,53 @@
     .status--rejected  { background: rgba(220,38,38,0.1); color: #B91C1C; }
     .status--published { background: var(--green); color: var(--white); }
 
+    /* ── Dot statut ─────────────────────────────────────────── */
+    .admin-dot {
+      display: inline-block; width: 9px; height: 9px;
+      border-radius: 50%; flex-shrink: 0; margin-right: 4px; vertical-align: middle;
+    }
+    .admin-dot--new       { background: #94A3B8; }
+    .admin-dot--review    { background: #3B82F6; }
+    .admin-dot--interview { background: #E8A020; }
+    .admin-dot--approved  { background: #00C853; }
+    .admin-dot--published { background: #00C853; box-shadow:0 0 0 3px rgba(0,200,83,.18); }
+    .admin-dot--rejected  { background: #DC2626; }
+
+    /* ── Timeline admin ──────────────────────────────────────── */
+    .admin-timeline {
+      display: flex; align-items: flex-start;
+      justify-content: space-between;
+      position: relative; margin: 1rem 0 1.5rem;
+    }
+    .admin-timeline::before {
+      content:''; position:absolute;
+      top:13px; left:13px; right:13px;
+      height:3px; background:#E5E7EB; z-index:0;
+    }
+    .admin-tl-step {
+      display:flex; flex-direction:column;
+      align-items:center; flex:1; position:relative; z-index:1;
+    }
+    .admin-tl-dot {
+      width:26px; height:26px; border-radius:50%;
+      border:3px solid #E5E7EB; background:#fff;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.7rem; font-weight:700; margin-bottom:.35rem;
+    }
+    .admin-tl-step.done   .admin-tl-dot { background:#00C853; border-color:#00C853; color:#fff; }
+    .admin-tl-step.active .admin-tl-dot { background:#00C853; border-color:#00C853; color:#fff; box-shadow:0 0 0 4px rgba(0,200,83,.2); }
+    .admin-tl-step.rejected .admin-tl-dot { background:#DC2626; border-color:#DC2626; color:#fff; }
+    .admin-tl-label {
+      font-size:.62rem; font-weight:600; color:#9CA3AF;
+      text-align:center; line-height:1.3; max-width:55px;
+    }
+    .admin-tl-step.done   .admin-tl-label { color:#00C853; }
+    .admin-tl-step.active .admin-tl-label { color:#00C853; font-weight:700; }
+    .admin-tl-step.rejected .admin-tl-label { color:#DC2626; font-weight:700; }
+
+    /* ── Ligne cliquable ─────────────────────────────────────── */
+    .admin-table tbody tr { cursor: pointer; }
+
     /* Action buttons in table */
     .admin-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
     .admin-btn {
@@ -1426,18 +1473,48 @@
     const st = STATUS_LABELS[p.status] || { label: p.status, cls: '' };
     const date = new Date(p.created_at).toLocaleDateString('fr-FR');
     const montant = parseInt(p.montant || 0).toLocaleString('fr-FR');
-    return `<tr>
+    const dot = `<span class="admin-dot admin-dot--${p.status || 'new'}"></span>`;
+    return `<tr onclick="openDrawer('demande',${p.id})" title="Voir le dossier">
       <td>
-        <div class="admin-table__name">${p.prenom || ''} ${p.nom || ''}</div>
-        <div class="admin-table__sub">${p.nom_projet}</div>
+        <div class="admin-table__name">${dot}${p.prenom || ''} ${p.nom || ''}</div>
+        <div class="admin-table__sub" style="padding-left:13px;">${p.nom_projet}</div>
       </td>
       <td>${TYPE_BADGES[p.type] || p.type}</td>
       <td>${p.ile || '—'}</td>
       <td>${montant} KMF</td>
       <td>${date}</td>
       <td><span class="status ${st.cls}">${st.label}</span></td>
-      <td><div class="admin-actions">${actions(p)}</div></td>
+      <td><div class="admin-actions" onclick="event.stopPropagation()">${actions(p)}</div></td>
     </tr>`;
+  }
+
+  /* ── Timeline admin helper ── */
+  function adminTimeline(status) {
+    const STEPS = [
+      { label: 'Reçu'      },
+      { label: 'Examen'    },
+      { label: 'Entretien' },
+      { label: 'Validé'    },
+      { label: 'En ligne'  },
+    ];
+    const levelMap = { new:1, review:2, interview:3, approved:4, published:5, rejected:2 };
+    const level    = levelMap[status] ?? 1;
+    const rejected = status === 'rejected';
+
+    return `<div class="admin-timeline">
+      ${STEPS.map((s, i) => {
+        const n = i + 1;
+        const isDone   = n < level;
+        const isActive = n === level;
+        const isRej    = rejected && isActive;
+        let cls = isRej ? 'rejected' : (isDone ? 'done' : isActive ? 'active' : '');
+        const icon = isRej ? '✕' : ((isDone || isActive) ? '✓' : n);
+        return `<div class="admin-tl-step ${cls}">
+          <div class="admin-tl-dot">${icon}</div>
+          <div class="admin-tl-label">${s.label}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
   }
 
   /* ── Charger les stats depuis l'API ── */
@@ -1519,22 +1596,27 @@
         const dateStr = info.date ? new Date(info.date).toLocaleDateString('fr-FR', { day:'numeric', month:'short' }).split(' ') : ['—','—'];
         const typeLabel = { google_meet:'Google Meet', zoom:'Zoom', whatsapp:'WhatsApp', phone:'Appel tél.', inperson:'Présentiel' }[info.type_entretien] || (info.type_entretien || '');
         const isOnline = !['inperson','phone'].includes(info.type_entretien);
-        return `<div class="interview-card">
+        const reponse = info.reponse_porteur;
+        const reponseTag = reponse
+          ? `<span style="font-size:.72rem;font-weight:700;color:${reponse==='accepted'?'#00C853':'#DC2626'};margin-left:.4rem;">${reponse==='accepted'?'✅ Confirmé':'❌ Décliné'}</span>`
+          : `<span style="font-size:.72rem;color:#9CA3AF;margin-left:.4rem;">⏳ En attente</span>`;
+        return `<div class="interview-card" style="cursor:pointer;" onclick="openDrawer('demande',${p.id})">
           <div class="interview-card__date-block">
             <div class="interview-card__day">${dateStr[0]}</div>
             <div class="interview-card__month">${dateStr[1] || ''}</div>
           </div>
           <div class="interview-card__info">
-            <div class="interview-card__title">${p.prenom || ''} ${p.nom || ''} — ${p.nom_projet}</div>
+            <div class="interview-card__title">${p.prenom || ''} ${p.nom || ''} — ${p.nom_projet} ${reponseTag}</div>
             <div class="interview-card__meta">
               ${info.heure || ''} ${info.duree ? '· ' + info.duree : ''}
               ${typeLabel ? `· <span class="interview-card__type interview-card__type--${isOnline ? 'online' : 'inperson'}"><i class="ph-light ph-${isOnline ? 'video-camera' : 'map-pin'}"></i> ${typeLabel}</span>` : ''}
-              ${info.lien ? `· <a href="${info.lien}" target="_blank" style="font-size:0.78rem;color:var(--navy);">Lien</a>` : ''}
+              ${info.lien ? `· <a href="${info.lien}" target="_blank" style="font-size:0.78rem;color:var(--navy);" onclick="event.stopPropagation()">Rejoindre</a>` : ''}
             </div>
           </div>
-          <div class="admin-actions">
-            <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview',${p.id})">✏️ Modifier</button>
-            <button class="admin-btn admin-btn--green" onclick="openDrawer('score',${p.id})">Évaluer</button>
+          <div class="admin-actions" onclick="event.stopPropagation()">
+            <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview',${p.id})">✏️</button>
+            <button class="admin-btn admin-btn--green" onclick="approveProject(${p.id})">✅</button>
+            <button class="admin-btn admin-btn--danger" onclick="rejectProject(${p.id})">❌</button>
           </div>
         </div>`;
       };
@@ -1554,22 +1636,24 @@
 
   /* ── Actions câblées sur l'API réelle ── */
   async function approveProject(id) {
-    const note = document.querySelector('#adminDrawerContent textarea')?.value || '';
+    const note = document.getElementById(`noteDecision_${id}`)?.value
+              || document.querySelector('#adminDrawerContent textarea')?.value || '';
     try {
       await API.admin.updateStatus(id, 'approved', note);
       closeDrawer();
-      showToast('Projet approuvé — le porteur est notifié.', 'success');
-      loadAdminStats(); loadRecentDemandes(); loadDemandes();
+      showToast('✅ Projet approuvé — le porteur est notifié par email.', 'success');
+      loadAdminStats(); loadRecentDemandes(); loadDemandes(); loadEntretiens();
     } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
   }
 
   async function rejectProject(id) {
-    const note = document.querySelector('#adminDrawerContent textarea')?.value || '';
+    const note = document.getElementById(`noteDecision_${id}`)?.value
+              || document.querySelector('#adminDrawerContent textarea')?.value || '';
     try {
       await API.admin.updateStatus(id, 'rejected', note);
       closeDrawer();
-      showToast('Projet refusé — le candidat est notifié.', 'warning');
-      loadAdminStats(); loadRecentDemandes(); loadDemandes();
+      showToast('❌ Projet refusé — le candidat est notifié par email.', 'warning');
+      loadAdminStats(); loadRecentDemandes(); loadDemandes(); loadEntretiens();
     } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
   }
 
@@ -1639,40 +1723,102 @@
       const p = window._adminProjects[id];
       if (!p) return `<div style="padding:2rem;color:var(--text-muted);">Chargement du dossier…</div>`;
       const montant = parseInt(p.montant || 0).toLocaleString('fr-FR');
-      const date    = new Date(p.created_at).toLocaleDateString('fr-FR');
+      const date    = new Date(p.created_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' });
       const st = STATUS_LABELS[p.status] || { label: p.status };
+
+      // Infos entretien si statut interview
+      let interviewBlock = '';
+      if (p.status === 'interview' && p.note_admin) {
+        let info = {};
+        try { info = JSON.parse(p.note_admin); } catch {}
+        const tLabels = { google_meet:'Google Meet', zoom:'Zoom', whatsapp:'WhatsApp Video', phone:'Appel tél.', inperson:'Présentiel — Moroni' };
+        const dateStr = info.date ? new Date(info.date).toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' }) : '—';
+        const reponse = info.reponse_porteur;
+        const reponseHtml = reponse
+          ? `<div style="margin-top:.5rem;font-size:.82rem;font-weight:700;color:${reponse==='accepted'?'#00C853':'#DC2626'};">
+              ${reponse==='accepted' ? '✅ Porteur confirmé' : '❌ Porteur a décliné'}
+             </div>`
+          : `<div style="margin-top:.5rem;font-size:.8rem;color:#9CA3AF;font-style:italic;">⏳ En attente de réponse du porteur</div>`;
+
+        interviewBlock = `
+          <div style="padding:1rem;background:#FFFBEB;border:1.5px solid rgba(232,160,32,.35);border-radius:10px;margin-bottom:1rem;">
+            <div style="font-weight:700;color:#9A6310;margin-bottom:.4rem;font-size:.88rem;">🗓️ Entretien planifié</div>
+            <div style="font-size:.85rem;color:var(--text-muted);line-height:1.8;">
+              📅 <strong>${dateStr}</strong> à <strong>${info.heure||'—'}</strong><br>
+              📡 ${tLabels[info.type_entretien]||info.type_entretien||'—'}
+              ${info.lien ? `· <a href="${info.lien}" target="_blank" style="color:var(--ocean);">Lien</a>` : ''}
+              ${info.notes ? `<br>📝 ${info.notes}` : ''}
+            </div>
+            ${reponseHtml}
+            <button class="admin-btn admin-btn--outline" style="margin-top:.75rem;font-size:.75rem;" onclick="openDrawer('interview',${id})">✏️ Modifier l'entretien</button>
+          </div>`;
+      }
+
+      // Bloc décision
+      const decisionBlock = `
+        <div style="margin-top:1rem;">
+          <label style="font-size:.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:.4rem;">
+            Note de décision <span style="font-weight:400;color:var(--text-muted);">(envoyée au porteur)</span>
+          </label>
+          <textarea id="noteDecision_${id}" style="width:100%;padding:.7rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:.875rem;font-family:var(--font-body);min-height:70px;resize:vertical;box-sizing:border-box;" placeholder="Ex : Projet très prometteur, nous souhaitons discuter du plan financier…"></textarea>
+        </div>`;
+
+      // Boutons d'action selon statut
+      let actionBtns = '';
+      if (p.status === 'new' || p.status === 'review') {
+        actionBtns = `
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="openDrawer('interview',${id})">🗓️ Planifier entretien</button>
+          <button class="admin-btn admin-btn--outline" style="flex:1;" onclick="setReview(${id})">🔍 Mettre en examen</button>
+          <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})">✅ Approuver</button>
+          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})">❌ Refuser</button>`;
+      } else if (p.status === 'interview') {
+        actionBtns = `
+          <button class="admin-btn admin-btn--green" style="flex:2;" onclick="approveProject(${id})">✅ Entretien terminé — Approuver</button>
+          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})">❌ Refuser</button>`;
+      } else if (p.status === 'approved') {
+        actionBtns = `
+          <button class="admin-btn admin-btn--green" style="flex:1;" onclick="openDrawer('publish',${id})"><i class="ph-light ph-rocket-launch"></i> Publier le projet</button>
+          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})">❌ Refuser</button>`;
+      } else if (p.status === 'published') {
+        actionBtns = `<div style="font-size:.85rem;color:var(--green-deep);font-weight:700;">🚀 Projet publié et en ligne</div>`;
+      } else if (p.status === 'rejected') {
+        actionBtns = `
+          <div style="font-size:.82rem;color:#B91C1C;font-weight:600;margin-bottom:.5rem;">❌ Dossier refusé</div>
+          <button class="admin-btn admin-btn--outline" style="flex:1;" onclick="setReview(${id})">↩️ Remettre en examen</button>`;
+      }
+
       return `
       <div class="admin-drawer__header">
         <div class="admin-drawer__title"><i class="ph-light ph-clipboard-text"></i> Dossier #${p.id}</div>
         <div class="admin-drawer__sub"><span class="status ${STATUS_LABELS[p.status]?.cls || ''}">${st.label}</span></div>
       </div>
+
+      <!-- Timeline -->
+      <div style="padding:0 0 .5rem;">
+        ${adminTimeline(p.status)}
+      </div>
+
       <div class="admin-drawer__section">
         <div class="admin-drawer__section-title">Porteur de projet</div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Nom</div><div class="admin-drawer__field-value">${p.prenom || ''} ${p.nom || ''}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Île</div><div class="admin-drawer__field-value">${p.ile || '—'}</div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Email</div><div class="admin-drawer__field-value">${p.email || '—'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Email</div><div class="admin-drawer__field-value"><a href="mailto:${p.email}" style="color:var(--ocean);">${p.email || '—'}</a></div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Téléphone</div><div class="admin-drawer__field-value">${p.tel || '—'}</div></div>
       </div>
       <div class="admin-drawer__section">
         <div class="admin-drawer__section-title">Projet</div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Titre</div><div class="admin-drawer__field-value">${p.nom_projet}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Titre</div><div class="admin-drawer__field-value"><strong>${p.nom_projet}</strong></div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Modèle</div><div class="admin-drawer__field-value">${TYPE_BADGES[p.type] || p.type}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Montant cible</div><div class="admin-drawer__field-value">${montant} KMF</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Secteur</div><div class="admin-drawer__field-value">${p.secteur || '—'}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Durée</div><div class="admin-drawer__field-value">${p.duree ? p.duree + ' jours' : '—'}</div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Déposé le</div><div class="admin-drawer__field-value">${date}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Soumis le</div><div class="admin-drawer__field-value">${date}</div></div>
       </div>
-      ${p.description ? `<div class="admin-drawer__section"><div class="admin-drawer__section-title">Description</div><p style="font-size:0.875rem;color:var(--text-muted);line-height:1.7;">${p.description}</p></div>` : ''}
-      ${p.note_admin ? `<div class="admin-drawer__section"><div class="admin-drawer__section-title">Note admin</div><p style="font-size:0.875rem;color:var(--text-muted);">${p.note_admin}</p></div>` : ''}
-      <div>
-        <label style="font-size:0.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:0.4rem;">Note de décision (visible dans la notification)</label>
-        <textarea style="width:100%;padding:0.7rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.875rem;font-family:var(--font-body);min-height:70px;resize:vertical;box-sizing:border-box;" placeholder="Ex : Projet très prometteur, nous souhaitons discuter du plan financier…"></textarea>
-      </div>
-      <div style="display:flex;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap;">
-        <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="openDrawer('interview',${id})">🗓️ Entretien</button>
-        <button class="admin-btn admin-btn--outline" style="flex:1;" onclick="setReview(${id})">🔍 Examiner</button>
-        <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})"><i class="ph-light ph-check-circle"></i> Approuver</button>
-        <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})"><i class="ph-light ph-x-circle"></i> Refuser</button>
+      ${p.description ? `<div class="admin-drawer__section"><div class="admin-drawer__section-title">Description</div><p style="font-size:.875rem;color:var(--text-muted);line-height:1.7;">${p.description}</p></div>` : ''}
+      ${interviewBlock}
+      ${decisionBlock}
+      <div style="display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap;">
+        ${actionBtns}
       </div>`;
     },
 
