@@ -522,10 +522,10 @@
     /* Mobile toggle — kept for compat but hidden */
     .admin-mobile-toggle { display: none !important; }
 
-    /* ── Admin Topbar (mobile header) ─────────────────────── */
+    /* ── Admin Topbar (header — visible partout) ───────────── */
     .admin-topbar {
-      display: none;
-      position: fixed;
+      display: flex;
+      position: sticky;
       top: 0; left: 0; right: 0;
       height: 56px;
       background: var(--navy-deep);
@@ -653,14 +653,24 @@
     .admin-empty__icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
     .admin-empty__text { font-size: 0.95rem; }
 
+    /* ── Desktop : topbar visible, sidebar sous la topbar ───── */
+    @media (min-width: 769px) {
+      .admin-topbar__hamburger { display: none; }
+      .admin-sidebar {
+        top: 56px;
+        height: calc(100vh - 56px);
+      }
+      .admin-main { padding-top: 2rem; }
+    }
+
     /* Responsive */
     @media (max-width: 1024px) {
       .admin-stats { grid-template-columns: repeat(2, 1fr); }
       .admin-main { padding: 1.5rem 1.75rem; }
     }
     @media (max-width: 768px) {
-      /* Show topbar, hide old toggle */
-      .admin-topbar { display: flex; }
+      /* Topbar : fixe sur mobile */
+      .admin-topbar { position: fixed; }
       .admin-sidebar-overlay { display: block; }
 
       /* Layout collapses to single column */

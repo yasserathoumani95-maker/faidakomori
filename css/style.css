@@ -2837,14 +2837,17 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
     gap: 0 !important;
   }
 
-  /* Sidebar → header horizontal avec nav en onglets */
+  /* Sidebar → header horizontal collant avec nav en onglets */
   .dashboard-sidebar {
-    position: static !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
     border-radius: 0 !important;
     border-left: none !important;
     border-right: none !important;
     border-top: none !important;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0 !important;
+    box-shadow: 0 2px 12px rgba(13,34,68,0.10) !important;
   }
   .dashboard-sidebar__user {
     display: flex !important;

@@ -148,16 +148,9 @@
 
     /* ── Responsive mon-espace ───────────────────────────── */
     @media (max-width: 768px) {
-      /* Modal pleine largeur sur mobile */
-      .projet-modal {
-        border-radius: 16px;
-        max-width: 100%;
-      }
+      .projet-modal { border-radius: 16px; max-width: 100%; }
       .projet-modal__header { padding: 1.25rem 1.25rem 0.875rem; }
       .projet-modal__body   { padding: 1.25rem; }
-
-      /* Timeline : dots plus petits, labels plus courts */
-      .timeline { margin: 1rem 0; }
       .timeline-step__dot { width: 24px; height: 24px; font-size: 0.65rem; }
       .timeline-step__label { font-size: 0.62rem; max-width: 52px; }
       .timeline-line { top: 12px; }
@@ -165,11 +158,46 @@
     }
 
     @media (max-width: 480px) {
-      /* Overlay : padding minimal */
       .projet-modal-overlay { padding: 0.5rem; }
       .projet-modal { border-radius: 14px; }
       .projet-modal__header { flex-direction: column-reverse; align-items: flex-start; gap: 0.5rem; }
       .projet-modal__close { align-self: flex-end; }
+
+      /* Timeline → vertical sur très petit écran */
+      .timeline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin: 0.75rem 0;
+      }
+      .timeline::before { display: none; }
+      .timeline-step {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+      }
+      .timeline-step__dot {
+        width: 28px; height: 28px;
+        flex-shrink: 0;
+        margin-bottom: 0;
+      }
+      .timeline-step__label {
+        font-size: 0.82rem;
+        max-width: none;
+        text-align: left;
+      }
+      /* Trait vertical entre les étapes */
+      .timeline-line {
+        position: absolute;
+        left: 13px;
+        top: 28px;
+        right: auto;
+        width: 2px;
+        height: 0.6rem;
+        background: #E5E7EB;
+      }
+      .timeline-step.done .timeline-line { background: #00C853; }
     }
   </style>
 </head>
