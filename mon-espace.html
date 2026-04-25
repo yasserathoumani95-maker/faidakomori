@@ -146,97 +146,75 @@
     }
     .timeline-step.done .timeline-line { background: #00C853; }
 
-    /* ═══════════════════════════════════════════════════════
-       RESPONSIVE MON-ESPACE — COMPLET
-       ═══════════════════════════════════════════════════════ */
-
-    /* ── Tablet ≤ 768px ──────────────────────────────────── */
-    @media (max-width: 768px) {
-      /* Modal */
-      .projet-modal { max-width: 100%; border-radius: 18px; }
-      .projet-modal__header { padding: 1.25rem; }
-      .projet-modal__body   { padding: 1.25rem; }
-
-      /* Timeline un peu plus compacte */
-      .timeline          { margin: 1rem 0; }
-      .timeline::before  { top: 12px; }
-      .timeline-line     { top: 12px; }
-      .timeline-step__dot   { width: 24px; height: 24px; font-size: 0.65rem; }
-      .timeline-step__label { font-size: 0.65rem; max-width: 54px; }
-
-      /* En-têtes de panel : empiler */
-      .admin-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-      }
-      .admin-header > a,
-      .admin-header > button { width: 100%; justify-content: center; text-align: center; }
+    /* Animation bottom-sheet — DOIT être au niveau racine (bug iOS Safari) */
+    @keyframes sheetIn {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
     }
 
-    /* ── Mobile ≤ 480px ──────────────────────────────────── */
-    @media (max-width: 480px) {
+    /* ═══════════════════════════════════════════════════════
+       RESPONSIVE MON-ESPACE
+       ═══════════════════════════════════════════════════════ */
 
-      /* ── Bottom-sheet ──────────────────────────────────── */
+    /* ── Tous les mobiles ≤ 768px ────────────────────────── */
+    @media (max-width: 768px) {
+
+      /* ── Bottom-sheet modal ──────────────────────────── */
       .projet-modal-overlay {
         align-items: flex-end;
+        justify-content: flex-start;
         padding: 0;
       }
       .projet-modal {
-        border-radius: 24px 24px 0 0;
+        border-radius: 22px 22px 0 0;
         max-width: 100%;
         width: 100%;
-        max-height: 90dvh;
+        max-height: 90vh;
         overflow-y: auto;
-        animation: sheetIn .3s cubic-bezier(0.32, 0.72, 0, 1);
+        -webkit-overflow-scrolling: touch;
+        animation: sheetIn .28s ease-out;
       }
-      @keyframes sheetIn {
-        from { transform: translateY(100%); }
-        to   { transform: translateY(0); }
-      }
-      /* Poignée */
+      /* Poignée visuelle */
       .projet-modal::before {
         content: '';
         display: block;
         width: 36px; height: 4px;
         background: #D1D5DB; border-radius: 2px;
-        margin: 0.875rem auto 0;
+        margin: 0.75rem auto 0;
       }
       .projet-modal__header {
-        padding: 0.75rem 1.25rem 0.875rem;
-        border-bottom: 1px solid #F3F4F6;
+        padding: 0.875rem 1.25rem;
+        border-bottom: 1px solid #F0F0F0;
       }
       .projet-modal__body { padding: 1rem 1.25rem 2.5rem; }
 
-      /* ── Timeline verticale ────────────────────────────── */
+      /* ── Timeline verticale ──────────────────────────── */
       .timeline {
         flex-direction: column;
         align-items: stretch;
         gap: 0;
-        margin: 0.875rem 0;
+        margin: 0.75rem 0;
       }
       .timeline::before { display: none; }
-      /* Cacher les divs timeline-line — remplacés par ::after */
-      .timeline-line { display: none !important; }
+      .timeline-line    { display: none; }
 
       .timeline-step {
-        display: flex;
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
         gap: 0.875rem;
         flex: none;
         width: 100%;
         position: relative;
-        padding: 0.1rem 0 1.1rem;
+        padding: 0.25rem 0 1rem;
       }
-      .timeline-step:last-child { padding-bottom: 0.1rem; }
+      .timeline-step:last-child { padding-bottom: 0.25rem; }
 
-      /* Trait vertical de connexion via ::after */
+      /* Trait vertical entre étapes */
       .timeline-step:not(:last-child)::after {
         content: '';
         position: absolute;
-        left: 12px;    /* centre du dot 26px (13px - 1px demi-largeur trait) */
-        top: 26px;     /* bas du dot */
+        left: 12px;
+        top: 28px;
         bottom: 0;
         width: 2px;
         background: #E5E7EB;
@@ -248,50 +226,46 @@
         flex-shrink: 0;
         margin-bottom: 0;
         font-size: 0.72rem;
-        position: relative; z-index: 1;
+        position: relative;
+        z-index: 1;
+        background: #fff;
       }
       .timeline-step__label {
         font-size: 0.9rem;
         font-weight: 600;
         max-width: none;
         text-align: left;
-        padding-top: 0.18rem; /* aligner verticalement avec dot */
       }
 
-      /* ── Grilles inline : forcer 1 colonne ─────────────── */
-      #contrib-stats { grid-template-columns: 1fr !important; }
-
-      /* ── CTA card : empiler ─────────────────────────────── */
-      #deposer-cta-card {
+      /* ── Panneaux : en-têtes empilés ──────────────────── */
+      .admin-header {
         flex-direction: column !important;
         align-items: flex-start !important;
+        gap: 0.75rem !important;
       }
-      #deposer-cta-card > a {
+      .admin-header > a.btn,
+      .admin-header > button.btn {
         width: 100% !important;
         justify-content: center !important;
       }
 
-      /* ── Livraisons : select pleine largeur ─────────────── */
-      #livraisons-section .admin-header { flex-direction: column; gap: 0.75rem; }
-      #livraisons-section select { max-width: 100% !important; width: 100% !important; }
-
-      /* ── Formulaires ─────────────────────────────────────── */
+      /* ── Formulaires ──────────────────────────────────── */
       .form-row { flex-direction: column !important; gap: 0 !important; }
-      .form-card .btn,
-      #panel-profil .btn,
-      #panel-paiement .btn {
-        width: 100%;
-        justify-content: center;
-      }
+      .form-card .btn { width: 100% !important; justify-content: center !important; }
 
-      /* ── Boutons de notification ─────────────────────────── */
-      #btn-mark-read { width: 100%; }
+      /* ── Grilles inline 3-col → 1-col ─────────────────── */
+      #contrib-stats { grid-template-columns: 1fr !important; }
 
-      /* ── Cartes de contribution (meta) ───────────────────── */
-      .dashboard-project-card__meta {
-        font-size: 0.78rem;
-        line-height: 1.55;
+      /* ── CTA card ─────────────────────────────────────── */
+      #deposer-cta-card {
+        flex-direction: column !important;
+        align-items: stretch !important;
       }
+      #deposer-cta-card > a { width: 100% !important; justify-content: center !important; }
+
+      /* ── Livraisons ───────────────────────────────────── */
+      #livraisons-section select { max-width: 100% !important; width: 100% !important; }
+      #btn-mark-read { width: 100% !important; }
     }
   </style>
 </head>
