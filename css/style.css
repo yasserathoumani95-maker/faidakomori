@@ -2840,9 +2840,10 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
   /* Sidebar → header horizontal collant avec nav en onglets */
   .dashboard-sidebar {
     position: sticky !important;
-    top: 0 !important;
+    top: 58px !important;            /* colle SOUS la navbar fixe (≈ 58px) */
     z-index: 100 !important;
-    overflow: visible !important;   /* ne pas clipper — permet le sticky */
+    overflow: hidden !important;     /* clip le sidebar pour que 1fr reste 343px */
+    min-width: 0 !important;         /* évite que le sidebar force le grid track à s'élargir */
     border-radius: 0 !important;
     border-left: none !important;
     border-right: none !important;
@@ -2856,7 +2857,7 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
     align-items: center !important;
     gap: 1rem !important;
     text-align: left !important;
-    padding: 1.25rem 1rem !important;
+    padding: 1rem !important;
   }
   .dashboard-sidebar__avatar { margin: 0 !important; flex-shrink: 0; }
   .dashboard-sidebar__nav {
@@ -2866,13 +2867,17 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
     scrollbar-width: none !important;
     padding: 0 !important;
     border-top: 1px solid var(--border-solid);
+    align-items: stretch !important;
   }
   .dashboard-sidebar__nav::-webkit-scrollbar { display: none; }
+  /* Masquer le séparateur hr dans la nav horizontale mobile */
+  .dashboard-sidebar__nav hr { display: none !important; }
   .dashboard-nav-item {
     flex-shrink: 0 !important;
     white-space: nowrap !important;
-    padding: 0.75rem 1rem !important;
-    font-size: 0.82rem !important;
+    width: auto !important;          /* annule le width:100% du bouton déconnexion */
+    padding: 0.75rem 0.9rem !important;
+    font-size: 0.8rem !important;
     border-left: none !important;
     border-bottom: 2.5px solid transparent;
     border-radius: 0 !important;
