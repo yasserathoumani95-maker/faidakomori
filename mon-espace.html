@@ -6,7 +6,7 @@
   <title>Mon espace — FaidaKomori</title>
   <meta name="theme-color" content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=8" />
+  <link rel="stylesheet" href="css/style.css?v=9" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -903,28 +903,74 @@
       };
       const level = rejected ? 3 : (levelMap[p.status] ?? 1);
 
+      // ── Timeline : rendu inline (pas de CSS classes → immune aux bugs iOS Safari media query) ──
+      const isMobile = window.innerWidth <= 768;
+
+      const stepsHtml = STEPS.map((s, i) => {
+        const stepNum  = i + 1;
+        const isDone   = stepNum < level;
+        const isActive = stepNum === level;
+        const isRej    = rejected && isActive;
+        const isLast   = i === STEPS.length - 1;
+
+        const icon = isRej ? '✕' : (isDone || isActive ? '✓' : String(stepNum));
+
+        // Couleurs du dot
+        let dotBg     = '#F3F4F6', dotBorder = '#D1D5DB', dotColor = '#9CA3AF', dotShadow = '';
+        let labelColor = '#9CA3AF', labelWeight = '600';
+        let lineColor  = '#E5E7EB';
+
+        if (isRej) {
+          dotBg = '#DC2626'; dotBorder = '#DC2626'; dotColor = '#fff';
+          labelColor = '#DC2626'; labelWeight = '700'; lineColor = '#DC2626';
+        } else if (isDone) {
+          dotBg = '#00C853'; dotBorder = '#00C853'; dotColor = '#fff';
+          labelColor = '#00C853'; lineColor = '#00C853';
+        } else if (isActive) {
+          dotBg = '#00C853'; dotBorder = '#00C853'; dotColor = '#fff';
+          dotShadow = '0 0 0 5px rgba(0,200,83,.18)';
+          labelColor = '#0D2244'; labelWeight = '700';
+        }
+
+        if (isMobile) {
+          // ── VERSION MOBILE : colonne verticale, tout en inline ──────
+          const connector = !isLast
+            ? `<div style="position:absolute;left:17px;top:36px;bottom:0;width:2px;background:${lineColor};"></div>`
+            : '';
+          return `
+            <div style="display:flex;flex-direction:row;align-items:flex-start;gap:12px;
+                        width:100%;position:relative;padding-bottom:${isLast ? '0' : '20px'};">
+              ${connector}
+              <div style="width:36px;height:36px;min-width:36px;border-radius:50%;
+                          background:${dotBg};border:2.5px solid ${dotBorder};color:${dotColor};
+                          display:flex;align-items:center;justify-content:center;
+                          font-size:14px;font-weight:800;
+                          position:relative;z-index:1;flex-shrink:0;
+                          box-shadow:${dotShadow || 'none'};">${icon}</div>
+              <div style="font-size:16px;font-weight:${labelWeight};color:${labelColor};
+                          line-height:1.4;padding-top:7px;flex:1;">${s.label}</div>
+            </div>`;
+        } else {
+          // ── VERSION DESKTOP : horizontale avec classes CSS ───────────
+          const cls = isRej ? 'rejected' : (isDone ? 'done' : (isActive ? 'active' : ''));
+          return `
+            <div class="timeline-step ${cls}">
+              ${!isLast ? `<div class="timeline-line ${isDone ? 'done' : ''}"></div>` : ''}
+              <div class="timeline-step__dot">${icon}</div>
+              <div class="timeline-step__label">${s.label}</div>
+            </div>`;
+        }
+      }).join('');
+
+      const wrapperStyle = isMobile
+        ? 'display:flex;flex-direction:column;gap:0;'
+        : 'display:flex;flex-direction:row;align-items:flex-start;justify-content:space-between;position:relative;';
+
       const timelineHtml = `
         <div style="margin-bottom:1.25rem;">
-          <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.75rem;">Avancement du dossier</div>
-          <div class="timeline">
-            ${STEPS.map((s, i) => {
-              const stepNum  = i + 1;
-              const isDone   = stepNum < level;
-              const isActive = stepNum === level;
-              const isRej    = rejected && isActive;
-              let cls = '';
-              if (isRej)    cls = 'rejected';
-              else if (isDone || isActive) cls = isDone ? 'done' : 'active';
-
-              const icon = isRej ? '✕' : (isDone || isActive ? '✓' : stepNum);
-
-              return `
-                <div class="timeline-step ${cls}">
-                  ${i < STEPS.length - 1 ? `<div class="timeline-line ${isDone ? 'done' : ''}"></div>` : ''}
-                  <div class="timeline-step__dot">${icon}</div>
-                  <div class="timeline-step__label">${s.label}</div>
-                </div>`;
-            }).join('')}
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6B7280;margin-bottom:12px;">Avancement du dossier</div>
+          <div style="${wrapperStyle}${isMobile ? '' : 'margin:1.5rem 0;'}" ${isMobile ? '' : 'class="timeline"'}>
+            ${stepsHtml}
           </div>
         </div>`;
       document.getElementById('modal-timeline').innerHTML = timelineHtml;
