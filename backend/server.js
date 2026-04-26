@@ -38,7 +38,17 @@ const authLimiter = rateLimit({
 app.use(limiter);
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '..')));
+// HTML files : jamais en cache (iOS Safari met sinon en cache indéfiniment)
+app.use(express.static(path.join(__dirname, '..'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      res.setHeader('Surrogate-Control', 'no-store');
+    }
+  }
+}));
 
 // ── Routes API ───────────────────────────────────────────────
 app.use('/api/auth',     authLimiter, require('./routes/auth'));
