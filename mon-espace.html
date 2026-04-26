@@ -9,7 +9,7 @@
   <title>Mon espace — FaidaKomori</title>
   <meta name="theme-color" content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=9" />
+  <link rel="stylesheet" href="css/style.css?v=10" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -877,9 +877,9 @@
 
       // En-tête
       const typeLabels = { prevente:'Prévente', dons:'Dons / Crowdfunding', investissement:'Investissement' };
-      document.getElementById('modal-projet-type').textContent = typeLabels[p.type] || p.type;
-      document.getElementById('modal-projet-nom').textContent  = p.nom_projet;
-      document.getElementById('modal-projet-date').innerHTML   =
+      document.getElementById('pm-type').textContent = typeLabels[p.type] || p.type;
+      document.getElementById('pm-nom').textContent  = p.nom_projet;
+      document.getElementById('pm-date').innerHTML   =
         `<i class="ph-light ph-calendar-blank"></i> Soumis le ${new Date(p.created_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}`;
 
       // ── Timeline ──────────────────────────────────────────────
@@ -976,7 +976,7 @@
             ${stepsHtml}
           </div>
         </div>`;
-      document.getElementById('modal-timeline').innerHTML = timelineHtml;
+      document.getElementById('pm-timeline').innerHTML = timelineHtml;
 
       // ── Note admin / Entretien ────────────────────────────────
       let noteHtml = '';
@@ -1032,7 +1032,7 @@
         </div>` + noteHtml;
       }
 
-      document.getElementById('modal-note-admin').innerHTML = noteHtml;
+      document.getElementById('pm-note').innerHTML = noteHtml;
 
       // ── Collecte (si publié) ──────────────────────────────────
       let collecteHtml = '';
@@ -1050,7 +1050,7 @@
             Voir mon projet en ligne <i class="ph-light ph-arrow-right"></i>
           </a>`;
       }
-      document.getElementById('modal-collecte').innerHTML = collecteHtml;
+      document.getElementById('pm-collecte').innerHTML = collecteHtml;
 
       // ── Ouvrir le modal ───────────────────────────────────────
       const overlay = document.getElementById('projet-modal-overlay');
@@ -1486,19 +1486,19 @@
     <div class="projet-modal" id="projet-modal">
       <div class="projet-modal__header">
         <div>
-          <div id="modal-projet-type" style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ocean);margin-bottom:.3rem;"></div>
-          <h3 id="modal-projet-nom" style="font-size:1.2rem;font-weight:800;color:var(--navy);margin:0;"></h3>
-          <div id="modal-projet-date" style="font-size:0.8rem;color:var(--text-muted);margin-top:.25rem;"></div>
+          <div id="pm-type" style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ocean);margin-bottom:.3rem;"></div>
+          <h3 id="pm-nom" style="font-size:1.2rem;font-weight:800;color:var(--navy);margin:0;"></h3>
+          <div id="pm-date" style="font-size:0.8rem;color:var(--text-muted);margin-top:.25rem;"></div>
         </div>
         <button class="projet-modal__close" onclick="fermerModalProjet()">✕</button>
       </div>
       <div class="projet-modal__body">
         <!-- Timeline -->
-        <div id="modal-timeline"></div>
+        <div id="pm-timeline"></div>
         <!-- Infos admin (note, entretien, etc.) -->
-        <div id="modal-note-admin"></div>
+        <div id="pm-note"></div>
         <!-- Collecte si publié -->
-        <div id="modal-collecte"></div>
+        <div id="pm-collecte"></div>
       </div>
     </div>
   </div>
