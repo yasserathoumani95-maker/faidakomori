@@ -6,7 +6,7 @@
   <title>Mon espace — FaidaKomori</title>
   <meta name="theme-color" content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=7" />
+  <link rel="stylesheet" href="css/style.css?v=8" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -63,11 +63,9 @@
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 24px 80px rgba(13,34,68,.22);
-      animation: modalIn .22s ease;
-    }
-    @keyframes modalIn {
-      from { opacity:0; transform:translateY(18px) scale(.97); }
-      to   { opacity:1; transform:translateY(0)     scale(1);   }
+      /* Pas d'animation CSS — géré en JS pour éviter le bug iOS Safari opacity:0 */
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
     .projet-modal__header {
       display: flex; align-items: flex-start;
@@ -165,10 +163,6 @@
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
         border-radius: 16px;
-        animation: none !important;
-        opacity: 1 !important;           /* iOS Safari : reset après animation:none */
-        transform: none !important;      /* iOS Safari : reset translateY/scale */
-        -webkit-transform: none !important;
       }
       .projet-modal__header { padding: 1rem 1rem 0.75rem; }
       .projet-modal__body   { padding: 1rem 1rem 1.5rem; }
@@ -1009,15 +1003,46 @@
       }
       document.getElementById('modal-collecte').innerHTML = collecteHtml;
 
-      // Ouvrir
-      document.getElementById('projet-modal-overlay').classList.add('open');
-      // iOS Safari : bloquer le scroll uniquement sur desktop
+      // ── Ouvrir le modal ───────────────────────────────────────
+      const overlay = document.getElementById('projet-modal-overlay');
+      const modal   = document.getElementById('projet-modal');
+
+      // Garantir la visibilité (iOS Safari ignore animation:none et garde opacity:0)
+      modal.style.opacity   = '1';
+      modal.style.transform = 'none';
+      modal.style.webkitTransform = 'none';
+      modal.style.transition = 'none';
+      modal.style.webkitTransition = 'none';
+
+      overlay.classList.add('open');
+
+      // Animation d'entrée sur desktop uniquement (JS, plus fiable que CSS @keyframes)
+      if (window.innerWidth > 768) {
+        modal.style.opacity   = '0';
+        modal.style.transform = 'translateY(16px) scale(.97)';
+        modal.style.transition = 'opacity .2s ease, transform .2s ease';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            modal.style.opacity   = '1';
+            modal.style.transform = 'translateY(0) scale(1)';
+          });
+        });
+      }
+
+      // Bloquer scroll du body uniquement sur desktop (iOS Safari bug)
       if (window.innerWidth > 480) document.body.style.overflow = 'hidden';
     }
     window.ouvrirProjet = ouvrirProjet;
 
     function fermerModalProjet(e) {
       if (e && e.target !== document.getElementById('projet-modal-overlay')) return;
+      const modal = document.getElementById('projet-modal');
+      // Réinitialiser les styles JS
+      modal.style.opacity = '';
+      modal.style.transform = '';
+      modal.style.webkitTransform = '';
+      modal.style.transition = '';
+      modal.style.webkitTransition = '';
       document.getElementById('projet-modal-overlay').classList.remove('open');
       document.body.style.overflow = '';
     }
