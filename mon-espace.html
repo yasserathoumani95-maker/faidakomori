@@ -6,7 +6,7 @@
   <title>Mon espace — FaidaKomori</title>
   <meta name="theme-color" content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+  <link rel="stylesheet" href="css/style.css?v=6" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -166,6 +166,9 @@
         -webkit-overflow-scrolling: touch;
         border-radius: 16px;
         animation: none !important;
+        opacity: 1 !important;           /* iOS Safari : reset après animation:none */
+        transform: none !important;      /* iOS Safari : reset translateY/scale */
+        -webkit-transform: none !important;
       }
       .projet-modal__header { padding: 1rem 1rem 0.75rem; }
       .projet-modal__body   { padding: 1rem 1rem 1.5rem; }

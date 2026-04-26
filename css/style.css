@@ -2884,13 +2884,63 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
   }
   .dashboard-nav-item:hover { border-bottom-color: var(--border-solid); }
 
+  /* Contenu dashboard : éviter le débordement horizontal (CSS Grid min-width bug) */
+  .dashboard-content {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   /* Panel contenu plein écran */
-  .dashboard-panel.active { padding: 0 1rem 2rem; }
+  .dashboard-panel.active {
+    padding: 0 1rem 2rem;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Tous les enfants directs du panel : contraints à la largeur */
+  .dashboard-panel.active > * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* CTA card sur mobile : colonne, pleine largeur */
+  #deposer-cta-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    padding: 1.25rem !important;
+  }
+  #deposer-cta-card > a {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    flex-shrink: 1 !important;
+  }
+
+  /* En-têtes de panel */
+  .admin-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+  .admin-header > a.btn,
+  .admin-header > button.btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
 
   /* Project card empilée */
   .dashboard-project-card {
     flex-direction: column !important;
     align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+  .dashboard-project-card > div:last-child {
+    width: 100%;
+    justify-content: flex-start !important;
   }
 
   /* Contrib stats : 2 colonnes */
@@ -2898,6 +2948,10 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 
   /* Select livraisons : pleine largeur */
   #livraisons-project-select { max-width: 100% !important; width: 100% !important; }
+
+  /* Texte vide : ne pas déborder */
+  .dashboard-empty { padding: 2rem 1rem !important; }
+  .dashboard-empty p { word-break: break-word; }
 }
 
 /* ══════════════════════════════════════════════════════════════
