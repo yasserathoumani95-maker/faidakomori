@@ -10,7 +10,7 @@
   <meta property="og:type"        content="website" />
   <meta name="theme-color"        content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=11" />
+  <link rel="stylesheet" href="css/style.css?v=12" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -1306,6 +1306,7 @@
       // Scroll en haut du modal
       document.querySelector('#pd-soutien .modal')?.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    window.soutienGoTo = soutienGoTo;
 
     window.soutienNext = function() {
       const step = _currentStep;
