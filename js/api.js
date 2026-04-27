@@ -113,7 +113,11 @@ const API = (() => {
       scheduleInterview: (id, data)            => request('POST',  `/admin/projects/${id}/interview`, data),
       users:             ()                    => request('GET',   '/admin/users'),
       updateRole:        (id, role)            => request('PATCH', `/admin/users/${id}/role`, { role }),
-      contributions:     ()                    => request('GET',   '/admin/contributions'),
+      contributions:     (params = {})          => {
+        const qs = new URLSearchParams(params).toString();
+        return request('GET', `/admin/contributions${qs ? '?' + qs : ''}`);
+      },
+      confirmerContribution: (id, statut, note) => request('PATCH', `/admin/contributions/${id}/statut`, { statut, note }),
       notifications:     ()                    => request('GET',   '/admin/notifications'),
       versements:        ()                    => request('GET',   '/admin/versements'),
       processVersement:  (id, data)            => request('PATCH', `/admin/versements/${id}`, data),

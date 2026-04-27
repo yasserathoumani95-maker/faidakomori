@@ -450,12 +450,19 @@
       <button class="modal__close" onclick="closeModal('modal-don-success')">✕</button>
       <span class="success-modal__icon"><i class="ph-light ph-confetti"></i></span>
       <h3 class="modal__title">Contribution enregistrée !</h3>
-      <p style="color:var(--text-muted);margin-bottom:1.5rem;line-height:1.75;" id="success-main-text">
+      <p style="color:var(--text-muted);margin-bottom:1rem;line-height:1.75;" id="success-main-text">
         Le porteur de projet vous contactera sur le numéro indiqué pour finaliser le paiement.
       </p>
 
+      <!-- Référence de la contribution -->
+      <div id="success-reference-box" style="display:none;background:var(--navy);color:#fff;border-radius:var(--radius-sm);padding:0.9rem 1.1rem;margin-bottom:1.25rem;text-align:center;">
+        <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;opacity:0.65;margin:0 0 0.2rem;">Numéro de référence</p>
+        <p style="font-family:var(--font-heading);font-size:1.35rem;font-weight:800;letter-spacing:0.05em;margin:0;" id="success-reference-code">FK-2025-XXXXXX</p>
+        <p style="font-size:0.72rem;opacity:0.65;margin:0.3rem 0 0;">Conservez cette référence pour le suivi de votre paiement</p>
+      </div>
+
       <!-- Étapes selon le type -->
-      <div style="background:var(--sand);border-radius:var(--radius-sm);padding:1.1rem;margin-bottom:1.5rem;text-align:left;" id="success-steps">
+      <div style="background:var(--sand);border-radius:var(--radius-sm);padding:1.1rem;margin-bottom:1.25rem;text-align:left;" id="success-steps">
         <p style="font-size:0.85rem;margin:0;color:var(--text-muted);max-width:100%;line-height:1.8;">
           <i class="ph-light ph-clipboard-text"></i> <strong>Prochaines étapes :</strong><br/>
           1. Le porteur vous contacte pour confirmer le paiement<br/>
@@ -1095,8 +1102,9 @@
           || document.querySelector('[data-project-id]')?.dataset.projectId;
 
         try {
+          let reference = null;
           if (typeof API !== 'undefined' && projectId) {
-            await API.projects.contribute(projectId, {
+            const result = await API.projects.contribute(projectId, {
               montant,
               methode_paiement: methode,
               nom_contributeur: anonyme ? null : (nom || null),
@@ -1104,9 +1112,10 @@
               message: message || null,
               anonyme
             });
+            reference = result?.reference || null;
           }
 
-          adaptSuccessModal(proj, montant);
+          adaptSuccessModal(proj, montant, reference);
           if (typeof closeModal === 'function') closeModal('modal-soutien');
           setTimeout(() => {
             if (typeof openModal === 'function') openModal('modal-don-success');
@@ -1129,12 +1138,22 @@
     }
 
     // ── Modal succès adaptatif ────────────────────────────────
-    function adaptSuccessModal(project, montant) {
+    function adaptSuccessModal(project, montant, reference) {
       const mainText     = document.getElementById('success-main-text');
       const stepsEl      = document.getElementById('success-steps');
       const successLink  = document.getElementById('success-mon-espace-link');
       const createAcct   = document.getElementById('success-create-account');
+      const refBox       = document.getElementById('success-reference-box');
+      const refCode      = document.getElementById('success-reference-code');
       const isLoggedIn   = typeof API !== 'undefined' && API.isLoggedIn();
+
+      // ── Afficher la référence ────────────────────────────────
+      if (reference && refBox && refCode) {
+        refCode.textContent = reference;
+        refBox.style.display = 'block';
+      } else if (refBox) {
+        refBox.style.display = 'none';
+      }
 
       if (!project) return;
 

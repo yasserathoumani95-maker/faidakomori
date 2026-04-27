@@ -52,6 +52,8 @@ const TABLES_SQLITE = [
     montant INTEGER NOT NULL, methode_paiement TEXT DEFAULT 'mvola',
     message TEXT, anonyme INTEGER DEFAULT 0,
     coordonnees_paiement TEXT, livraison_status TEXT, parts_pourcentage REAL,
+    statut_paiement TEXT NOT NULL DEFAULT 'en_attente',
+    reference TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT)`,
   `CREATE TABLE IF NOT EXISTS notifications (
     id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL,
@@ -98,6 +100,8 @@ const TABLES_PG = [
     montant INTEGER NOT NULL, methode_paiement TEXT DEFAULT 'mvola',
     message TEXT, anonyme INTEGER DEFAULT 0,
     coordonnees_paiement TEXT, livraison_status TEXT, parts_pourcentage FLOAT,
+    statut_paiement TEXT NOT NULL DEFAULT 'en_attente',
+    reference TEXT,
     created_at TEXT NOT NULL DEFAULT ${NOW_TEXT}, updated_at TEXT)`,
   `CREATE TABLE IF NOT EXISTS notifications (
     id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL,
@@ -184,6 +188,13 @@ async function initPostgres(connectionString) {
   // Créer les tables
   for (const table of TABLES_PG) await pool.query(table);
 
+  // Migrations — colonnes ajoutées après création initiale
+  const migrationsPG = [
+    `ALTER TABLE contributions ADD COLUMN IF NOT EXISTS statut_paiement TEXT NOT NULL DEFAULT 'en_attente'`,
+    `ALTER TABLE contributions ADD COLUMN IF NOT EXISTS reference TEXT`,
+  ];
+  for (const m of migrationsPG) { try { await pool.query(m); } catch {} }
+
   // Compte admin
   const adminRes = await pool.query("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
   if (!adminRes.rows.length) {
@@ -252,6 +263,13 @@ async function initSqlJsLocal() {
   };
 
   for (const table of TABLES_SQLITE) sqlDb.exec(table);
+
+  // Migrations SQLite — colonnes ajoutées après création initiale
+  const migrationsSQLite = [
+    `ALTER TABLE contributions ADD COLUMN statut_paiement TEXT NOT NULL DEFAULT 'en_attente'`,
+    `ALTER TABLE contributions ADD COLUMN reference TEXT`,
+  ];
+  for (const m of migrationsSQLite) { try { sqlDb.run(m); saveDb(); } catch {} }
 
   const adminRes = sqlDb.exec("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
   if (!adminRes[0]?.values?.length) {

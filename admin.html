@@ -656,6 +656,54 @@
     .admin-empty__icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
     .admin-empty__text { font-size: 0.95rem; }
 
+    /* ── Paiements filter buttons ── */
+    .paiement-filter-btn {
+      padding: 0.38rem 0.9rem;
+      border-radius: 50px;
+      border: 1.5px solid var(--border-solid);
+      background: #fff;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .paiement-filter-btn:hover { border-color: var(--navy); color: var(--navy); }
+    .paiement-filter-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* ── Paiements table ── */
+    .paiements-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .paiements-table th {
+      text-align: left;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      background: var(--off-white);
+      border-bottom: 1px solid var(--border-solid);
+    }
+    .paiements-table td {
+      padding: 0.85rem 0.9rem;
+      border-bottom: 1px solid var(--border-solid);
+      vertical-align: middle;
+    }
+    .paiements-table tr:last-child td { border-bottom: none; }
+    .paiements-table tr:hover td { background: rgba(0,0,0,0.015); }
+    .statut-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.22rem 0.65rem;
+      border-radius: 50px;
+      font-size: 0.73rem;
+      font-weight: 700;
+    }
+    .statut-badge--attente  { background: rgba(234,179,8,0.12);  color: #92400E; }
+    .statut-badge--confirme { background: rgba(0,200,83,0.12);   color: #065F46; }
+    .statut-badge--annule   { background: rgba(220,38,38,0.1);   color: #B91C1C; }
+
     /* ── Desktop : topbar visible, sidebar sans hauteur fixe ── */
     @media (min-width: 769px) {
       .admin-topbar__hamburger { display: none; }
@@ -803,6 +851,11 @@
       <button class="admin-nav-item" data-panel="annonces">
         <span class="admin-nav-item__icon"><i class="ph-light ph-megaphone"></i></span>
         Annonces
+      </button>
+      <button class="admin-nav-item" data-panel="paiements">
+        <span class="admin-nav-item__icon"><i class="ph-light ph-credit-card"></i></span>
+        Paiements
+        <span class="admin-nav-item__badge" id="paiements-badge" style="display:none;">0</span>
       </button>
       <button class="admin-nav-item" data-panel="versements">
         <span class="admin-nav-item__icon"><i class="ph-light ph-money"></i></span>
@@ -1341,6 +1394,39 @@
         <div class="admin-empty"><i class="ph-light ph-money" style="font-size:2.5rem;opacity:0.3;"></i><p>Chargement…</p></div>
       </div>
     </div><!-- /panel-versements -->
+
+    <!-- ════ Panel : Paiements ════ -->
+    <div class="admin-panel" id="panel-paiements">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title"><i class="ph-light ph-credit-card"></i> Gestion des paiements</h1>
+          <p class="admin-header__sub">Confirmez ou annulez les contributions en attente de vérification.</p>
+        </div>
+        <button class="btn btn-outline-navy btn-sm" onclick="loadPaiements()">
+          <i class="ph-light ph-arrow-clockwise"></i> Actualiser
+        </button>
+      </div>
+
+      <!-- Filtres statut -->
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;" id="paiements-statut-filters">
+        <button class="paiement-filter-btn active" data-statut="">Tous</button>
+        <button class="paiement-filter-btn" data-statut="en_attente">⏳ En attente</button>
+        <button class="paiement-filter-btn" data-statut="confirme">✅ Confirmés</button>
+        <button class="paiement-filter-btn" data-statut="annule">❌ Annulés</button>
+      </div>
+
+      <!-- Filtres type -->
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;" id="paiements-type-filters">
+        <button class="paiement-filter-btn paiement-filter-type active" data-type="">Tous types</button>
+        <button class="paiement-filter-btn paiement-filter-type" data-type="dons">💚 Dons</button>
+        <button class="paiement-filter-btn paiement-filter-type" data-type="prevente">📦 Prévente</button>
+        <button class="paiement-filter-btn paiement-filter-type" data-type="investissement">📈 Investissement</button>
+      </div>
+
+      <div id="paiements-list">
+        <div class="admin-empty"><i class="ph-light ph-credit-card" style="font-size:2.5rem;opacity:0.3;"></i><p>Chargement…</p></div>
+      </div>
+    </div><!-- /panel-paiements -->
 
     <!-- ════ Panel : Top Donateurs ════ -->
     <div class="admin-panel" id="panel-top-donors">
@@ -2366,6 +2452,151 @@
   }
   document.querySelector('[data-panel="top-donors"]')?.addEventListener('click', loadTopDonors);
 
+  // ── Paiements ──────────────────────────────────────────────
+  const _paiementsState = { statut: '', type: '' };
+
+  async function loadPaiements() {
+    const container = document.getElementById('paiements-list');
+    if (!container) return;
+    container.innerHTML = `<div class="admin-empty"><i class="ph-light ph-circle-notch" style="font-size:2rem;opacity:0.4;animation:spin 1s linear infinite;"></i><p>Chargement…</p></div>`;
+    try {
+      const params = { limit: 200 };
+      if (_paiementsState.statut) params.statut = _paiementsState.statut;
+      if (_paiementsState.type)   params.type   = _paiementsState.type;
+
+      const { contributions, total } = await API.admin.contributions(params);
+
+      // Mettre à jour le badge (en_attente seulement)
+      const pending = contributions.filter(c => c.statut_paiement === 'en_attente').length;
+      const badge = document.getElementById('paiements-badge');
+      if (badge) {
+        badge.textContent = pending > 9 ? '9+' : pending;
+        badge.style.display = pending > 0 ? 'inline-flex' : 'none';
+      }
+
+      if (!contributions.length) {
+        container.innerHTML = `<div class="admin-empty"><i class="ph-light ph-credit-card" style="font-size:2.5rem;opacity:0.3;"></i><p>Aucun paiement trouvé pour ces filtres.</p></div>`;
+        return;
+      }
+
+      const typeLabel  = { prevente:'📦 Prévente', dons:'💚 Don', investissement:'📈 Investissement' };
+      const methLabel  = { huri:'Huri Money', mpesa:'M-Pesa', mvola:'MoVola', virement:'Virement' };
+
+      container.innerHTML = `
+        <div style="margin-bottom:0.75rem;font-size:0.82rem;color:var(--text-muted);">
+          <strong>${total}</strong> paiement${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}
+        </div>
+        <div style="background:#fff;border-radius:var(--radius);border:1.5px solid var(--border-solid);overflow:hidden;overflow-x:auto;">
+          <table class="paiements-table">
+            <thead>
+              <tr>
+                <th>Référence</th>
+                <th>Projet</th>
+                <th>Type</th>
+                <th>Contributeur</th>
+                <th>Montant</th>
+                <th>Méthode</th>
+                <th>Coordonnées</th>
+                <th>Statut</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${contributions.map(c => {
+                const statutBadge = c.statut_paiement === 'confirme'
+                  ? '<span class="statut-badge statut-badge--confirme">✅ Confirmé</span>'
+                  : c.statut_paiement === 'annule'
+                    ? '<span class="statut-badge statut-badge--annule">❌ Annulé</span>'
+                    : '<span class="statut-badge statut-badge--attente">⏳ En attente</span>';
+
+                const actions = c.statut_paiement === 'en_attente'
+                  ? `<div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+                       <button onclick="confirmerPaiement(${c.id},'confirme')"
+                         style="padding:0.3rem 0.7rem;border-radius:50px;border:none;background:rgba(0,200,83,0.15);color:#065F46;font-size:0.75rem;font-weight:700;cursor:pointer;">
+                         ✅ Confirmer
+                       </button>
+                       <button onclick="confirmerPaiement(${c.id},'annule')"
+                         style="padding:0.3rem 0.7rem;border-radius:50px;border:none;background:rgba(220,38,38,0.1);color:#B91C1C;font-size:0.75rem;font-weight:700;cursor:pointer;">
+                         ❌ Annuler
+                       </button>
+                     </div>`
+                  : '<span style="font-size:0.75rem;color:var(--text-muted);">—</span>';
+
+                const nom = c.anonyme ? '<em style="color:var(--text-muted);">Anonyme</em>'
+                  : (c.user_prenom ? `${c.user_prenom} ${c.user_nom}` : (c.nom_contributeur || '—'));
+                const coords = c.coordonnees_paiement
+                  ? `<span style="font-family:monospace;font-size:0.8rem;background:var(--off-white);padding:0.15rem 0.4rem;border-radius:4px;">${c.coordonnees_paiement}</span>`
+                  : '<span style="color:var(--text-muted);">—</span>';
+                const date = c.created_at ? new Date(c.created_at).toLocaleDateString('fr-FR') : '—';
+                const ref  = c.reference
+                  ? `<span style="font-family:monospace;font-size:0.78rem;font-weight:700;color:var(--navy);">${c.reference}</span>`
+                  : '<span style="color:var(--text-muted);font-size:0.78rem;">—</span>';
+
+                return `
+                  <tr>
+                    <td>${ref}</td>
+                    <td style="max-width:150px;font-weight:600;color:var(--navy);">${c.nom_projet || '—'}</td>
+                    <td>${typeLabel[c.type] || c.type || '—'}</td>
+                    <td>${nom}</td>
+                    <td style="font-weight:700;white-space:nowrap;">${parseInt(c.montant || 0).toLocaleString('fr-FR')} <span style="font-size:0.72rem;font-weight:500;">KMF</span></td>
+                    <td>${methLabel[c.methode_paiement] || c.methode_paiement || '—'}</td>
+                    <td>${coords}</td>
+                    <td>${statutBadge}</td>
+                    <td style="white-space:nowrap;">${date}</td>
+                    <td>${actions}</td>
+                  </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    } catch (err) {
+      container.innerHTML = `<div class="admin-empty"><p style="color:#B91C1C;">Erreur : ${err.message}</p></div>`;
+    }
+  }
+
+  async function confirmerPaiement(id, statut) {
+    let note = null;
+    if (statut === 'annule') {
+      note = window.prompt('Motif de l\'annulation (optionnel) :');
+      if (note === null) return; // annulé par l'utilisateur
+    }
+    try {
+      await API.admin.confirmerContribution(id, statut, note);
+      showToast(
+        statut === 'confirme'
+          ? '✅ Paiement confirmé — le contributeur est notifié.'
+          : '❌ Contribution annulée.',
+        statut === 'confirme' ? 'success' : 'warning'
+      );
+      loadPaiements();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'warning');
+    }
+  }
+
+  // Câblage des filtres statut
+  document.getElementById('paiements-statut-filters')?.addEventListener('click', e => {
+    const btn = e.target.closest('.paiement-filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('#paiements-statut-filters .paiement-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    _paiementsState.statut = btn.dataset.statut || '';
+    loadPaiements();
+  });
+
+  // Câblage des filtres type
+  document.getElementById('paiements-type-filters')?.addEventListener('click', e => {
+    const btn = e.target.closest('.paiement-filter-type');
+    if (!btn) return;
+    document.querySelectorAll('#paiements-type-filters .paiement-filter-type').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    _paiementsState.type = btn.dataset.type || '';
+    loadPaiements();
+  });
+
+  document.querySelector('[data-panel="paiements"]')?.addEventListener('click', loadPaiements);
+
   /* ── Câblage des panels — charge les données à l'ouverture ── */
   document.querySelector('[data-panel="demandes"]')?.addEventListener('click', loadDemandes);
   document.querySelector('[data-panel="entretiens"]')?.addEventListener('click', loadEntretiens);
@@ -2374,6 +2605,12 @@
   loadAdminStats();
   loadRecentDemandes();
   loadEntretiens();
+  // Charger le badge paiements en_attente au démarrage
+  API.admin.contributions({ statut: 'en_attente', limit: 100 }).then(({ contributions }) => {
+    const n = contributions.length;
+    const badge = document.getElementById('paiements-badge');
+    if (badge && n > 0) { badge.textContent = n > 9 ? '9+' : n; badge.style.display = 'inline-flex'; }
+  }).catch(() => {});
 
   function updateLinkField() {
     const type = document.getElementById('interviewType').value;

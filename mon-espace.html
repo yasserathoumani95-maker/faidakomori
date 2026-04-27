@@ -460,7 +460,7 @@
               </div>
               <div style="background:#fff;border-radius:var(--radius);padding:1rem 1.25rem;border:1.5px solid var(--border-solid);text-align:center;">
                 <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--gold-dark);" id="contrib-stat-pending">—</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Livraison(s) en cours</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Paiement(s) en attente</div>
               </div>
             </div>
 
@@ -1141,9 +1141,17 @@
         investissement: { icon:'ph-trend-up',  label:'Investissement', color:'var(--green-deep)', bg:'rgba(0,200,83,0.08)' },
       };
 
+      // Statut paiement config
+      const paiementConfig = {
+        en_attente: { bg:'rgba(234,179,8,0.12)',  color:'#92400E', icon:'ph-clock',        label:'Paiement en attente de confirmation' },
+        confirme:   { bg:'rgba(0,200,83,0.10)',   color:'#065F46', icon:'ph-check-circle', label:'Paiement confirmé' },
+        annule:     { bg:'rgba(220,38,38,0.09)',  color:'#B91C1C', icon:'ph-x-circle',     label:'Paiement annulé' },
+      };
+
       container.innerHTML = contributions.map(c => {
         const tc = typeConfig[c.type] || typeConfig.dons;
         const lc = livraisonColors[c.livraison_status];
+        const pc = paiementConfig[c.statut_paiement] || paiementConfig.en_attente;
         const methodLabel = { huri:'Huri Money', mpesa:'M-Pesa', virement:'Virement', mvola:'MoVola' }[c.methode_paiement] || (c.methode_paiement || '').toUpperCase();
 
         return `
@@ -1165,6 +1173,18 @@
               ${c.type === 'investissement' && c.parts_pourcentage ? `
                 <div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-muted);">
                   <i class="ph-light ph-chart-pie-slice"></i> Part acquise : <strong style="color:var(--navy);">${c.parts_pourcentage}%</strong> de l'entreprise
+                </div>` : ''}
+
+              <!-- Statut paiement -->
+              <div style="margin-top:0.6rem;display:inline-flex;align-items:center;gap:0.45rem;padding:0.35rem 0.8rem;border-radius:50px;background:${pc.bg};">
+                <i class="ph-light ${pc.icon}" style="color:${pc.color};"></i>
+                <span style="font-size:0.76rem;font-weight:700;color:${pc.color};">${pc.label}</span>
+              </div>
+
+              ${c.reference ? `
+                <div style="margin-top:0.45rem;display:flex;align-items:center;gap:0.5rem;">
+                  <span style="font-size:0.72rem;color:var(--text-muted);font-weight:600;">Réf.</span>
+                  <span style="font-family:monospace;font-size:0.82rem;font-weight:700;color:var(--navy);background:var(--off-white);padding:0.15rem 0.5rem;border-radius:4px;border:1px solid var(--border-solid);">${c.reference}</span>
                 </div>` : ''}
 
               ${lc ? `
@@ -1206,7 +1226,7 @@
 
         // Statistiques
         const total    = contributions.reduce((s, c) => s + (parseInt(c.montant) || 0), 0);
-        const pending  = contributions.filter(c => c.livraison_status === 'pending' || c.livraison_status === 'expedie').length;
+        const pending  = contributions.filter(c => (c.statut_paiement || 'en_attente') === 'en_attente').length;
         const statsEl  = document.getElementById('contrib-stats');
         const filtsEl  = document.getElementById('contrib-filters');
         if (statsEl) {

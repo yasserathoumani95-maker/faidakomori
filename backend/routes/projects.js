@@ -107,6 +107,15 @@ router.post('/', requireAuth, async (req, res) => {
   res.status(201).json({ success: true, project });
 });
 
+// ── Générer une référence unique FK-YYYY-XXXXXX ──────────────
+function generateReference() {
+  const year  = new Date().getFullYear();
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sans 0,O,1,I pour éviter confusion
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return `FK-${year}-${code}`;
+}
+
 // ── POST /api/projects/:id/contribute ────────────────────────
 router.post('/:id/contribute', optionalAuth, async (req, res) => {
   const { montant, methode_paiement, message, anonyme, nom_contributeur, coordonnees_paiement } = req.body;
@@ -121,8 +130,9 @@ router.post('/:id/contribute', optionalAuth, async (req, res) => {
     return res.status(400).json({ error: 'Montant trop élevé. Maximum 10 000 000 KMF par contribution.' });
   }
 
-  const userId = req.user?.id || null;
+  const userId          = req.user?.id || null;
   const livraison_status = project.type === 'prevente' ? 'pending' : null;
+  const reference        = generateReference();
 
   let parts_contrib = null;
   if (project.type === 'investissement' && project.parts_pourcentage && project.montant > 0) {
@@ -130,14 +140,19 @@ router.post('/:id/contribute', optionalAuth, async (req, res) => {
   }
 
   await db.prepare(`
-    INSERT INTO contributions (project_id, user_id, nom_contributeur, montant, methode_paiement, message, anonyme, coordonnees_paiement, livraison_status, parts_pourcentage)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO contributions
+      (project_id, user_id, nom_contributeur, montant, methode_paiement, message,
+       anonyme, coordonnees_paiement, livraison_status, parts_pourcentage,
+       statut_paiement, reference)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'en_attente', ?)
   `).run(
     project.id, userId, nom_contributeur || null, montantInt,
-    methode_paiement || 'mvola', message || null, anonyme ? 1 : 0,
-    coordonnees_paiement || null, livraison_status, parts_contrib
+    methode_paiement || 'huri', message || null, anonyme ? 1 : 0,
+    coordonnees_paiement || null, livraison_status, parts_contrib,
+    reference
   );
 
+  // Mettre à jour les compteurs du projet (comptabilité optimiste)
   await db.prepare(`
     UPDATE projects SET
       montant_collecte = montant_collecte + ?,
@@ -146,17 +161,29 @@ router.post('/:id/contribute', optionalAuth, async (req, res) => {
     WHERE id = ?
   `).run(montantInt, project.id);
 
-  // Notifier le porteur de projet
+  // Notifier le porteur de projet avec les coordonnées de paiement
   if (project.user_id) {
-    const m = anonyme ? 'Un anonyme' : (nom_contributeur || 'Quelqu\'un');
+    const who   = anonyme ? 'Un anonyme' : (nom_contributeur || 'Quelqu\'un');
+    const methL = { huri:'Huri Money', mpesa:'M-Pesa', virement:'Virement bancaire', mvola:'MoVola' }[methode_paiement] || methode_paiement || '';
+    const msg   = `💰 ${who} souhaite ${project.type === 'investissement' ? 'investir' : (project.type === 'prevente' ? 'précommander' : 'donner')} ${montantInt.toLocaleString('fr-FR')} KMF` +
+                  ` pour "${project.nom_projet}" via ${methL}. Ref: ${reference}.` +
+                  (coordonnees_paiement ? ` Contactez-le au : ${coordonnees_paiement}` : '');
     await db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`).run(
-      project.user_id,
-      `${m} a contribué ${montantInt.toLocaleString('fr-FR')} KMF à votre projet "${project.nom_projet}"`,
-      `/projet-detail.html?id=${project.id}`
+      project.user_id, msg, `/admin.html#paiements`
     );
   }
 
-  res.json({ success: true, message: 'Contribution enregistrée avec succès.' });
+  // Notifier les admins (pour validation)
+  const admins = await db.prepare(`SELECT id FROM users WHERE role = 'admin'`).all();
+  for (const a of admins) {
+    await db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`).run(
+      a.id,
+      `📥 Nouvelle contribution ${montantInt.toLocaleString('fr-FR')} KMF — "${project.nom_projet}" (${reference})`,
+      `/admin.html#paiements`
+    );
+  }
+
+  res.json({ success: true, reference, message: 'Contribution enregistrée avec succès.' });
 });
 
 // ── GET /api/projects/:id/contributions-porteur ───────────────

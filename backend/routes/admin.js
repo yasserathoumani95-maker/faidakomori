@@ -180,12 +180,70 @@ router.patch('/users/:id/role', async (req, res) => {
 
 // ── GET /api/admin/contributions ─────────────────────────────
 router.get('/contributions', async (req, res) => {
-  const contributions = await db.prepare(`
-    SELECT c.*, p.nom_projet, p.type FROM contributions c
+  const { statut, type, page = 1, limit = 50 } = req.query;
+  const lim = parseInt(limit);
+  const off = (parseInt(page) - 1) * lim;
+
+  let sql  = `SELECT c.*, p.nom_projet, p.type, u.email AS user_email, u.nom AS user_nom, u.prenom AS user_prenom
+              FROM contributions c
+              JOIN projects p ON c.project_id = p.id
+              LEFT JOIN users u ON c.user_id = u.id
+              WHERE 1=1`;
+  const args = [];
+
+  if (statut && ['en_attente', 'confirme', 'annule'].includes(statut)) {
+    sql += ` AND c.statut_paiement = ?`; args.push(statut);
+  }
+  if (type && ['prevente', 'dons', 'investissement'].includes(type)) {
+    sql += ` AND p.type = ?`; args.push(type);
+  }
+
+  const countSql = sql.replace(
+    /SELECT c\.\*, .* FROM/,
+    'SELECT COUNT(*) AS n FROM'
+  );
+  sql += ` ORDER BY c.created_at DESC LIMIT ${lim} OFFSET ${off}`;
+
+  const contributions = await db.prepare(sql).all(...args);
+  const countRow      = await db.prepare(countSql).get(...args);
+  res.json({ contributions, total: countRow?.n || 0, page: parseInt(page) });
+});
+
+// ── PATCH /api/admin/contributions/:id/statut ─────────────────
+router.patch('/contributions/:id/statut', async (req, res) => {
+  const { statut, note } = req.body;
+  if (!['confirme', 'annule'].includes(statut)) {
+    return res.status(400).json({ error: 'Statut invalide. Valeurs : confirme, annule.' });
+  }
+
+  const contrib = await db.prepare(`
+    SELECT c.*, p.nom_projet, p.montant AS projet_montant FROM contributions c
     JOIN projects p ON c.project_id = p.id
-    ORDER BY c.created_at DESC LIMIT 100
-  `).all();
-  res.json({ contributions });
+    WHERE c.id = ?
+  `).get(req.params.id);
+  if (!contrib) return res.status(404).json({ error: 'Contribution introuvable.' });
+  if (contrib.statut_paiement === 'confirme') {
+    return res.status(409).json({ error: 'Ce paiement est déjà confirmé.' });
+  }
+
+  await db.prepare(`
+    UPDATE contributions SET statut_paiement = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+  `).run(statut, contrib.id);
+
+  // Notifier le contributeur (s'il a un compte)
+  if (contrib.user_id) {
+    const montantFmt = parseInt(contrib.montant).toLocaleString('fr-FR');
+    let msg;
+    if (statut === 'confirme') {
+      msg = `✅ Votre paiement de ${montantFmt} KMF pour "${contrib.nom_projet}" (Réf. ${contrib.reference}) a été confirmé. Merci pour votre soutien !`;
+    } else {
+      msg = `❌ Votre contribution de ${montantFmt} KMF pour "${contrib.nom_projet}" (Réf. ${contrib.reference}) a été annulée.${note ? ' Motif : ' + note : ''} Contactez-nous pour plus d\'informations.`;
+    }
+    await db.prepare(`INSERT INTO notifications (user_id, message, lien) VALUES (?, ?, ?)`)
+      .run(contrib.user_id, msg, '/mon-espace.html');
+  }
+
+  res.json({ success: true, statut });
 });
 
 // ── GET /api/admin/notifications ─────────────────────────────
