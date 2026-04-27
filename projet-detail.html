@@ -10,7 +10,7 @@
   <meta property="og:type"        content="website" />
   <meta name="theme-color"        content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=12" />
+  <link rel="stylesheet" href="css/style.css?v=13" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -604,8 +604,9 @@
             <div style="display:flex;align-items:center;gap:1rem;background:rgba(0,200,83,0.07);border:1.5px solid rgba(0,200,83,0.2);border-radius:var(--radius-sm);padding:1rem 1.1rem;margin-bottom:1.25rem;">
               <i class="ph-light ph-user-circle" style="font-size:2.2rem;color:var(--green-deep);flex-shrink:0;"></i>
               <div>
-                <p id="step4-user-name" style="font-size:0.95rem;font-weight:700;color:var(--green-deep);margin:0 0 0.2rem;">Connecté</p>
-                <p style="font-size:0.78rem;color:var(--text-muted);margin:0;">Contribution liée à votre compte — suivi dans <strong>Mon Espace</strong>.</p>
+                <p id="step4-user-name" style="font-size:0.95rem;font-weight:700;color:var(--green-deep);margin:0 0 0.15rem;">Connecté</p>
+                <p id="step4-user-sub" style="font-size:0.78rem;color:var(--text-muted);margin:0 0 0.1rem;"></p>
+                <p style="font-size:0.76rem;color:var(--text-muted);margin:0;">Contribution liée à votre compte — suivi dans <strong>Mon Espace</strong>.</p>
               </div>
             </div>
             <button type="button" class="btn btn-primary btn-full" onclick="soutienGoTo(5)">
@@ -1191,6 +1192,60 @@
       soutienGoTo(1);
     }
 
+    // ══════════════════════════════════════════════════════════
+    // AUTO-FILL — Chargement profil utilisateur connecté
+    // ══════════════════════════════════════════════════════════
+    let _fkProfile  = null; // { id, nom, prenom, email, tel, ile, role }
+    let _fkPaiement = null; // { paiement_tel, paiement_banque, paiement_rib }
+
+    async function _loadUserProfile() {
+      if (!API.isLoggedIn()) return;
+      try {
+        const [profRes, payRes] = await Promise.all([
+          API.user.profile(),
+          API.user.getPaiement()
+        ]);
+        _fkProfile  = profRes.user   || null;
+        _fkPaiement = payRes.paiement || null;
+      } catch (e) {
+        // Silencieux — l'utilisateur peut quand même remplir manuellement
+      }
+    }
+
+    // Pré-remplir les champs coordonnées selon le profil et la méthode choisie
+    function _autoFillStep3() {
+      const user = API.getUser(); // { prenom, nom, email, role }
+      if (!user) return;
+
+      // ── Nom affiché ───────────────────────────────────────
+      const nomField = document.getElementById('don-nom');
+      if (nomField && !nomField.value.trim()) {
+        nomField.value = `${user.prenom} ${user.nom}`.trim();
+      }
+
+      // ── Coordonnées de paiement ───────────────────────────
+      const coordsField = document.getElementById('don-coords');
+      if (!coordsField || coordsField.value.trim()) return; // ne pas écraser la saisie manuelle
+
+      const method = document.querySelector('#pay-cards-list .pay-card.selected')?.dataset.method || 'huri';
+
+      if (method === 'virement') {
+        // Banque : utiliser paiement_banque (+ RIB si dispo)
+        const banque = _fkPaiement?.paiement_banque || '';
+        const rib    = _fkPaiement?.paiement_rib    || '';
+        if (banque) {
+          coordsField.value = rib ? `${banque} — ${rib}` : banque;
+        }
+      } else {
+        // Mobile money : paiement_tel en priorité, sinon tel du profil
+        const tel = _fkPaiement?.paiement_tel || _fkProfile?.tel || '';
+        if (tel) coordsField.value = tel;
+      }
+    }
+
+    // Lancer le chargement immédiatement si connecté
+    if (API.isLoggedIn()) _loadUserProfile();
+
     // ── Calculateur de parts en temps réel ───────────────────
     function updateInvestPartsPreview() {
       const proj = window._projectData;
@@ -1280,6 +1335,11 @@
 
       _currentStep = step;
 
+      // Si on arrive à l'étape 3, pré-remplir les coordonnées
+      if (step === 3) {
+        _autoFillStep3();
+      }
+
       // Si on arrive à l'étape 4, vérifier connexion
       if (step === 4) {
         const user = typeof API !== 'undefined' ? API.getUser() : null;
@@ -1287,7 +1347,11 @@
         const authBox      = document.getElementById('step4-auth-box');
         if (user) {
           if (connectedDiv) {
+            const emailLine = _fkProfile?.email || user.email || '';
+            const telLine   = _fkPaiement?.paiement_tel || _fkProfile?.tel || '';
             document.getElementById('step4-user-name').textContent = `✓ Connecté en tant que ${user.prenom} ${user.nom}`;
+            const step4Sub = document.getElementById('step4-user-sub');
+            if (step4Sub) step4Sub.textContent = [emailLine, telLine ? `📞 ${telLine}` : ''].filter(Boolean).join(' · ');
             connectedDiv.style.display = '';
           }
           if (authBox) authBox.style.display = 'none';
@@ -1389,9 +1453,9 @@
 
         if (result.token && result.user) {
           API.setSession(result.token, result.user);
-          // Auto-remplir nom dans step 3 si vide
-          const nomField = document.getElementById('don-nom');
-          if (nomField && !nomField.value.trim()) nomField.value = `${result.user.prenom} ${result.user.nom}`;
+          // Charger le profil complet (tel, paiement) puis pré-remplir step 3
+          await _loadUserProfile();
+          _autoFillStep3();
         }
         soutienGoTo(5);
       } catch(e) {
