@@ -489,8 +489,10 @@
         <div class="soutien-progress__dot" id="sdot-3">3</div>
         <div class="soutien-progress__line" id="sline-3"></div>
         <div class="soutien-progress__dot" id="sdot-4">4</div>
+        <div class="soutien-progress__line" id="sline-4"></div>
+        <div class="soutien-progress__dot" id="sdot-5">5</div>
       </div>
-      <div class="soutien-step-label" id="soutien-step-label">Étape <span>1</span> sur 4 — <span id="soutien-step-name">Montant</span></div>
+      <div class="soutien-step-label" id="soutien-step-label">Étape <span>1</span> sur 5 — <span id="soutien-step-name">Montant</span></div>
 
       <form id="don-form" novalidate>
 
@@ -593,8 +595,87 @@
           </div>
         </div>
 
-        <!-- ══ ÉTAPE 4 : Récapitulatif + Confirmer ══ -->
+        <!-- ══ ÉTAPE 4 : Compte ══ -->
         <div class="soutien-step" id="soutien-step-4" style="display:none;">
+          <p style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;"><i class="ph-light ph-user-circle-plus"></i> Votre compte FaidaKomori</p>
+
+          <!-- A — Connecté -->
+          <div id="step4-connected" style="display:none;">
+            <div style="display:flex;align-items:center;gap:1rem;background:rgba(0,200,83,0.07);border:1.5px solid rgba(0,200,83,0.2);border-radius:var(--radius-sm);padding:1rem 1.1rem;margin-bottom:1.25rem;">
+              <i class="ph-light ph-user-circle" style="font-size:2.2rem;color:var(--green-deep);flex-shrink:0;"></i>
+              <div>
+                <p id="step4-user-name" style="font-size:0.95rem;font-weight:700;color:var(--green-deep);margin:0 0 0.2rem;">Connecté</p>
+                <p style="font-size:0.78rem;color:var(--text-muted);margin:0;">Contribution liée à votre compte — suivi dans <strong>Mon Espace</strong>.</p>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-full" onclick="soutienGoTo(5)">
+              Continuer vers le récapitulatif <i class="ph-light ph-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- B — Non connecté -->
+          <div id="step4-auth-box">
+            <p style="font-size:0.83rem;color:var(--text-muted);margin-bottom:1.1rem;">Créez un compte pour suivre votre contribution dans <strong>Mon Espace</strong>, ou connectez-vous si vous en avez déjà un.</p>
+
+            <!-- Tabs -->
+            <div style="display:flex;border-bottom:2px solid var(--border-solid);margin-bottom:1.25rem;">
+              <button type="button" id="tab-login-btn" onclick="showAuthTab('login')" style="flex:1;padding:0.65rem;border:none;background:none;font-weight:700;font-size:0.88rem;color:var(--navy);border-bottom:3px solid var(--navy);margin-bottom:-2px;cursor:pointer;transition:all .15s;">Se connecter</button>
+              <button type="button" id="tab-register-btn" onclick="showAuthTab('register')" style="flex:1;padding:0.65rem;border:none;background:none;font-weight:600;font-size:0.88rem;color:var(--text-muted);cursor:pointer;transition:all .15s;">Créer un compte</button>
+            </div>
+
+            <!-- Login form -->
+            <div id="auth-tab-login">
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" id="step4-login-email" class="form-input" placeholder="votre@email.com" autocomplete="email" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mot de passe</label>
+                <input type="password" id="step4-login-pass" class="form-input" placeholder="••••••••" autocomplete="current-password" />
+              </div>
+            </div>
+
+            <!-- Register form -->
+            <div id="auth-tab-register" style="display:none;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label">Prénom</label>
+                  <input type="text" id="step4-reg-prenom" class="form-input" placeholder="Faida" />
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label">Nom</label>
+                  <input type="text" id="step4-reg-nom" class="form-input" placeholder="Komori" />
+                </div>
+              </div>
+              <div class="form-group" style="margin-top:0.75rem;">
+                <label class="form-label">Email</label>
+                <input type="email" id="step4-reg-email" class="form-input" placeholder="votre@email.com" autocomplete="email" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mot de passe <span style="font-size:0.75rem;color:var(--text-muted);">(6 caractères min.)</span></label>
+                <input type="password" id="step4-reg-pass" class="form-input" placeholder="••••••••" autocomplete="new-password" />
+              </div>
+            </div>
+
+            <!-- Erreur auth -->
+            <div id="step4-auth-error" style="display:none;padding:0.65rem 0.9rem;border-radius:var(--radius-sm);background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.2);color:#B91C1C;font-size:0.85rem;margin-bottom:0.9rem;"></div>
+
+            <!-- Bouton principal -->
+            <button type="button" id="step4-auth-btn" class="btn btn-primary btn-full" style="margin-bottom:0.75rem;" onclick="submitStep4Auth()">
+              <i class="ph-light ph-sign-in"></i>
+              <span id="step4-auth-label">Se connecter</span>
+              <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
+            </button>
+
+            <!-- Continuer sans compte -->
+            <button type="button" class="btn btn-outline btn-full" onclick="skipStep4Auth()" style="color:var(--text-muted);border-color:var(--border-solid);font-size:0.85rem;">
+              <i class="ph-light ph-eye-slash"></i> Continuer sans compte
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ ÉTAPE 5 : Récapitulatif + Confirmer ══ -->
+        <div class="soutien-step" id="soutien-step-5" style="display:none;">
           <p style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">
             <i class="ph-light ph-clipboard-text"></i> Récapitulatif de votre contribution
           </p>
@@ -1165,7 +1246,7 @@
 
     // ── Gestion des étapes ──────────────────────────────────
     let _currentStep = 1;
-    const _stepNames = ['Montant', 'Mode de paiement', 'Vos coordonnées', 'Récapitulatif'];
+    const _stepNames = ['Montant', 'Mode de paiement', 'Vos coordonnées', 'Compte', 'Récapitulatif'];
 
     function soutienGoTo(step) {
       // Masquer toutes les étapes
@@ -1174,7 +1255,7 @@
       if (el) el.style.display = '';
 
       // Mettre à jour les dots
-      for (let i = 1; i <= 4; i++) {
+      for (let i = 1; i <= 5; i++) {
         const dot  = document.getElementById(`sdot-${i}`);
         const line = document.getElementById(`sline-${i}`);
         if (!dot) continue;
@@ -1186,21 +1267,41 @@
 
       // Label étape
       const labelEl = document.getElementById('soutien-step-label');
-      if (labelEl) labelEl.innerHTML = `Étape <span>${step}</span> sur 4 — <span id="soutien-step-name">${_stepNames[step-1]}</span>`;
+      if (labelEl) labelEl.innerHTML = `Étape <span>${step}</span> sur 5 — <span id="soutien-step-name">${_stepNames[step-1]}</span>`;
 
       // Navigation
       const prevBtn = document.getElementById('soutien-prev');
       const nextBtn = document.getElementById('soutien-next');
       const nav     = document.getElementById('soutien-nav');
       if (prevBtn) prevBtn.style.display = step > 1 ? '' : 'none';
+      // Étape 4 (compte) et 5 (récap) : le "Suivant" est géré par les boutons internes
       if (nextBtn) nextBtn.style.display = step < 4 ? '' : 'none';
-      // Sur l'étape 4, le submit remplace le "Suivant"
-      if (nav) nav.style.display = step === 4 ? 'none' : '';
+      if (nav) nav.style.display = step === 5 ? 'none' : '';
 
       _currentStep = step;
 
-      // Si on arrive à l'étape 4, remplir le récap
-      if (step === 4) fillRecap();
+      // Si on arrive à l'étape 4, vérifier connexion
+      if (step === 4) {
+        const user = typeof API !== 'undefined' ? API.getUser() : null;
+        const connectedDiv = document.getElementById('step4-connected');
+        const authBox      = document.getElementById('step4-auth-box');
+        if (user) {
+          if (connectedDiv) {
+            document.getElementById('step4-user-name').textContent = `✓ Connecté en tant que ${user.prenom} ${user.nom}`;
+            connectedDiv.style.display = '';
+          }
+          if (authBox) authBox.style.display = 'none';
+          // Auto-remplir nom
+          const nomField = document.getElementById('don-nom');
+          if (nomField && !nomField.value.trim()) nomField.value = `${user.prenom} ${user.nom}`;
+        } else {
+          if (connectedDiv) connectedDiv.style.display = 'none';
+          if (authBox) authBox.style.display = '';
+        }
+      }
+
+      // Si on arrive à l'étape 5, remplir le récap
+      if (step === 5) fillRecap();
 
       // Scroll en haut du modal
       document.querySelector('#pd-soutien .modal')?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1232,6 +1333,77 @@
         clearStepErr();
         soutienGoTo(4);
       }
+    };
+
+    // ── Étape 4 : gestion du compte ─────────────────────────────
+    window.showAuthTab = function(tab) {
+      const loginDiv = document.getElementById('auth-tab-login');
+      const regDiv   = document.getElementById('auth-tab-register');
+      const loginBtn = document.getElementById('tab-login-btn');
+      const regBtn   = document.getElementById('tab-register-btn');
+      const label    = document.getElementById('step4-auth-label');
+      if (tab === 'login') {
+        if (loginDiv) loginDiv.style.display = '';
+        if (regDiv)   regDiv.style.display   = 'none';
+        if (loginBtn) { loginBtn.style.color = 'var(--navy)'; loginBtn.style.fontWeight = '700'; loginBtn.style.borderBottom = '3px solid var(--navy)'; }
+        if (regBtn)   { regBtn.style.color   = 'var(--text-muted)'; regBtn.style.fontWeight = '600'; regBtn.style.borderBottom = 'none'; }
+        if (label) label.textContent = 'Se connecter';
+      } else {
+        if (loginDiv) loginDiv.style.display = 'none';
+        if (regDiv)   regDiv.style.display   = '';
+        if (regBtn)   { regBtn.style.color   = 'var(--navy)'; regBtn.style.fontWeight = '700'; regBtn.style.borderBottom = '3px solid var(--navy)'; }
+        if (loginBtn) { loginBtn.style.color = 'var(--text-muted)'; loginBtn.style.fontWeight = '600'; loginBtn.style.borderBottom = 'none'; }
+        if (label) label.textContent = 'Créer mon compte';
+      }
+    };
+
+    window.submitStep4Auth = async function() {
+      const btn   = document.getElementById('step4-auth-btn');
+      const label = document.getElementById('step4-auth-label');
+      const err   = document.getElementById('step4-auth-error');
+      const loginDiv = document.getElementById('auth-tab-login');
+      const isLogin  = loginDiv && loginDiv.style.display !== 'none';
+
+      if (err) err.style.display = 'none';
+      if (btn) btn.disabled = true;
+      const origLabel = label ? label.textContent : '';
+      if (label) label.textContent = 'En cours…';
+
+      try {
+        let result;
+        if (isLogin) {
+          const email = document.getElementById('step4-login-email')?.value?.trim();
+          const pass  = document.getElementById('step4-login-pass')?.value;
+          if (!email || !pass) throw new Error('Email et mot de passe requis.');
+          result = await API.auth.login(email, pass);
+        } else {
+          const prenom = document.getElementById('step4-reg-prenom')?.value?.trim();
+          const nom    = document.getElementById('step4-reg-nom')?.value?.trim();
+          const email  = document.getElementById('step4-reg-email')?.value?.trim();
+          const pass   = document.getElementById('step4-reg-pass')?.value;
+          if (!prenom || !nom || !email || !pass) throw new Error('Tous les champs sont requis.');
+          if (pass.length < 6) throw new Error('Le mot de passe doit faire au moins 6 caractères.');
+          result = await API.auth.register({ prenom, nom, email, password: pass, ile: '' });
+        }
+
+        if (result.token && result.user) {
+          API.setSession(result.token, result.user);
+          // Auto-remplir nom dans step 3 si vide
+          const nomField = document.getElementById('don-nom');
+          if (nomField && !nomField.value.trim()) nomField.value = `${result.user.prenom} ${result.user.nom}`;
+        }
+        soutienGoTo(5);
+      } catch(e) {
+        const msg = e.message || 'Erreur. Veuillez réessayer.';
+        if (err) { err.textContent = msg; err.style.display = 'block'; }
+      } finally {
+        if (btn) btn.disabled = false;
+        if (label) label.textContent = origLabel;
+      }
+    };
+
+    window.skipStep4Auth = function() {
+      soutienGoTo(5);
     };
 
     window.soutienPrev = function() {
@@ -1359,36 +1531,6 @@
         if (!coords) {
           showErr('Veuillez saisir vos coordonnées de paiement.');
           soutienGoTo(3); return;
-        }
-
-        // ── Auth gate : TOUS les types nécessitent un compte ──
-        if (!user) {
-          showErr('');
-          if (errDiv) {
-            const redirectUrl = encodeURIComponent(window.location.href);
-            errDiv.style.display = 'block';
-            errDiv.innerHTML = `
-              <div style="display:flex;flex-direction:column;gap:0.75rem;">
-                <div style="display:flex;align-items:center;gap:0.6rem;">
-                  <i class="ph-light ph-lock" style="font-size:1.3rem;color:#B91C1C;flex-shrink:0;"></i>
-                  <strong style="color:#B91C1C;">Un compte FaidaKomori est requis</strong>
-                </div>
-                <p style="font-size:0.85rem;color:var(--text-muted);margin:0;line-height:1.6;">
-                  Créez un compte gratuit pour soutenir ce projet et suivre votre contribution dans votre espace personnel.
-                </p>
-                <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-                  <a href="login.html?tab=register&redirect=${redirectUrl}"
-                     style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.1rem;background:var(--navy);color:#fff;border-radius:50px;font-weight:700;font-size:0.85rem;text-decoration:none;">
-                    <i class="ph-light ph-user-plus"></i> Créer un compte gratuit
-                  </a>
-                  <a href="login.html?redirect=${redirectUrl}"
-                     style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.1rem;border:1.5px solid var(--navy);color:var(--navy);border-radius:50px;font-weight:600;font-size:0.85rem;text-decoration:none;">
-                    <i class="ph-light ph-sign-in"></i> Se connecter
-                  </a>
-                </div>
-              </div>`;
-          }
-          return;
         }
 
         // ── Envoi ─────────────────────────────────────────────
