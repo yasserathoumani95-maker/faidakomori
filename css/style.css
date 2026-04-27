@@ -618,7 +618,7 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 }
 .navbar__logo:hover .navbar__logo-img {
   transform: scale(1.08) rotate(-3deg);
-  filter: drop-shadow(0 3px 8px rgba(0,200,83,0.45));
+  filter: drop-shadow(0 3px 8px rgba(232,160,32,0.55));
 }
 .footer__logo-img {
   width: 30px;
