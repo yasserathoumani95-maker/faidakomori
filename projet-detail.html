@@ -10,7 +10,7 @@
   <meta property="og:type"        content="website" />
   <meta name="theme-color"        content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=13" />
+  <link rel="stylesheet" href="css/style.css?v=14" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -1125,6 +1125,103 @@
 
       } catch (err) {
         console.warn('Projet non chargé (mode démo) :', err.message);
+        // ── Fallback : données démo uniques par ID ────────
+        const DEMO_PROJECTS = {
+          1: { id:1, nom_projet:'Livre de cuisine comorienne', type:'prevente', ile:'Grande Comore', secteur:'culture',
+               prenom:'Fatima', nom:'Abdou',
+               description:'Recueil illustré de 120 recettes traditionnelles comoriennes transmises de génération en génération. Chaque soutien reçoit un exemplaire dédicacé livré à domicile. Ce livre est un voyage culinaire et culturel à travers les quatre îles des Comores — mkatra, langouste grillée, pilao, sambusa et bien d'autres.',
+               montant:400000, montant_collecte:272000, nb_contributeurs:68, duree:22 },
+          2: { id:2, nom_projet:'École primaire à Mohéli', type:'dons', ile:'Mohéli', secteur:'education',
+               prenom:'Association', nom:'Éducation Mohéli',
+               description:'Construction d\'une salle de classe supplémentaire pour accueillir 40 enfants supplémentaires dans un village rural de Mohéli. Le village de Nioumachoua manque cruellement de place : 80 élèves partagent actuellement une seule salle. Votre don finance les matériaux de construction, le mobilier et la formation d\'un enseignant local.',
+               montant:1500000, montant_collecte:630000, nb_contributeurs:124, duree:45 },
+          3: { id:3, nom_projet:'Restaurant traditionnel Moroni', type:'investissement', ile:'Grande Comore', secteur:'restauration',
+               prenom:'Nassim', nom:'Hamidou',
+               description:'Ouverture d\'un restaurant de cuisine comorienne authentique au cœur de Moroni, face au marché central. Menu 100% local, produits des agriculteurs comoriens. Le restaurant dispose déjà d\'un local signé et d\'une brigade de 4 personnes. 25% des parts sont proposées aux investisseurs FaidaKomori en échange de leur apport.',
+               montant:2000000, montant_collecte:1700000, nb_contributeurs:12, duree:8, parts_pourcentage:25 },
+          4: { id:4, nom_projet:'Broderies artisanales Anjouan', type:'prevente', ile:'Anjouan', secteur:'artisanat',
+               prenom:'Mariam', nom:'Said',
+               description:'Collection de vêtements et accessoires brodés à la main avec les motifs traditionnels anjouanais. Chaque pièce est unique, réalisée par des artisanes locales de Mutsamudu. En précommandant, vous soutenez directement la valorisation de l\'artisanat comorien et recevez votre pièce en exclusivité avant la mise en vente publique.',
+               montant:300000, montant_collecte:93000, nb_contributeurs:31, duree:58 },
+          5: { id:5, nom_projet:'Conserverie de poisson Anjouan', type:'investissement', ile:'Anjouan', secteur:'agriculture',
+               prenom:'Ibrahim', nom:'Youssouf',
+               description:'Création d\'une unité de transformation et de conservation du poisson pêché localement à Anjouan. Le projet répond à un besoin réel : 40% du poisson est actuellement perdu faute de moyens de conservation. La conserverie permettra de créer 15 emplois directs et d\'exporter vers les marchés régionaux. 30% des parts disponibles pour les investisseurs.',
+               montant:3000000, montant_collecte:1650000, nb_contributeurs:8, duree:30, parts_pourcentage:30 },
+          6: { id:6, nom_projet:'Jardin communautaire Moroni', type:'dons', ile:'Grande Comore', secteur:'agriculture',
+               prenom:'Association', nom:'Verte Comores',
+               description:'Création d\'un jardin communautaire en permaculture dans le quartier Hambou de Moroni pour fournir des légumes frais à 50 familles défavorisées. Le projet inclut des ateliers de jardinage, la formation de 10 jardiniers bénévoles et la mise en place d\'un système d\'irrigation économe. Les surplus seront vendus au marché local pour financer la continuité.',
+               montant:500000, montant_collecte:385000, nb_contributeurs:156, duree:14 },
+          7: { id:7, nom_projet:'Album de musique twarab', type:'prevente', ile:'Diaspora', secteur:'culture',
+               prenom:'Ali', nom:'Mlamali',
+               description:'Premier album de twarab moderne enregistré aux Comores, mêlant instruments traditionnels (oud, violon, qarqaba) et production contemporaine. Enregistré à Moroni avec 12 musiciens comoriens. En précommandant, vous recevez l\'album en format physique + digital dédicacé, ainsi qu\'une invitation à l\'écoute privée à Moroni ou Paris.',
+               montant:500000, montant_collecte:260000, nb_contributeurs:87, duree:35 },
+          8: { id:8, nom_projet:'Épicerie en ligne Comores', type:'investissement', ile:'Grande Comore', secteur:'technologie',
+               prenom:'Karim', nom:'Hassan',
+               description:'Application mobile de livraison de courses à domicile à Moroni. Déjà 200 clients testeurs actifs et 8 fournisseurs locaux partenaires. L\'investissement permettra d\'accélérer le développement technique, le recrutement de livreurs et le marketing. 20% des parts disponibles pour les investisseurs FaidaKomori.',
+               montant:2000000, montant_collecte:1240000, nb_contributeurs:15, duree:21, parts_pourcentage:20 },
+          9: { id:9, nom_projet:'Nettoyage des plages de Mohéli', type:'dons', ile:'Mohéli', secteur:'environnement',
+               prenom:'Association', nom:'EcoMohéli',
+               description:'Organisation de 6 grandes journées de nettoyage des plages de Mohéli avec achat de matériel, sensibilisation des communautés côtières et mise en place d\'un système de recyclage des déchets plastiques. Mohéli est classée réserve de biosphère UNESCO — protégeons-la ensemble.',
+               montant:250000, montant_collecte:225000, nb_contributeurs:203, duree:5 },
+        };
+
+        const demo = DEMO_PROJECTS[parseInt(urlId)];
+        if (demo) {
+          // Titre & méta
+          document.title = `${demo.nom_projet} — FaidaKomori`;
+          const crumb = document.querySelector('[aria-label="Fil d\'Ariane"] span:last-child');
+          if (crumb) crumb.textContent = demo.nom_projet;
+
+          // Galerie
+          const typeEmoji = { prevente:'📦', dons:'🤝', investissement:'📈' };
+          const emojiMap = { 1:'📚', 2:'🏫', 3:'🍽️', 4:'🎨', 5:'🐟', 6:'🌿', 7:'🎵', 8:'🛒', 9:'🌊' };
+          const gallery = document.querySelector('.detail-gallery');
+          if (gallery) gallery.textContent = emojiMap[demo.id] || typeEmoji[demo.type] || '📁';
+
+          // Badges
+          const badgesEl = document.querySelector('.detail-badges');
+          const typeCfg = {
+            prevente:       { icon:'ph-package',   label:'Prévente',       cls:'badge-prevente' },
+            dons:           { icon:'ph-handshake',  label:'Don solidaire',  cls:'badge-dons'     },
+            investissement: { icon:'ph-trend-up',   label:'Investissement', cls:'badge-invest'   },
+          };
+          const tc = typeCfg[demo.type] || typeCfg.dons;
+          if (badgesEl) {
+            badgesEl.innerHTML = `
+              <span class="badge ${tc.cls}"><i class="ph-light ${tc.icon}"></i> ${tc.label}</span>
+              ${demo.secteur ? `<span class="badge" style="background:rgba(13,34,68,0.08);color:var(--navy);border:1px solid rgba(13,34,68,0.12);"><i class="ph-light ph-tag"></i> ${demo.secteur}</span>` : ''}
+              ${demo.ile ? `<span class="badge" style="background:rgba(10,123,108,0.08);color:var(--ocean);border:1px solid rgba(10,123,108,0.15);"><i class="ph-light ph-map-pin"></i> ${demo.ile}</span>` : ''}`;
+          }
+
+          // Titre, auteur, description
+          const h1 = document.querySelector('.detail-title');
+          if (h1) h1.textContent = demo.nom_projet;
+          const authorEl = document.querySelector('.detail-author');
+          if (authorEl) authorEl.innerHTML = `<i class="ph-light ph-user-circle"></i> <strong>${demo.prenom} ${demo.nom}</strong>${demo.ile ? ` — ${demo.ile}` : ''}`;
+          const descEl = document.querySelector('.detail-desc');
+          if (descEl) descEl.textContent = demo.description;
+
+          // Chiffres collecte
+          const collecte = demo.montant_collecte || 0;
+          const objectif = demo.montant || 1;
+          const pct      = Math.min(Math.round((collecte / objectif) * 100), 100);
+          const amtEl = document.querySelector('.sticky-card__amount');
+          if (amtEl) amtEl.innerHTML = `${collecte.toLocaleString('fr-FR')} <span style="font-size:1rem;font-weight:500;">KMF</span>`;
+          const lblEl = document.querySelector('.sticky-card__label');
+          if (lblEl) lblEl.textContent = `collectés sur ${objectif.toLocaleString('fr-FR')} KMF`;
+          const fillEl = document.querySelector('.progress-bar__fill[data-pct]');
+          if (fillEl) { fillEl.dataset.pct = pct; fillEl.style.width = pct + '%'; }
+          const pctEl = document.querySelector('.progress-pct');
+          if (pctEl) pctEl.textContent = pct + '%';
+          const statVals = document.querySelectorAll('.sticky-card__stat-val');
+          if (statVals[0]) statVals[0].textContent = demo.nb_contributeurs || 0;
+          if (statVals[1]) statVals[1].textContent = demo.duree || 30;
+          if (statVals[2]) statVals[2].textContent = `${(objectif - collecte).toLocaleString('fr-FR')} KMF`;
+
+          // Stocker et adapter le modal
+          window._projectData = demo;
+          adaptModalToProject(demo);
+        }
       }
     }
 
