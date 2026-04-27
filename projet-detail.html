@@ -21,6 +21,156 @@
     .modal__icon .ph-light { font-size:2.5rem; }
     .success-modal__icon .ph-light { font-size:3rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Formulaire étapes ─────────────────────────────── */
+    .soutien-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 1.5rem;
+    }
+    .soutien-progress__dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 800;
+      border: 2px solid var(--border-solid);
+      color: var(--text-muted);
+      background: #fff;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .soutien-progress__dot.active {
+      background: var(--navy); color: #fff; border-color: var(--navy);
+    }
+    .soutien-progress__dot.done {
+      background: var(--green); color: #fff; border-color: var(--green);
+    }
+    .soutien-progress__line {
+      flex: 1; height: 2px; background: var(--border-solid); max-width: 40px; min-width: 12px;
+    }
+    .soutien-progress__line.done { background: var(--green); }
+    .soutien-step-label {
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1.25rem;
+    }
+    .soutien-step-label span { color: var(--navy); }
+
+    /* ── Cartes mode de paiement ─────────────────────── */
+    .pay-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 2px solid var(--border-solid);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.18s;
+      background: #fff;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pay-card:active { transform: scale(0.98); }
+    .pay-card__radio {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border-solid);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.18s;
+    }
+    .pay-card__radio::after {
+      content: '';
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      transition: all 0.18s;
+    }
+    .pay-card__icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      width: 2.5rem;
+      text-align: center;
+    }
+    .pay-card__info strong { display: block; font-size: 0.95rem; color: var(--navy); }
+    .pay-card__info span { font-size: 0.78rem; color: var(--text-muted); }
+    .pay-card.selected {
+      border-color: var(--green);
+      background: rgba(0,200,83,0.05);
+    }
+    .pay-card.selected .pay-card__radio {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .pay-card.selected .pay-card__radio::after {
+      background: #fff;
+    }
+    .pay-card.selected .pay-card__info strong { color: var(--green-deep); }
+
+    /* ── Récapitulatif ───────────────────────────────── */
+    .recap-box {
+      background: var(--sand);
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-solid);
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .recap-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--border-solid);
+      font-size: 0.87rem;
+    }
+    .recap-row:last-child { border-bottom: none; }
+    .recap-row__label { color: var(--text-muted); font-weight: 500; }
+    .recap-row__value { font-weight: 700; color: var(--navy); text-align: right; }
+
+    /* ── Navigation étapes ───────────────────────────── */
+    .soutien-nav {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+    .soutien-nav .btn-prev {
+      flex: 0 0 auto;
+      padding: 0.7rem 1.1rem;
+      border: 1.5px solid var(--border-solid);
+      border-radius: 50px;
+      background: #fff;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .soutien-nav .btn-prev:hover { border-color: var(--navy); color: var(--navy); }
+    .soutien-nav .btn-next {
+      flex: 1;
+      padding: 0.85rem 1.25rem;
+      border-radius: 50px;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .soutien-nav .btn-next:hover { background: var(--navy-deep); }
+    .soutien-nav .btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -179,25 +329,25 @@
               <h4 style="color:var(--navy);margin-bottom:1rem;">Choisissez votre contrepartie</h4>
               <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;max-width:100%;">En soutenant ce projet, vous recevez une contrepartie selon votre montant de soutien.</p>
 
-              <div class="reward-card" onclick="document.getElementById('custom-amount').value='3000';openModal('modal-soutien')">
+              <div class="reward-card" onclick="document.getElementById('custom-amount').value='3000';openModal('pd-soutien')">
                 <div class="reward-card__amount">3 000 KMF</div>
                 <p class="reward-card__title"><i class="ph-light ph-star"></i> Soutien digital</p>
                 <p class="reward-card__desc">Version PDF complète du livre + vos coordonnées dans les remerciements numériques.</p>
               </div>
 
-              <div class="reward-card" onclick="document.getElementById('custom-amount').value='5000';openModal('modal-soutien')">
+              <div class="reward-card" onclick="document.getElementById('custom-amount').value='5000';openModal('pd-soutien')">
                 <div class="reward-card__amount">5 000 KMF</div>
                 <p class="reward-card__title"><i class="ph-light ph-book-open"></i> Un exemplaire dédicacé</p>
                 <p class="reward-card__desc">1 exemplaire imprimé dédicacé par l'auteure + version PDF + votre nom dans les remerciements.</p>
               </div>
 
-              <div class="reward-card" onclick="document.getElementById('custom-amount').value='10000';openModal('modal-soutien')">
+              <div class="reward-card" onclick="document.getElementById('custom-amount').value='10000';openModal('pd-soutien')">
                 <div class="reward-card__amount">10 000 KMF</div>
                 <p class="reward-card__title"><i class="ph-light ph-books"></i> Pack famille</p>
                 <p class="reward-card__desc">2 exemplaires dédicacés + version PDF + citation de votre famille en page d'introduction.</p>
               </div>
 
-              <div class="reward-card" onclick="document.getElementById('custom-amount').value='25000';openModal('modal-soutien')" style="border-color:var(--gold);background:rgba(232,160,32,0.04);">
+              <div class="reward-card" onclick="document.getElementById('custom-amount').value='25000';openModal('pd-soutien')" style="border-color:var(--gold);background:rgba(232,160,32,0.04);">
                 <div style="position:absolute;top:-1px;right:1rem;background:var(--gold);color:var(--navy);font-size:0.68rem;font-weight:800;padding:0.2rem 0.65rem;border-radius:0 0 6px 6px;text-transform:uppercase;letter-spacing:0.06em;">Populaire</div>
                 <div class="reward-card__amount">25 000 KMF</div>
                 <p class="reward-card__title"><i class="ph-light ph-trophy"></i> Mécène du livre</p>
@@ -271,7 +421,7 @@
                 </div>
               </div>
 
-              <button class="btn btn-primary btn-full btn-lg" data-open-modal="modal-soutien" style="margin-bottom:0.75rem;">
+              <button class="btn btn-primary btn-full btn-lg" data-open-modal="pd-soutien" style="margin-bottom:0.75rem;">
                 <i class="ph-light ph-package"></i> Soutenir ce projet
                 <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
               </button>
@@ -320,134 +470,219 @@
   </main>
 
   <!-- ── MODAL SOUTIEN ─────────────────────────────────────── -->
-  <div class="modal-overlay" id="modal-soutien">
-    <div class="modal modal-relative" style="max-height:90vh;overflow-y:auto;">
-      <button class="modal__close" onclick="closeModal('modal-soutien')">✕</button>
+  <div class="modal-overlay" id="pd-soutien">
+    <div class="modal modal-relative" style="max-height:92vh;overflow-y:auto;padding-bottom:1.5rem;">
+      <button class="modal__close" onclick="closeModal('pd-soutien')">✕</button>
 
-      <!-- Rappel projet (rempli dynamiquement) -->
-      <div id="modal-project-recap" style="display:none;background:var(--sand);border-radius:var(--radius-sm);padding:0.85rem 1rem;margin-bottom:1.25rem;border-left:3px solid var(--gold);">
-        <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin:0 0 0.2rem;" id="modal-project-type-label">Prévente</p>
-        <p style="font-size:0.92rem;font-weight:700;color:var(--navy);margin:0;" id="modal-project-name">—</p>
-        <p style="font-size:0.78rem;color:var(--text-muted);margin:0.15rem 0 0;" id="modal-project-porteur">—</p>
+      <!-- Rappel projet -->
+      <div id="pd-proj-recap" style="display:none;background:var(--sand);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-bottom:1.25rem;border-left:3px solid var(--gold);">
+        <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin:0 0 0.15rem;" id="pd-proj-type">Prévente</p>
+        <p style="font-size:0.9rem;font-weight:700;color:var(--navy);margin:0;" id="pd-proj-name">—</p>
       </div>
 
-      <!-- Icône + titre adaptatifs -->
-      <span class="modal__icon" id="modal-icon-wrap"><i class="ph-light ph-heart" id="modal-type-icon"></i></span>
-      <h3 class="modal__title" id="modal-title">Soutenir ce projet</h3>
-      <p class="modal__sub" id="modal-subtitle">Votre contribution sera enregistrée et le porteur vous contactera pour finaliser le paiement.</p>
-
-      <!-- Bannière compte connecté -->
-      <div id="modal-user-info" style="display:none;background:rgba(0,200,83,0.07);border:1.5px solid rgba(0,200,83,0.2);border-radius:var(--radius-sm);padding:0.8rem 1rem;margin-bottom:1.2rem;align-items:center;gap:0.75rem;">
-        <i class="ph-light ph-user-circle" style="font-size:1.5rem;color:var(--green-deep);flex-shrink:0;"></i>
-        <div>
-          <p style="font-size:0.85rem;font-weight:700;color:var(--green-deep);margin:0;" id="modal-user-name">Connecté</p>
-          <p style="font-size:0.76rem;color:var(--text-muted);margin:0;">Votre contribution sera liée à votre compte — suivi disponible dans <strong>Mon Espace</strong>.</p>
-        </div>
+      <!-- Indicateur d'étapes -->
+      <div class="soutien-progress" id="soutien-progress">
+        <div class="soutien-progress__dot active" id="sdot-1">1</div>
+        <div class="soutien-progress__line" id="sline-1"></div>
+        <div class="soutien-progress__dot" id="sdot-2">2</div>
+        <div class="soutien-progress__line" id="sline-2"></div>
+        <div class="soutien-progress__dot" id="sdot-3">3</div>
+        <div class="soutien-progress__line" id="sline-3"></div>
+        <div class="soutien-progress__dot" id="sdot-4">4</div>
       </div>
+      <div class="soutien-step-label" id="soutien-step-label">Étape <span>1</span> sur 4 — <span id="soutien-step-name">Montant</span></div>
 
       <form id="don-form" novalidate>
 
-        <!-- ① Montant -->
-        <div class="form-group">
-          <label class="form-label" id="don-montant-label">Montant de votre soutien (KMF) <span style="color:#DC2626;">*</span></label>
-          <div class="amount-grid" id="don-amount-grid">
-            <button type="button" class="amount-btn" data-amount="3000">3 000</button>
-            <button type="button" class="amount-btn selected" data-amount="5000">5 000</button>
-            <button type="button" class="amount-btn" data-amount="10000">10 000</button>
-            <button type="button" class="amount-btn" data-amount="15000">15 000</button>
-            <button type="button" class="amount-btn" data-amount="25000">25 000</button>
-            <button type="button" class="amount-btn" data-amount="">Autre</button>
-          </div>
-          <input type="number" id="custom-amount" class="form-input" placeholder="Ou saisir un montant" value="5000" style="margin-top:0.5rem;" min="100" />
-
-          <!-- Calculateur parts (investissement uniquement) -->
-          <div id="invest-parts-preview" style="display:none;margin-top:0.65rem;padding:0.75rem 1rem;background:rgba(13,34,68,0.05);border-radius:var(--radius-sm);border:1.5px solid rgba(13,34,68,0.12);">
-            <p style="font-size:0.78rem;color:var(--text-muted);margin:0 0 0.2rem;"><i class="ph-light ph-chart-pie-slice"></i> Estimation de votre part :</p>
-            <p style="font-family:var(--font-heading);font-size:1.2rem;font-weight:800;color:var(--navy);margin:0;" id="invest-parts-value">—</p>
-            <p style="font-size:0.72rem;color:var(--text-muted);margin:0.15rem 0 0;">Calculé sur la base des parts proposées par le porteur.</p>
-          </div>
-        </div>
-
-        <!-- ② Moyen de paiement -->
-        <div class="form-group">
-          <label class="form-label">Moyen de paiement préféré</label>
-          <div class="payment-options">
-            <div class="payment-option selected" data-method="huri">
-              <span class="payment-option__icon"><i class="ph-light ph-device-mobile"></i></span>
-              <div>
-                <strong style="font-size:0.9rem;">Huri Money</strong>
-                <p style="font-size:0.78rem;color:var(--text-muted);margin:0;max-width:100%;">Paiement mobile instantané</p>
-              </div>
+        <!-- ══ ÉTAPE 1 : Montant ══ -->
+        <div class="soutien-step" id="soutien-step-1">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" id="don-montant-label" style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.85rem;">
+              <i class="ph-light ph-coins"></i> Quel montant souhaitez-vous contribuer ?
+            </label>
+            <div class="amount-grid" id="don-amount-grid">
+              <button type="button" class="amount-btn" data-amount="3000">3 000</button>
+              <button type="button" class="amount-btn selected" data-amount="5000">5 000</button>
+              <button type="button" class="amount-btn" data-amount="10000">10 000</button>
+              <button type="button" class="amount-btn" data-amount="15000">15 000</button>
+              <button type="button" class="amount-btn" data-amount="25000">25 000</button>
+              <button type="button" class="amount-btn" data-amount="50000">50 000</button>
             </div>
-            <div class="payment-option" data-method="mpesa">
-              <span class="payment-option__icon"><i class="ph-light ph-currency-dollar-simple"></i></span>
-              <div>
-                <strong style="font-size:0.9rem;">M-Pesa</strong>
-                <p style="font-size:0.78rem;color:var(--text-muted);margin:0;max-width:100%;">Via votre compte M-Pesa</p>
-              </div>
+            <div style="position:relative;margin-top:0.75rem;">
+              <input type="number" id="custom-amount" class="form-input" placeholder="Ou saisir un autre montant…" value="5000" min="100" style="padding-right:3.5rem;" />
+              <span style="position:absolute;right:0.9rem;top:50%;transform:translateY(-50%);font-size:0.82rem;font-weight:700;color:var(--text-muted);">KMF</span>
             </div>
-            <div class="payment-option" data-method="virement">
-              <span class="payment-option__icon"><i class="ph-light ph-bank"></i></span>
-              <div>
-                <strong style="font-size:0.9rem;">Virement bancaire</strong>
-                <p style="font-size:0.78rem;color:var(--text-muted);margin:0;max-width:100%;">RIB fourni après confirmation</p>
-              </div>
+            <p class="form-hint" style="margin-top:0.5rem;"><i class="ph-light ph-info"></i> Vous ne payez rien maintenant — le porteur vous contactera pour finaliser.</p>
+
+            <!-- Calculateur parts investissement -->
+            <div id="invest-parts-preview" style="display:none;margin-top:0.85rem;padding:1rem 1.1rem;background:rgba(13,34,68,0.05);border-radius:var(--radius-sm);border:1.5px solid rgba(13,34,68,0.15);">
+              <p style="font-size:0.78rem;color:var(--text-muted);margin:0 0 0.25rem;"><i class="ph-light ph-chart-pie-slice"></i> Estimation de votre part dans l'entreprise :</p>
+              <p style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--navy);margin:0;" id="invest-parts-value">—</p>
+              <p style="font-size:0.72rem;color:var(--text-muted);margin:0.2rem 0 0;">Calculé sur la base des parts proposées. Confirmé à la signature du contrat.</p>
             </div>
           </div>
         </div>
 
-        <!-- ③ Coordonnées de paiement -->
-        <div class="form-group">
-          <label class="form-label" for="don-coords"><i class="ph-light ph-device-mobile"></i> Votre numéro mobile money <span style="color:#DC2626;">*</span></label>
-          <input type="tel" id="don-coords" class="form-input" placeholder="+269 321 00 00" />
-          <p class="form-hint">Ce numéro sera communiqué au porteur pour finaliser le paiement. <strong>Vous ne payez rien maintenant.</strong></p>
-        </div>
-
-        <!-- ④ Nom affiché (masqué si anonyme) -->
-        <div class="form-group" id="don-nom-group">
-          <label class="form-label" for="don-nom" id="don-nom-label">Votre nom <span style="color:var(--text-muted);font-weight:400;">(pour les remerciements)</span></label>
-          <input type="text" id="don-nom" class="form-input" placeholder="Prénom Nom" />
-        </div>
-
-        <!-- ⑤ Message optionnel -->
-        <div class="form-group">
-          <label class="form-label" for="don-message">Message pour le porteur <span style="color:var(--text-muted);font-weight:400;">(optionnel)</span></label>
-          <textarea id="don-message" class="form-textarea" rows="2" placeholder="Un mot d'encouragement…"></textarea>
-        </div>
-
-        <!-- ⑥ Anonymat -->
-        <div style="display:flex;align-items:flex-start;gap:0.65rem;padding:0.85rem 1rem;background:rgba(13,34,68,0.04);border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);margin-bottom:1.25rem;cursor:pointer;" onclick="document.getElementById('don-anonyme').click()">
-          <input type="checkbox" id="don-anonyme" style="width:18px;height:18px;cursor:pointer;flex-shrink:0;margin-top:1px;" onclick="event.stopPropagation();" />
-          <div>
-            <p style="font-size:0.88rem;font-weight:600;color:var(--navy);margin:0 0 0.15rem;"><i class="ph-light ph-eye-slash"></i> Rester anonyme</p>
-            <p style="font-size:0.78rem;color:var(--text-muted);margin:0;">Mon nom ne sera pas affiché publiquement sur la page du projet.</p>
+        <!-- ══ ÉTAPE 2 : Moyen de paiement ══ -->
+        <div class="soutien-step" id="soutien-step-2" style="display:none;">
+          <p style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">
+            <i class="ph-light ph-credit-card"></i> Choisissez votre moyen de paiement
+          </p>
+          <div style="display:flex;flex-direction:column;gap:0.65rem;" id="pay-cards-list">
+            <div class="pay-card selected" data-method="huri" onclick="selectPayCard(this)">
+              <div class="pay-card__radio"></div>
+              <div class="pay-card__icon">📱</div>
+              <div class="pay-card__info">
+                <strong>Huri Money</strong>
+                <span>Mobile money — Telecom Comores</span>
+              </div>
+            </div>
+            <div class="pay-card" data-method="mvola" onclick="selectPayCard(this)">
+              <div class="pay-card__radio"></div>
+              <div class="pay-card__icon">💛</div>
+              <div class="pay-card__info">
+                <strong>MoVola</strong>
+                <span>Mobile money — Société Nationale des Postes</span>
+              </div>
+            </div>
+            <div class="pay-card" data-method="mpesa" onclick="selectPayCard(this)">
+              <div class="pay-card__radio"></div>
+              <div class="pay-card__icon">🟢</div>
+              <div class="pay-card__info">
+                <strong>M-Pesa</strong>
+                <span>Mobile money — Comores Telecom</span>
+              </div>
+            </div>
+            <div class="pay-card" data-method="virement" onclick="selectPayCard(this)">
+              <div class="pay-card__radio"></div>
+              <div class="pay-card__icon">🏦</div>
+              <div class="pay-card__info">
+                <strong>Virement bancaire</strong>
+                <span>BIC, BCC ou banque locale (RIB fourni)</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- ⑦ Rappel compte (prévente + investissement) -->
-        <div id="don-account-notice" style="display:none;margin-bottom:1.25rem;padding:0.85rem 1rem;border-radius:var(--radius-sm);border:1.5px solid rgba(10,123,108,0.2);background:rgba(10,123,108,0.05);">
-          <p style="font-size:0.83rem;color:var(--ocean);font-weight:600;margin:0 0 0.25rem;" id="don-account-notice-title"><i class="ph-light ph-shield-check"></i> Créez un compte pour sécuriser votre suivi</p>
-          <p style="font-size:0.78rem;color:var(--text-muted);margin:0;" id="don-account-notice-body">Avec un compte vous pouvez suivre la livraison de votre commande et recevoir des notifications.</p>
-          <a href="login.html" style="display:inline-block;margin-top:0.5rem;font-size:0.8rem;font-weight:700;color:var(--ocean);">Se connecter / Créer un compte <i class="ph-light ph-arrow-right"></i></a>
+        <!-- ══ ÉTAPE 3 : Coordonnées ══ -->
+        <div class="soutien-step" id="soutien-step-3" style="display:none;">
+          <p style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;" id="step3-title">
+            <i class="ph-light ph-device-mobile"></i> Vos coordonnées de paiement
+          </p>
+
+          <!-- Champ coordonnées (label dynamique) -->
+          <div class="form-group">
+            <label class="form-label" id="don-coords-label">Votre numéro mobile money <span style="color:#DC2626;">*</span></label>
+            <input type="tel" id="don-coords" class="form-input" placeholder="+269 321 00 00" style="font-size:1.05rem;" />
+            <p class="form-hint" id="don-coords-hint">Ce numéro sera partagé avec le porteur pour finaliser le virement.</p>
+          </div>
+
+          <!-- Nom affiché -->
+          <div class="form-group" id="don-nom-group">
+            <label class="form-label" for="don-nom" id="don-nom-label">Votre prénom &amp; nom <span style="font-size:0.78rem;color:var(--text-muted);font-weight:400;">(affiché sur la page du projet)</span></label>
+            <input type="text" id="don-nom" class="form-input" placeholder="Ex : Faïda Komori" />
+          </div>
+
+          <!-- Anonymat -->
+          <div style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.9rem 1rem;background:rgba(13,34,68,0.04);border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);cursor:pointer;margin-bottom:0;" onclick="document.getElementById('don-anonyme').click()">
+            <input type="checkbox" id="don-anonyme" style="width:20px;height:20px;cursor:pointer;flex-shrink:0;margin-top:1px;accent-color:var(--navy);" onclick="event.stopPropagation();" />
+            <div>
+              <p style="font-size:0.88rem;font-weight:700;color:var(--navy);margin:0 0 0.15rem;"><i class="ph-light ph-eye-slash"></i> Rester anonyme</p>
+              <p style="font-size:0.78rem;color:var(--text-muted);margin:0;">Mon nom ne sera pas affiché publiquement.</p>
+            </div>
+          </div>
         </div>
 
-        <!-- Message d'erreur -->
-        <div id="don-error" style="display:none;padding:0.75rem 1rem;border-radius:var(--radius-sm);background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.2);color:#B91C1C;font-size:0.88rem;margin-bottom:1rem;"></div>
+        <!-- ══ ÉTAPE 4 : Récapitulatif + Confirmer ══ -->
+        <div class="soutien-step" id="soutien-step-4" style="display:none;">
+          <p style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">
+            <i class="ph-light ph-clipboard-text"></i> Récapitulatif de votre contribution
+          </p>
 
-        <button type="submit" class="btn btn-primary btn-full btn-lg" id="don-submit-btn">
-          <i class="ph-light ph-heart" id="don-submit-icon"></i>
-          <span id="don-submit-label">Confirmer mon soutien</span>
-          <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
-        </button>
+          <!-- Recap box -->
+          <div class="recap-box" id="soutien-recap">
+            <div class="recap-row">
+              <span class="recap-row__label">Projet</span>
+              <span class="recap-row__value" id="recap-projet">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-row__label">Type</span>
+              <span class="recap-row__value" id="recap-type">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-row__label">Montant</span>
+              <span class="recap-row__value" id="recap-montant" style="font-size:1.1rem;color:var(--gold-dark);">—</span>
+            </div>
+            <div class="recap-row" id="recap-parts-row" style="display:none;">
+              <span class="recap-row__label">Part estimée</span>
+              <span class="recap-row__value" id="recap-parts">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-row__label">Moyen de paiement</span>
+              <span class="recap-row__value" id="recap-methode">—</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-row__label">Vos coordonnées</span>
+              <span class="recap-row__value" id="recap-coords">—</span>
+            </div>
+          </div>
+
+          <!-- Message optionnel -->
+          <div class="form-group">
+            <label class="form-label" for="don-message"><i class="ph-light ph-chat-text"></i> Message pour le porteur <span style="font-size:0.78rem;color:var(--text-muted);font-weight:400;">(optionnel)</span></label>
+            <textarea id="don-message" class="form-textarea" rows="2" placeholder="Un mot d'encouragement ou de précision…"></textarea>
+          </div>
+
+          <!-- Ce qui va se passer -->
+          <div style="padding:0.9rem 1.1rem;background:rgba(0,200,83,0.06);border:1.5px solid rgba(0,200,83,0.18);border-radius:var(--radius-sm);margin-bottom:1.25rem;">
+            <p style="font-size:0.82rem;font-weight:700;color:var(--green-deep);margin:0 0 0.5rem;"><i class="ph-light ph-info"></i> Ce qui va se passer après :</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin:0;line-height:1.85;" id="recap-next-steps">
+              1. Votre demande est enregistrée.<br/>
+              2. Le porteur vous contacte sur vos coordonnées.<br/>
+              3. Vous envoyez le montant via le moyen choisi.<br/>
+              4. Suivez votre contribution dans Mon Espace.
+            </p>
+          </div>
+
+          <!-- Bannière compte connecté / non connecté -->
+          <div id="pd-user-info" style="display:none;background:rgba(0,200,83,0.07);border:1.5px solid rgba(0,200,83,0.2);border-radius:var(--radius-sm);padding:0.8rem 1rem;margin-bottom:1.2rem;display:none;align-items:center;gap:0.75rem;">
+            <i class="ph-light ph-user-circle" style="font-size:1.5rem;color:var(--green-deep);flex-shrink:0;"></i>
+            <div>
+              <p style="font-size:0.85rem;font-weight:700;color:var(--green-deep);margin:0;" id="pd-user-name">Connecté</p>
+              <p style="font-size:0.76rem;color:var(--text-muted);margin:0;">Contribution liée à votre compte — suivi dans <strong>Mon Espace</strong>.</p>
+            </div>
+          </div>
+
+          <!-- Erreur -->
+          <div id="don-error" style="display:none;padding:0.75rem 1rem;border-radius:var(--radius-sm);background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.2);color:#B91C1C;font-size:0.88rem;margin-bottom:1rem;"></div>
+
+          <!-- Bouton submit -->
+          <button type="submit" class="btn btn-primary btn-full btn-lg" id="don-submit-btn" style="margin-top:0;">
+            <i class="ph-light ph-paper-plane-right" id="don-submit-icon"></i>
+            <span id="don-submit-label">Envoyer ma demande</span>
+            <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
+          </button>
+          <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:0.65rem;"><i class="ph-light ph-lock-simple"></i> Vous ne payez rien maintenant.</p>
+        </div>
+
+        <!-- ── Navigation Précédent / Suivant ── -->
+        <div class="soutien-nav" id="soutien-nav">
+          <button type="button" class="btn-prev" id="soutien-prev" style="display:none;" onclick="soutienPrev()">
+            <i class="ph-light ph-arrow-left"></i> Précédent
+          </button>
+          <button type="button" class="btn-next" id="soutien-next" onclick="soutienNext()">
+            Suivant <i class="ph-light ph-arrow-right"></i>
+          </button>
+        </div>
 
       </form>
     </div>
   </div>
 
   <!-- ── MODAL SUCCÈS DON ──────────────────────────────────── -->
-  <div class="modal-overlay" id="modal-don-success">
+  <div class="modal-overlay" id="pd-don-success">
     <div class="modal success-modal modal-relative">
-      <button class="modal__close" onclick="closeModal('modal-don-success')">✕</button>
+      <button class="modal__close" onclick="closeModal('pd-don-success')">✕</button>
       <span class="success-modal__icon"><i class="ph-light ph-confetti"></i></span>
       <h3 class="modal__title">Contribution enregistrée !</h3>
       <p style="color:var(--text-muted);margin-bottom:1rem;line-height:1.75;" id="success-main-text">
@@ -705,7 +940,7 @@
                 <p style="font-size:0.83rem;font-weight:700;color:var(--navy);margin:0 0 0.35rem;"><i class="ph-light ph-info"></i> Comment fonctionne l'investissement ?</p>
                 <p style="font-size:0.82rem;color:var(--text-muted);margin:0;max-width:100%;line-height:1.7;">Votre part est calculée proportionnellement : <strong>(montant investi ÷ objectif total) × parts proposées</strong>. Un contrat de parts vous sera transmis pour signature.</p>
               </div>
-              <button class="btn btn-primary btn-full" data-open-modal="modal-soutien" onclick="openModal('modal-soutien')">
+              <button class="btn btn-primary btn-full" data-open-modal="pd-soutien" onclick="openModal('pd-soutien')">
                 <i class="ph-light ph-trend-up"></i> Investir maintenant
                 <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
               </button>`;
@@ -729,7 +964,7 @@
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary btn-full" onclick="openModal('modal-soutien')">
+              <button class="btn btn-primary btn-full" onclick="openModal('pd-soutien')">
                 <i class="ph-light ph-handshake"></i> Faire un don maintenant
                 <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>
               </button>`;
@@ -739,12 +974,12 @@
             contrepartiesTab.innerHTML = `
               <h4 style="color:var(--navy);margin-bottom:0.5rem;"><i class="ph-light ph-package"></i> Contreparties de la prévente</h4>
               <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;max-width:100%;">En soutenant ce projet, vous précommandez le produit et recevez votre commande une fois l'objectif atteint.</p>
-              <div class="reward-card" onclick="document.getElementById('custom-amount').value='${montantMin}';openModal('modal-soutien')" style="cursor:pointer;">
+              <div class="reward-card" onclick="document.getElementById('custom-amount').value='${montantMin}';openModal('pd-soutien')" style="cursor:pointer;">
                 <div class="reward-card__amount">${montantMin.toLocaleString('fr-FR')} KMF</div>
                 <p class="reward-card__title"><i class="ph-light ph-package"></i> Soutien de base</p>
                 <p class="reward-card__desc">${project.description ? project.description.slice(0, 120) + (project.description.length > 120 ? '…' : '') : 'Votre soutien contribue directement à la réalisation du projet.'}</p>
               </div>
-              <div class="reward-card" onclick="document.getElementById('custom-amount').value='${montantMin * 2}';openModal('modal-soutien')" style="cursor:pointer;border-color:var(--gold);background:rgba(232,160,32,0.04);position:relative;">
+              <div class="reward-card" onclick="document.getElementById('custom-amount').value='${montantMin * 2}';openModal('pd-soutien')" style="cursor:pointer;border-color:var(--gold);background:rgba(232,160,32,0.04);position:relative;">
                 <div style="position:absolute;top:-1px;right:1rem;background:var(--gold);color:var(--navy);font-size:0.68rem;font-weight:800;padding:0.2rem 0.65rem;border-radius:0 0 6px 6px;text-transform:uppercase;letter-spacing:0.06em;">Populaire</div>
                 <div class="reward-card__amount">${(montantMin * 2).toLocaleString('fr-FR')} KMF</div>
                 <p class="reward-card__title"><i class="ph-light ph-star"></i> Soutien premium</p>
@@ -783,7 +1018,7 @@
         }
 
         // ── Stocker project_id + adapter le modal ─────────
-        document.querySelector('[data-open-modal="modal-soutien"]')?.setAttribute('data-project-id', project.id);
+        document.querySelector('[data-open-modal="pd-soutien"]')?.setAttribute('data-project-id', project.id);
         // function declarations sont hoistées → adaptModalToProject est disponible ici
         adaptModalToProject(project);
 
@@ -820,115 +1055,59 @@
     function adaptModalToProject(project) {
       if (!project) return;
 
-      // Rappel projet dans le modal
-      const recap = document.getElementById('modal-project-recap');
-      const recapName    = document.getElementById('modal-project-name');
-      const recapPorteur = document.getElementById('modal-project-porteur');
-      const recapType    = document.getElementById('modal-project-type-label');
+      // Rappel projet (bandeau en haut du modal)
+      const recap     = document.getElementById('pd-proj-recap');
+      const recapName = document.getElementById('pd-proj-name');
+      const recapType = document.getElementById('pd-proj-type');
       if (recap && recapName) {
-        const typeLabels = { prevente:'Prévente', dons:'Don solidaire', investissement:'Investissement' };
+        const typeLabels = { prevente:'📦 Prévente', dons:'💚 Don solidaire', investissement:'📈 Investissement' };
         if (recapType) recapType.textContent = typeLabels[project.type] || project.type;
         recapName.textContent = project.nom_projet;
-        if (recapPorteur) recapPorteur.textContent =
-          `${project.prenom || ''} ${project.nom || ''}`.trim() + (project.ile ? ' · ' + project.ile : '');
         recap.style.display = 'block';
-        // Couleur bordure selon type
         const borderColors = { prevente:'var(--gold)', dons:'var(--ocean)', investissement:'var(--navy)' };
         recap.style.borderLeftColor = borderColors[project.type] || 'var(--gold)';
       }
 
-      // Icône, titre, sous-titre, bouton selon type
+      // Label montant adapté au type
       const typeConf = {
-        prevente: {
-          icon: 'ph-package',
-          title: 'Précommander ce produit',
-          subtitle: 'Vous recevrez votre commande une fois l\'objectif atteint. Votre suivi de livraison sera disponible dans Mon Espace si vous avez un compte.',
-          submitIcon: 'ph-package',
-          submitLabel: 'Confirmer ma précommande',
-          montantLabel: 'Montant de votre précommande (KMF)',
-          nomLabel: 'Votre nom (pour la livraison)',
-          amounts: [3000, 5000, 10000, 15000, 25000],
-        },
-        dons: {
-          icon: 'ph-handshake',
-          title: 'Faire un don',
-          subtitle: 'Votre don soutient directement ce projet. 100% versé au porteur (moins 3% de commission FaidaKomori).',
-          submitIcon: 'ph-handshake',
-          submitLabel: 'Confirmer mon don',
-          montantLabel: 'Montant de votre don (KMF)',
-          nomLabel: 'Votre nom (pour les remerciements)',
-          amounts: [500, 1000, 2500, 5000, 10000],
-        },
-        investissement: {
-          icon: 'ph-trend-up',
-          title: 'Investir dans ce projet',
-          subtitle: 'En investissant, vous devenez co-propriétaire et percevrez des revenus selon votre part.',
-          submitIcon: 'ph-trend-up',
-          submitLabel: 'Confirmer mon investissement',
-          montantLabel: 'Montant de votre investissement (KMF)',
-          nomLabel: 'Votre nom (investisseur)',
-          amounts: [25000, 50000, 100000, 200000, 500000],
-        }
+        prevente:       { montantLabel:'Montant de votre précommande (KMF)', nomLabel:'Votre nom (pour la livraison)', amounts:[3000,5000,10000,15000,25000] },
+        dons:           { montantLabel:'Montant de votre don (KMF)',          nomLabel:'Votre nom (pour les remerciements)', amounts:[500,1000,2500,5000,10000] },
+        investissement: { montantLabel:'Montant de votre investissement (KMF)', nomLabel:'Votre nom (investisseur)', amounts:[25000,50000,100000,200000,500000] },
       };
-
       const conf = typeConf[project.type] || typeConf.dons;
 
-      // Mettre à jour les éléments
-      const iconEl  = document.getElementById('modal-type-icon');
-      const titleEl = document.getElementById('modal-title');
-      const subEl   = document.getElementById('modal-subtitle');
-      const submitIcon  = document.getElementById('don-submit-icon');
-      const submitLabel = document.getElementById('don-submit-label');
-      const amtLabel    = document.getElementById('don-montant-label');
-      const nomLabel    = document.getElementById('don-nom-label');
-
-      if (iconEl)    iconEl.className    = `ph-light ${conf.icon}`;
-      if (titleEl)   titleEl.textContent = conf.title;
-      if (subEl)     subEl.textContent   = conf.subtitle;
-      if (submitIcon) submitIcon.className = `ph-light ${conf.submitIcon}`;
-      if (submitLabel) submitLabel.textContent = conf.submitLabel;
-      if (amtLabel) amtLabel.innerHTML = conf.montantLabel + ' <span style="color:#DC2626;">*</span>';
-      if (nomLabel) nomLabel.innerHTML = conf.nomLabel + ' <span style="color:var(--text-muted);font-weight:400;">(optionnel)</span>';
+      const amtLabel = document.getElementById('don-montant-label');
+      const nomLabel = document.getElementById('don-nom-label');
+      if (amtLabel) amtLabel.innerHTML = `<i class="ph-light ph-coins"></i> ${conf.montantLabel}`;
+      if (nomLabel) nomLabel.innerHTML = `${conf.nomLabel} <span style="font-size:0.78rem;color:var(--text-muted);font-weight:400;">(affiché sur la page du projet)</span>`;
 
       // Montants prédéfinis
       const amountGrid = document.getElementById('don-amount-grid');
       if (amountGrid) {
-        amountGrid.innerHTML = conf.amounts.slice(0, 5).map((a, i) =>
+        amountGrid.innerHTML = conf.amounts.map((a, i) =>
           `<button type="button" class="amount-btn${i === 1 ? ' selected' : ''}" data-amount="${a}">${a.toLocaleString('fr-FR')}</button>`
         ).join('') + `<button type="button" class="amount-btn" data-amount="">Autre</button>`;
-        // Valeur par défaut
         const customInput = document.getElementById('custom-amount');
         if (customInput) customInput.value = conf.amounts[1];
       }
 
-      // Notice compte (prévente + investissement)
-      const notice = document.getElementById('don-account-notice');
-      const noticeTitle = document.getElementById('don-account-notice-title');
-      const noticeBody  = document.getElementById('don-account-notice-body');
-      if (notice && !API.isLoggedIn()) {
-        if (project.type === 'prevente') {
-          notice.style.display = 'block';
-          if (noticeTitle) noticeTitle.innerHTML = '<i class="ph-light ph-package"></i> Suivez votre commande avec un compte';
-          if (noticeBody) noticeBody.textContent = 'Un compte vous permet de suivre votre livraison et de confirmer la réception depuis Mon Espace.';
-        } else if (project.type === 'investissement') {
-          notice.style.display = 'block';
-          if (noticeTitle) noticeTitle.innerHTML = '<i class="ph-light ph-trend-up"></i> Conservez la trace de votre investissement';
-          if (noticeBody) noticeBody.textContent = 'Un compte affiche votre portfolio d\'investissements et vos pourcentages de parts dans chaque entreprise.';
-        } else {
-          notice.style.display = 'none';
-        }
-      } else if (notice) {
-        notice.style.display = 'none';
+      // Calculateur parts investissement
+      const partsPreview = document.getElementById('invest-parts-preview');
+      if (partsPreview) partsPreview.style.display = project.type === 'investissement' ? 'block' : 'none';
+
+      // Pré-remplir le nom si l'utilisateur est connecté
+      const connectedUser = typeof API !== 'undefined' ? API.getUser() : null;
+      const nomInput = document.getElementById('don-nom');
+      if (nomInput && connectedUser && !nomInput.value) {
+        nomInput.value = `${connectedUser.prenom} ${connectedUser.nom}`.trim();
       }
 
-      // Calculateur de parts (investissement uniquement)
-      const partsPreview = document.getElementById('invest-parts-preview');
-      if (partsPreview) {
-        partsPreview.style.display = project.type === 'investissement' ? 'block' : 'none';
-      }
-      // Stocker les données projet pour le calculateur
+      // Stocker les données projet
       window._projectData = project;
       updateInvestPartsPreview();
+
+      // Repartir à l'étape 1
+      soutienGoTo(1);
     }
 
     // ── Calculateur de parts en temps réel ───────────────────
@@ -960,69 +1139,189 @@
     // Appeler adaptModalToProject quand le projet est chargé (si pas encore fait)
     // (La fonction sera appelée depuis le bloc de chargement dynamique ci-dessus)
 
-    // ── Compte utilisateur dans le modal ─────────────────────
-    const user = typeof API !== 'undefined' ? API.getUser() : null;
-    const modalUserInfo = document.getElementById('modal-user-info');
-    const modalUserName = document.getElementById('modal-user-name');
-    if (user) {
-      if (modalUserInfo) modalUserInfo.style.display = 'flex';
-      if (modalUserName) modalUserName.textContent = `${user.prenom} ${user.nom} — ${user.email}`;
-      const successLink = document.getElementById('success-mon-espace-link');
-      if (successLink) successLink.style.display = 'block';
-      // Pré-remplir le nom si connecté
-      const nomInput = document.getElementById('don-nom');
-      if (nomInput && !nomInput.value) nomInput.value = `${user.prenom} ${user.nom}`.trim();
-    } else {
-      if (modalUserInfo) modalUserInfo.style.display = 'none';
-    }
+    // ── Sélection carte paiement ────────────────────────────
+    window.selectPayCard = function(card) {
+      document.querySelectorAll('#pay-cards-list .pay-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      updateCoordsLabel();
+    };
 
-    // ══════════════════════════════════════════════════════════
-    //  EVENT DELEGATION sur le modal (robuste aux DOM mutations)
-    //  ↳ résout le bug : main.js capture les boutons statiques,
-    //    les nouveaux créés par adaptModalToProject n'ont plus
-    //    de handlers. La délégation écoute sur le conteneur fixe.
-    // ══════════════════════════════════════════════════════════
-    const modalSoutien = document.getElementById('modal-soutien');
-    if (modalSoutien) {
-
-      // ── Montants : délégation sur le modal entier ──────────
-      modalSoutien.addEventListener('click', (e) => {
-        // Clic sur un bouton montant (ou un enfant de ce bouton)
-        const amtBtn = e.target.closest('.amount-btn');
-        if (amtBtn && amtBtn.closest('#don-amount-grid')) {
-          document.querySelectorAll('#don-amount-grid .amount-btn')
-            .forEach(b => b.classList.remove('selected'));
-          amtBtn.classList.add('selected');
-          const input = document.getElementById('custom-amount');
-          if (input && amtBtn.dataset.amount) {
-            input.value = amtBtn.dataset.amount;
-            updateInvestPartsPreview();
-          }
-          return;
-        }
-
-        // Clic sur une option de paiement
-        const payOpt = e.target.closest('.payment-option');
-        if (payOpt) {
-          document.querySelectorAll('#modal-soutien .payment-option')
-            .forEach(o => o.classList.remove('selected'));
-          payOpt.classList.add('selected');
-          return;
-        }
-      });
-
-      // ── Saisie libre du montant ────────────────────────────
-      document.getElementById('custom-amount')?.addEventListener('input', updateInvestPartsPreview);
-
-      // ── Toggle anonyme ─────────────────────────────────────
-      const anonCb = document.getElementById('don-anonyme');
-      const nomGrp = document.getElementById('don-nom-group');
-      if (anonCb && nomGrp) {
-        anonCb.addEventListener('change', () => {
-          nomGrp.style.display = anonCb.checked ? 'none' : '';
-        });
+    function updateCoordsLabel() {
+      const method = document.querySelector('#pay-cards-list .pay-card.selected')?.dataset.method || 'huri';
+      const label  = document.getElementById('don-coords-label');
+      const input  = document.getElementById('don-coords');
+      const hint   = document.getElementById('don-coords-hint');
+      if (method === 'virement') {
+        if (label) label.innerHTML = '<i class="ph-light ph-bank"></i> Votre banque &amp; numéro de compte <span style="color:#DC2626;">*</span>';
+        if (input) { input.type = 'text'; input.placeholder = 'Ex : BIC Moroni — Compte 001234567'; }
+        if (hint)  hint.textContent = 'Le porteur vous contactera avec les coordonnées bancaires pour effectuer le virement.';
+      } else {
+        const names = { huri: 'Huri Money', mvola: 'MoVola', mpesa: 'M-Pesa' };
+        if (label) label.innerHTML = `<i class="ph-light ph-device-mobile"></i> Votre numéro ${names[method] || 'mobile money'} <span style="color:#DC2626;">*</span>`;
+        if (input) { input.type = 'tel'; input.placeholder = '+269 321 00 00'; }
+        if (hint)  hint.textContent = 'Ce numéro sera partagé avec le porteur pour finaliser le paiement.';
       }
     }
+
+    // ── Gestion des étapes ──────────────────────────────────
+    let _currentStep = 1;
+    const _stepNames = ['Montant', 'Mode de paiement', 'Vos coordonnées', 'Récapitulatif'];
+
+    function soutienGoTo(step) {
+      // Masquer toutes les étapes
+      document.querySelectorAll('.soutien-step').forEach(s => s.style.display = 'none');
+      const el = document.getElementById(`soutien-step-${step}`);
+      if (el) el.style.display = '';
+
+      // Mettre à jour les dots
+      for (let i = 1; i <= 4; i++) {
+        const dot  = document.getElementById(`sdot-${i}`);
+        const line = document.getElementById(`sline-${i}`);
+        if (!dot) continue;
+        dot.classList.remove('active', 'done');
+        if (i < step)  dot.classList.add('done');
+        if (i === step) dot.classList.add('active');
+        if (line) { line.classList.toggle('done', i < step); }
+      }
+
+      // Label étape
+      const labelEl = document.getElementById('soutien-step-label');
+      if (labelEl) labelEl.innerHTML = `Étape <span>${step}</span> sur 4 — <span id="soutien-step-name">${_stepNames[step-1]}</span>`;
+
+      // Navigation
+      const prevBtn = document.getElementById('soutien-prev');
+      const nextBtn = document.getElementById('soutien-next');
+      const nav     = document.getElementById('soutien-nav');
+      if (prevBtn) prevBtn.style.display = step > 1 ? '' : 'none';
+      if (nextBtn) nextBtn.style.display = step < 4 ? '' : 'none';
+      // Sur l'étape 4, le submit remplace le "Suivant"
+      if (nav) nav.style.display = step === 4 ? 'none' : '';
+
+      _currentStep = step;
+
+      // Si on arrive à l'étape 4, remplir le récap
+      if (step === 4) fillRecap();
+
+      // Scroll en haut du modal
+      document.querySelector('#pd-soutien .modal')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.soutienNext = function() {
+      const step = _currentStep;
+
+      if (step === 1) {
+        const montant = parseInt(document.getElementById('custom-amount')?.value || 0);
+        const proj    = window._projectData;
+        const min     = proj?.type === 'investissement' ? 10000 : 100;
+        if (!montant || montant < min) {
+          showStepErr(`Montant minimum : ${min.toLocaleString('fr-FR')} KMF.`);
+          return;
+        }
+        clearStepErr();
+        soutienGoTo(2);
+      } else if (step === 2) {
+        clearStepErr();
+        updateCoordsLabel();
+        soutienGoTo(3);
+      } else if (step === 3) {
+        const coords = document.getElementById('don-coords')?.value?.trim();
+        if (!coords) {
+          showStepErr('Veuillez saisir vos coordonnées de paiement.');
+          return;
+        }
+        clearStepErr();
+        soutienGoTo(4);
+      }
+    };
+
+    window.soutienPrev = function() {
+      if (_currentStep > 1) soutienGoTo(_currentStep - 1);
+    };
+
+    function showStepErr(msg) {
+      const err = document.getElementById('don-error');
+      if (err) { err.textContent = msg; err.style.display = 'block'; }
+    }
+    function clearStepErr() {
+      const err = document.getElementById('don-error');
+      if (err) err.style.display = 'none';
+    }
+
+    function fillRecap() {
+      const proj    = window._projectData;
+      const montant = parseInt(document.getElementById('custom-amount')?.value || 0);
+      const method  = document.querySelector('#pay-cards-list .pay-card.selected')?.dataset.method || 'huri';
+      const coords  = document.getElementById('don-coords')?.value?.trim() || '—';
+      const methLabels = { huri:'Huri Money', mvola:'MoVola', mpesa:'M-Pesa', virement:'Virement bancaire' };
+      const typeLabels = { prevente:'📦 Prévente', dons:'💚 Don', investissement:'📈 Investissement' };
+
+      const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+      el('recap-projet',  proj?.nom_projet || '—');
+      el('recap-type',    typeLabels[proj?.type] || proj?.type || '—');
+      el('recap-montant', montant.toLocaleString('fr-FR') + ' KMF');
+      el('recap-methode', methLabels[method] || method);
+      el('recap-coords',  coords);
+
+      // Parts investissement
+      const partsRow = document.getElementById('recap-parts-row');
+      if (proj?.type === 'investissement' && proj.parts_pourcentage && proj.montant > 0) {
+        const parts = Math.round((montant / proj.montant) * proj.parts_pourcentage * 100) / 100;
+        el('recap-parts', parts + '% de l\'entreprise');
+        if (partsRow) partsRow.style.display = '';
+      } else {
+        if (partsRow) partsRow.style.display = 'none';
+      }
+
+      // Prochaines étapes selon type
+      const stepsEl = document.getElementById('recap-next-steps');
+      if (stepsEl && proj) {
+        if (proj.type === 'prevente') {
+          stepsEl.innerHTML = '1. Votre précommande est enregistrée.<br/>2. Le porteur vous contacte pour confirmer le paiement.<br/>3. Vous envoyez le montant via ' + (methLabels[method] || method) + '.<br/>4. Votre produit est fabriqué puis expédié.<br/>5. Confirmez la réception dans <strong>Mon Espace</strong>.';
+        } else if (proj.type === 'investissement') {
+          stepsEl.innerHTML = '1. Votre demande d\'investissement est enregistrée.<br/>2. Le porteur vous contacte pour confirmer le paiement.<br/>3. Signature du contrat de parts.<br/>4. Vous devenez co-propriétaire du projet.';
+        } else {
+          stepsEl.innerHTML = '1. Votre don est enregistré.<br/>2. Le porteur vous contacte pour finaliser le paiement.<br/>3. Vous envoyez le montant via ' + (methLabels[method] || method) + '.<br/>4. Suivez votre contribution dans <strong>Mon Espace</strong>.';
+        }
+      }
+
+      // Afficher bannière utilisateur connecté
+      const userInfo = document.getElementById('pd-user-info');
+      const user = typeof API !== 'undefined' ? API.getUser() : null;
+      if (userInfo && user) {
+        document.getElementById('pd-user-name').textContent = `✓ Connecté en tant que ${user.prenom} ${user.nom}`;
+        userInfo.style.display = 'flex';
+      } else if (userInfo) {
+        userInfo.style.display = 'none';
+      }
+    }
+
+    // ── Montants : boutons preset ────────────────────────────
+    document.getElementById('don-amount-grid')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.amount-btn');
+      if (!btn) return;
+      document.querySelectorAll('#don-amount-grid .amount-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const input = document.getElementById('custom-amount');
+      if (input && btn.dataset.amount) { input.value = btn.dataset.amount; updateInvestPartsPreview(); }
+    });
+
+    document.getElementById('custom-amount')?.addEventListener('input', () => {
+      // Désélectionner les presets si saisie libre
+      const val = document.getElementById('custom-amount').value;
+      const matching = document.querySelector(`#don-amount-grid .amount-btn[data-amount="${val}"]`);
+      document.querySelectorAll('#don-amount-grid .amount-btn').forEach(b => b.classList.remove('selected'));
+      if (matching) matching.classList.add('selected');
+      updateInvestPartsPreview();
+    });
+
+    // ── Toggle anonyme ───────────────────────────────────────
+    document.getElementById('don-anonyme')?.addEventListener('change', function() {
+      const grp = document.getElementById('don-nom-group');
+      if (grp) grp.style.display = this.checked ? 'none' : '';
+    });
+
+    // ── Initialiser étape 1 au départ ───────────────────────
+    soutienGoTo(1);
 
     // ── Intercepter le submit de main.js (phase capture = avant bubble) ──
     // main.js ajoute un submit en bubble qui ferme juste le modal sans API.
@@ -1038,7 +1337,7 @@
         const nom       = document.getElementById('don-nom')?.value?.trim();
         const message   = document.getElementById('don-message')?.value?.trim();
         const anonyme   = document.getElementById('don-anonyme')?.checked || false;
-        const methode   = document.querySelector('#modal-soutien .payment-option.selected')?.dataset.method || 'huri';
+        const methode   = document.querySelector('#pay-cards-list .pay-card.selected')?.dataset.method || 'huri';
         const errDiv    = document.getElementById('don-error');
         const submitBtn = document.getElementById('don-submit-btn');
         const proj      = window._projectData;
@@ -1047,19 +1346,19 @@
         const clearErr = ()   => { if (errDiv) errDiv.style.display = 'none'; };
         clearErr();
 
-        // ── Validation montant ───────────────────────────────
+        // ── Validations finales ───────────────────────────────
         const minMontant = (proj?.type === 'investissement') ? 10000 : 100;
         if (!montant || montant < minMontant) {
           showErr(`Montant minimum : ${minMontant.toLocaleString('fr-FR')} KMF.`);
-          return;
+          soutienGoTo(1); return;
         }
         if (montant > 10_000_000) {
           showErr('Montant maximum : 10 000 000 KMF.');
-          return;
+          soutienGoTo(1); return;
         }
         if (!coords) {
-          showErr('Veuillez saisir votre numéro mobile money.');
-          return;
+          showErr('Veuillez saisir vos coordonnées de paiement.');
+          soutienGoTo(3); return;
         }
 
         // ── Auth gate : TOUS les types nécessitent un compte ──
@@ -1116,21 +1415,19 @@
           }
 
           adaptSuccessModal(proj, montant, reference);
-          if (typeof closeModal === 'function') closeModal('modal-soutien');
-          setTimeout(() => {
-            if (typeof openModal === 'function') openModal('modal-don-success');
-          }, 350);
+          if (typeof closeModal === 'function') closeModal('pd-soutien');
+          // Réinitialiser le formulaire à l'étape 1 pour la prochaine ouverture
           donForm.reset();
+          soutienGoTo(1);
+          setTimeout(() => {
+            if (typeof openModal === 'function') openModal('pd-don-success');
+          }, 350);
         } catch (err) {
           showErr(err.message || 'Une erreur est survenue. Veuillez réessayer.');
         } finally {
           if (submitBtn) {
             submitBtn.disabled = false;
-            const iconMap = { prevente:'ph-package', dons:'ph-handshake', investissement:'ph-trend-up' };
-            const lblMap  = { prevente:'Confirmer ma précommande', dons:'Confirmer mon don', investissement:'Confirmer mon investissement' };
-            const ic  = (proj && iconMap[proj.type])  || 'ph-heart';
-            const lbl = (proj && lblMap[proj.type])   || 'Confirmer mon soutien';
-            submitBtn.innerHTML = `<i class="ph-light ${ic}"></i> ${lbl} <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>`;
+            submitBtn.innerHTML = `<i class="ph-light ph-paper-plane-right"></i> Envoyer ma demande <span class="btn-icon-wrap"><i class="ph-light ph-arrow-right"></i></span>`;
           }
         }
 
