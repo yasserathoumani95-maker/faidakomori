@@ -392,8 +392,8 @@
         <aside>
           <div class="sticky-card">
             <div class="sticky-card__header">
-              <div class="sticky-card__amount">272 000 <span style="font-size:1rem;font-weight:500;">KMF</span></div>
-              <p class="sticky-card__label">collectés sur 400 000 KMF</p>
+              <div class="sticky-card__amount" data-kmf="272000">272 000 KMF</div>
+              <p class="sticky-card__label">collectés sur <span data-kmf="400000">400 000 KMF</span></p>
               <div style="margin-top:1rem;">
                 <div class="progress-bar" style="height:8px;">
                   <div class="progress-bar__fill progress-bar__fill--prevente" data-pct="68"></div>
@@ -848,6 +848,7 @@
   </footer>
 
   <script src="js/api.js"></script>
+  <script src="js/currency.js?v=1"></script>
   <script src="js/db-local.js"></script>
   <script src="js/main.js"></script>
   <script>
@@ -915,10 +916,10 @@
         const restant  = Math.max(0, objectif - collecte);
 
         const amtEl = document.querySelector('.sticky-card__amount');
-        if (amtEl) amtEl.innerHTML = `${collecte.toLocaleString('fr-FR')} <span style="font-size:1rem;font-weight:500;">KMF</span>`;
+        if (amtEl) { amtEl.dataset.kmf = collecte; }
 
         const lblEl = document.querySelector('.sticky-card__label');
-        if (lblEl) lblEl.textContent = `collectés sur ${objectif.toLocaleString('fr-FR')} KMF`;
+        if (lblEl) lblEl.innerHTML = `collectés sur <span data-kmf="${objectif}">${objectif.toLocaleString('fr-FR')} KMF</span>`;
 
         const fillEl = document.querySelector('.progress-bar__fill[data-pct]');
         if (fillEl) { fillEl.dataset.pct = pct; fillEl.style.width = pct + '%'; }
@@ -929,9 +930,7 @@
         if (statVals[0]) statVals[0].textContent = nbBack;
         if (statVals[1]) statVals[1].textContent = project.duree || 30;
         if (statVals[2]) {
-          statVals[2].textContent = restant >= 1000
-            ? Math.round(restant / 1000) + 'K'
-            : restant.toLocaleString('fr-FR');
+          statVals[2].dataset.kmf = restant;
         }
 
         // ── Infos clés sidebar ────────────────────────────
@@ -962,10 +961,10 @@
         if (budgetTab) {
           const comm = Math.round(objectif * 0.03);
           budgetTab.innerHTML = `
-            <h4 style="color:var(--navy);margin-bottom:1rem;">Objectif de financement — ${objectif.toLocaleString('fr-FR')} KMF</h4>
+            <h4 style="color:var(--navy);margin-bottom:1rem;">Objectif de financement — <span data-kmf="${objectif}">${objectif.toLocaleString('fr-FR')} KMF</span></h4>
             <div style="background:var(--sand);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem;">
               <div style="display:flex;justify-content:space-between;font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem;">
-                <span>Progression</span><span>${pct}% — ${collecte.toLocaleString('fr-FR')} KMF collectés</span>
+                <span>Progression</span><span>${pct}% — <span data-kmf="${collecte}">${collecte.toLocaleString('fr-FR')} KMF</span> collectés</span>
               </div>
               <div class="progress-bar" style="height:10px;"><div class="progress-bar__fill progress-bar__fill--prevente" style="width:${pct}%"></div></div>
             </div>
@@ -982,7 +981,7 @@
                 <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.75;margin:0;">${project.budget_description}</p>
               </div>` : ''}
             <div style="padding:0.85rem 1rem;background:var(--sand);border-radius:var(--radius-sm);font-size:0.82rem;color:var(--text-muted);">
-              <i class="ph-light ph-buildings"></i> Commission FaidaKomori de <strong>3%</strong> (${comm.toLocaleString('fr-FR')} KMF) déduite lors du versement.
+              <i class="ph-light ph-buildings"></i> Commission FaidaKomori de <strong>3%</strong> (<span data-kmf="${comm}">${comm.toLocaleString('fr-FR')} KMF</span>) déduite lors du versement.
             </div>`;
         }
 
@@ -1001,8 +1000,9 @@
         if (contrepartiesTab) {
           if (project.type === 'investissement') {
             const parts    = project.parts_pourcentage || '—';
-            const valeur   = project.valeur_entreprise
-              ? `${parseInt(project.valeur_entreprise).toLocaleString('fr-FR')} KMF` : '—';
+            const valeurKmf = project.valeur_entreprise ? parseInt(project.valeur_entreprise) : null;
+            const valeur   = valeurKmf
+              ? `<span data-kmf="${valeurKmf}">${valeurKmf.toLocaleString('fr-FR')} KMF</span>` : '—';
             const partMin  = project.montant > 0 && project.parts_pourcentage
               ? `≈ ${Math.round((1 / project.montant) * project.parts_pourcentage * 100) / 100}%` : '—';
             contrepartiesTab.innerHTML = `
@@ -1019,7 +1019,7 @@
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:0.9rem 1.1rem;background:var(--off-white);border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);">
                   <span style="font-size:0.88rem;color:var(--text-muted);">Objectif de collecte</span>
-                  <strong style="font-size:1rem;color:var(--navy);font-family:var(--font-heading);">${objectif.toLocaleString('fr-FR')} KMF</strong>
+                  <strong style="font-size:1rem;color:var(--navy);font-family:var(--font-heading);"><span data-kmf="${objectif}">${objectif.toLocaleString('fr-FR')} KMF</span></strong>
                 </div>
               </div>
               <div style="padding:1rem 1.1rem;background:rgba(13,34,68,0.04);border-radius:var(--radius-sm);border:1.5px solid rgba(13,34,68,0.1);margin-bottom:1.25rem;">
@@ -1061,13 +1061,13 @@
               <h4 style="color:var(--navy);margin-bottom:0.5rem;"><i class="ph-light ph-package"></i> Contreparties de la prévente</h4>
               <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;max-width:100%;">En soutenant ce projet, vous précommandez le produit et recevez votre commande une fois l'objectif atteint.</p>
               <div class="reward-card" onclick="document.getElementById('custom-amount').value='${montantMin}';openModal('pd-soutien')" style="cursor:pointer;">
-                <div class="reward-card__amount">${montantMin.toLocaleString('fr-FR')} KMF</div>
+                <div class="reward-card__amount"><span data-kmf="${montantMin}">${montantMin.toLocaleString('fr-FR')} KMF</span></div>
                 <p class="reward-card__title"><i class="ph-light ph-package"></i> Soutien de base</p>
                 <p class="reward-card__desc">${project.description ? project.description.slice(0, 120) + (project.description.length > 120 ? '…' : '') : 'Votre soutien contribue directement à la réalisation du projet.'}</p>
               </div>
               <div class="reward-card" onclick="document.getElementById('custom-amount').value='${montantMin * 2}';openModal('pd-soutien')" style="cursor:pointer;border-color:var(--gold);background:rgba(232,160,32,0.04);position:relative;">
                 <div style="position:absolute;top:-1px;right:1rem;background:var(--gold);color:var(--navy);font-size:0.68rem;font-weight:800;padding:0.2rem 0.65rem;border-radius:0 0 6px 6px;text-transform:uppercase;letter-spacing:0.06em;">Populaire</div>
-                <div class="reward-card__amount">${(montantMin * 2).toLocaleString('fr-FR')} KMF</div>
+                <div class="reward-card__amount"><span data-kmf="${montantMin * 2}">${(montantMin * 2).toLocaleString('fr-FR')} KMF</span></div>
                 <p class="reward-card__title"><i class="ph-light ph-star"></i> Soutien premium</p>
                 <p class="reward-card__desc">Votre commande en priorité + votre nom dans les remerciements officiels du projet.</p>
               </div>
@@ -1090,7 +1090,7 @@
                   <div style="font-size:0.85rem;font-weight:700;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${name}</div>
                   <div style="font-size:0.73rem;color:var(--text-muted);">${date}</div>
                 </div>
-                <div style="font-family:var(--font-heading);font-weight:800;color:var(--gold-dark);font-size:0.88rem;flex-shrink:0;">${parseInt(c.montant).toLocaleString('fr-FR')} KMF</div>
+                <div style="font-family:var(--font-heading);font-weight:800;color:var(--gold-dark);font-size:0.88rem;flex-shrink:0;"><span data-kmf="${parseInt(c.montant)}">${parseInt(c.montant).toLocaleString('fr-FR')} KMF</span></div>
               </div>`;
           }).join('');
 
@@ -1107,6 +1107,9 @@
         document.querySelector('[data-open-modal="pd-soutien"]')?.setAttribute('data-project-id', project.id);
         // function declarations sont hoistées → adaptModalToProject est disponible ici
         adaptModalToProject(project);
+
+        // ── Convertir tous les montants selon la devise choisie ──
+        if (typeof fkApplyAll === 'function') fkApplyAll();
 
         // ── Partage du projet ─────────────────────────────
         const shareBtn = document.getElementById('btn-share-projet');
@@ -1210,9 +1213,9 @@
           const objectif = demo.montant || 1;
           const pct      = Math.min(Math.round((collecte / objectif) * 100), 100);
           const amtEl = document.querySelector('.sticky-card__amount');
-          if (amtEl) amtEl.innerHTML = `${collecte.toLocaleString('fr-FR')} <span style="font-size:1rem;font-weight:500;">KMF</span>`;
+          if (amtEl) { amtEl.dataset.kmf = collecte; }
           const lblEl = document.querySelector('.sticky-card__label');
-          if (lblEl) lblEl.textContent = `collectés sur ${objectif.toLocaleString('fr-FR')} KMF`;
+          if (lblEl) lblEl.innerHTML = `collectés sur <span data-kmf="${objectif}">${objectif.toLocaleString('fr-FR')} KMF</span>`;
           const fillEl = document.querySelector('.progress-bar__fill[data-pct]');
           if (fillEl) { fillEl.dataset.pct = pct; fillEl.style.width = pct + '%'; }
           const pctEl = document.querySelector('.progress-pct');
@@ -1220,11 +1223,14 @@
           const statVals = document.querySelectorAll('.sticky-card__stat-val');
           if (statVals[0]) statVals[0].textContent = demo.nb_contributeurs || 0;
           if (statVals[1]) statVals[1].textContent = demo.duree || 30;
-          if (statVals[2]) statVals[2].textContent = `${(objectif - collecte).toLocaleString('fr-FR')} KMF`;
+          if (statVals[2]) { statVals[2].dataset.kmf = objectif - collecte; }
 
           // Stocker et adapter le modal
           window._projectData = demo;
           adaptModalToProject(demo);
+
+          // ── Convertir tous les montants selon la devise choisie ──
+          if (typeof fkApplyAll === 'function') fkApplyAll();
         }
       }
     }
@@ -1268,7 +1274,7 @@
       const amountGrid = document.getElementById('don-amount-grid');
       if (amountGrid) {
         amountGrid.innerHTML = conf.amounts.map((a, i) =>
-          `<button type="button" class="amount-btn${i === 1 ? ' selected' : ''}" data-amount="${a}">${a.toLocaleString('fr-FR')}</button>`
+          `<button type="button" class="amount-btn${i === 1 ? ' selected' : ''}" data-amount="${a}" data-kmf="${a}">${typeof fkFormat === 'function' ? fkFormat(a) : a.toLocaleString('fr-FR') + ' KMF'}</button>`
         ).join('') + `<button type="button" class="amount-btn" data-amount="">Autre</button>`;
         const customInput = document.getElementById('custom-amount');
         if (customInput) customInput.value = conf.amounts[1];
@@ -1593,7 +1599,11 @@
       const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
       el('recap-projet',  proj?.nom_projet || '—');
       el('recap-type',    typeLabels[proj?.type] || proj?.type || '—');
-      el('recap-montant', montant.toLocaleString('fr-FR') + ' KMF');
+      const recapMontantEl = document.getElementById('recap-montant');
+      if (recapMontantEl) {
+        recapMontantEl.dataset.kmf = montant;
+        recapMontantEl.textContent = typeof fkFormat === 'function' ? fkFormat(montant) : montant.toLocaleString('fr-FR') + ' KMF';
+      }
       el('recap-methode', methLabels[method] || method);
       el('recap-coords',  coords);
 

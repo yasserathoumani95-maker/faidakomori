@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Modal</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { background: #f5f3ee; font-family: 'DM Sans', sans-serif; padding: 1rem; }
+    button { padding: 1rem 2rem; background: #00C853; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
+
+    /* ── Modal overlay ── */
+    .projet-modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(8,23,41,.55);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .projet-modal-overlay.open { display: flex; }
+    .projet-modal {
+      background: #fff;
+      border-radius: 20px;
+      width: 100%; max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(13,34,68,.22);
+      opacity: 1;
+      transform: none;
+    }
+    .projet-modal__header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 1rem;
+      padding: 1.5rem 1.5rem 1rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .projet-modal__close {
+      background: #F3F4F6; border: none; cursor: pointer;
+      border-radius: 50%; width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: #6B7280;
+    }
+    .projet-modal__body { padding: 1.5rem; }
+
+    @media (max-width: 768px) {
+      .projet-modal {
+        max-height: 85vh;
+        overflow-y: scroll;
+        border-radius: 16px;
+      }
+      .projet-modal__header { padding: 1rem 1rem 0.75rem; }
+      .projet-modal__body   { padding: 1rem 1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <h2>Test modal mobile</h2>
+  <button onclick="testerModal('review')">Statut: En cours d'étude</button><br><br>
+  <button onclick="testerModal('approved')">Statut: Validé</button><br><br>
+  <button onclick="testerModal('rejected')">Statut: Refusé</button>
+
+  <div class="projet-modal-overlay" id="projet-modal-overlay" onclick="if(event.target===this)fermer()">
+    <div class="projet-modal" id="projet-modal">
+      <div class="projet-modal__header">
+        <div>
+          <div id="pm-type" style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#00C853;margin-bottom:.3rem;"></div>
+          <h3 id="pm-nom" style="font-size:1.2rem;font-weight:800;color:#0D2244;margin:0;"></h3>
+          <div id="pm-date" style="font-size:0.8rem;color:#6B7280;margin-top:.25rem;"></div>
+        </div>
+        <button class="projet-modal__close" onclick="fermer()">✕</button>
+      </div>
+      <div class="projet-modal__body">
+        <div id="pm-timeline"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function testerModal(status) {
+      const p = {
+        id: 1,
+        nom_projet: 'Mon projet de commerce alimentaire',
+        type: 'prevente',
+        status: status,
+        created_at: new Date('2025-04-15T15:37:00').toISOString(),
+        note_admin: null,
+        montant: 500000,
+        montant_collecte: 125000
+      };
+
+      document.getElementById('pm-type').textContent = 'Prévente';
+      document.getElementById('pm-nom').textContent = p.nom_projet;
+      document.getElementById('pm-date').textContent = 'Soumis le 15 avril 2025 à 15:37';
+
+      const rejected = p.status === 'rejected';
+      const STEPS = rejected
+        ? [{ label: 'Déposé' }, { label: "En cours d'étude" }, { label: 'Refusé' }]
+        : [{ label: 'Déposé' }, { label: "En cours d'étude" }, { label: 'Validé' }, { label: 'En ligne' }];
+
+      const levelMap = { new:1, review:2, interview:2, approved:3, published:4 };
+      const level = rejected ? 3 : (levelMap[p.status] ?? 1);
+
+      const isMobile = window.innerWidth <= 768;
+
+      const stepsHtml = STEPS.map((s, i) => {
+        const stepNum  = i + 1;
+        const isDone   = stepNum < level;
+        const isActive = stepNum === level;
+        const isRej    = rejected && isActive;
+        const isLast   = i === STEPS.length - 1;
+
+        const icon = isRej ? '✕' : (isDone || isActive ? '✓' : String(stepNum));
+
+        let dotBg = '#F3F4F6', dotBorder = '#D1D5DB', dotColor = '#9CA3AF', dotShadow = '';
+        let labelColor = '#9CA3AF', labelWeight = '600';
+        let lineColor  = '#E5E7EB';
+
+        if (isRej) {
+          dotBg = '#DC2626'; dotBorder = '#DC2626'; dotColor = '#fff';
+          labelColor = '#DC2626'; labelWeight = '700'; lineColor = '#DC2626';
+        } else if (isDone) {
+          dotBg = '#00C853'; dotBorder = '#00C853'; dotColor = '#fff';
+          labelColor = '#00C853'; lineColor = '#00C853';
+        } else if (isActive) {
+          dotBg = '#00C853'; dotBorder = '#00C853'; dotColor = '#fff';
+          dotShadow = '0 0 0 5px rgba(0,200,83,.18)';
+          labelColor = '#0D2244'; labelWeight = '700';
+        }
+
+        if (isMobile) {
+          const connector = !isLast
+            ? `<div style="position:absolute;left:17px;top:36px;bottom:0;width:2px;background:${lineColor};"></div>`
+            : '';
+          return `
+            <div style="display:flex;flex-direction:row;align-items:flex-start;gap:12px;
+                        width:100%;position:relative;padding-bottom:${isLast ? '0' : '20px'};">
+              ${connector}
+              <div style="width:36px;height:36px;min-width:36px;border-radius:50%;
+                          background:${dotBg};border:2.5px solid ${dotBorder};color:${dotColor};
+                          display:flex;align-items:center;justify-content:center;
+                          font-size:14px;font-weight:800;position:relative;z-index:1;flex-shrink:0;
+                          box-shadow:${dotShadow || 'none'};">${icon}</div>
+              <div style="font-size:16px;font-weight:${labelWeight};color:${labelColor};
+                          line-height:1.4;padding-top:7px;flex:1;">${s.label}</div>
+            </div>`;
+        } else {
+          // Desktop — gardé simple pour le test
+          return `<div style="display:flex;flex-direction:column;align-items:center;flex:1;position:relative;">
+            <div style="width:28px;height:28px;border-radius:50%;background:${dotBg};border:3px solid ${dotBorder};color:${dotColor};display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-bottom:.4rem;">${icon}</div>
+            <div style="font-size:.68rem;font-weight:600;color:${labelColor};text-align:center;">${s.label}</div>
+          </div>`;
+        }
+      }).join('');
+
+      const wrapperStyle = isMobile
+        ? 'display:flex;flex-direction:column;gap:0;'
+        : 'display:flex;flex-direction:row;align-items:flex-start;justify-content:space-between;position:relative;';
+
+      document.getElementById('pm-timeline').innerHTML = `
+        <div style="margin-bottom:1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6B7280;margin-bottom:12px;">Avancement du dossier</div>
+          <div style="${wrapperStyle}">
+            ${stepsHtml}
+          </div>
+        </div>`;
+
+      const overlay = document.getElementById('projet-modal-overlay');
+      const modal = document.getElementById('projet-modal');
+      modal.style.opacity = '1';
+      modal.style.transform = 'none';
+      overlay.classList.add('open');
+    }
+
+    function fermer() {
+      document.getElementById('projet-modal-overlay').classList.remove('open');
+    }
+  </script>
+</body>
+</html>

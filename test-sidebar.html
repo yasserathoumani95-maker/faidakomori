@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Sidebar</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"/>
+</head>
+<body style="background:#f5f3ee;">
+
+  <nav class="navbar scrolled" style="position:relative;">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="#" class="navbar__logo">Faida<span>Komori</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section section--sand" style="padding-top:1rem;">
+    <div class="container">
+      <div class="dashboard-grid">
+
+        <aside class="dashboard-sidebar">
+          <div class="dashboard-sidebar__user">
+            <div class="dashboard-sidebar__avatar">YA</div>
+            <div>
+              <div class="dashboard-sidebar__name">Yasser Athoumani</div>
+              <div class="dashboard-sidebar__role">Porteur de projet</div>
+            </div>
+          </div>
+          <nav class="dashboard-sidebar__nav">
+            <a href="#" class="dashboard-nav-item active">
+              <i class="ph-light ph-folder ph-icon-nav"></i> Mes projets
+            </a>
+            <a href="#" class="dashboard-nav-item">
+              <i class="ph-light ph-hand-coins ph-icon-nav"></i> Mes contributions
+            </a>
+            <a href="#" class="dashboard-nav-item">
+              <i class="ph-light ph-bell ph-icon-nav"></i> Notifications
+            </a>
+            <a href="#" class="dashboard-nav-item">
+              <i class="ph-light ph-gear ph-icon-nav"></i> Mon profil
+            </a>
+            <a href="#" class="dashboard-nav-item">
+              <i class="ph-light ph-bank ph-icon-nav"></i> Paiement &amp; Versements
+            </a>
+            <hr style="border:none;border-top:1px solid #e5e7eb;margin:0.5rem 0;" />
+            <a href="#" class="dashboard-nav-item">
+              <i class="ph-light ph-plus-circle ph-icon-nav"></i> Nouveau projet
+            </a>
+            <a href="#" class="dashboard-nav-item" style="color:#9CA3AF;">
+              <i class="ph-light ph-sign-out ph-icon-nav"></i> Se déconnecter
+            </a>
+          </nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-panel active" style="padding:1rem;">
+            <div class="admin-header" style="margin-bottom:1.5rem;">
+              <div>
+                <h2 style="font-size:1.5rem;color:#0D2244;">Mes projets</h2>
+                <p style="color:#6B7280;font-size:0.9rem;margin-top:0.25rem;">Suivez l'avancement de vos candidatures</p>
+              </div>
+              <a href="#" class="btn btn-primary btn-sm" style="display:inline-flex;align-items:center;gap:0.4rem;">
+                <i class="ph-light ph-plus-circle"></i> Déposer un projet
+              </a>
+            </div>
+            <p style="color:#6B7280;padding:2rem 0;">Contenu du panel ici...</p>
+            <p style="color:#6B7280;padding:2rem 0;">Plus de contenu pour tester le scroll...</p>
+            <p style="color:#6B7280;padding:2rem 0;">Encore plus de contenu...</p>
+            <p style="color:#6B7280;padding:2rem 0;">On scrolle...</p>
+            <p style="color:#6B7280;padding:2rem 0;">Est-ce que le header colle ?</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
