@@ -4,14 +4,20 @@
   <rect y="4" width="24" height="4" fill="#FFFFFF"/>
   <rect y="8" width="24" height="4" fill="#CE1126"/>
   <rect y="12" width="24" height="4" fill="#3A75C4"/>
+
   <!-- Triangle vert côté gauche -->
   <polygon points="0,0 9,8 0,16" fill="#009A44"/>
-  <!-- Croissant blanc -->
-  <circle cx="4.4" cy="8" r="2.7" fill="#FFFFFF"/>
-  <circle cx="5.4" cy="8" r="2.2" fill="#009A44"/>
-  <!-- 4 étoiles blanches (petits cercles) -->
-  <circle cx="2.3" cy="5.1" r="0.58" fill="#FFFFFF"/>
-  <circle cx="2.3" cy="7"   r="0.58" fill="#FFFFFF"/>
-  <circle cx="2.3" cy="9"   r="0.58" fill="#FFFFFF"/>
-  <circle cx="2.3" cy="10.9" r="0.58" fill="#FFFFFF"/>
+
+  <!-- Croissant blanc ouvert vers la droite :
+       Grand cercle blanc masqué par un cercle vert décalé à droite.
+       Les deux hornes du croissant pointent vers la droite. -->
+  <circle cx="4"   cy="8" r="2.6" fill="#FFFFFF"/>
+  <circle cx="5.2" cy="8" r="2.1" fill="#009A44"/>
+
+  <!-- 4 étoiles blanches DANS la concavité du croissant
+       (entre les deux cornes, côté droit de l'arc) -->
+  <circle cx="5.7" cy="6.2" r="0.52" fill="#FFFFFF"/>
+  <circle cx="5.7" cy="7.4" r="0.52" fill="#FFFFFF"/>
+  <circle cx="5.7" cy="8.6" r="0.52" fill="#FFFFFF"/>
+  <circle cx="5.7" cy="9.8" r="0.52" fill="#FFFFFF"/>
 </svg>
