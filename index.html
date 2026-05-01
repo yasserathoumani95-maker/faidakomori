@@ -331,14 +331,14 @@
         <article class="project-card" data-type="prevente">
           <div class="project-card__inner">
             <div class="project-card__image project-card__image--prevente">
-              📚
+              <i class="ph-light ph-books" style="font-size:2.5rem;opacity:0.65;"></i>
               <div class="project-card__badge-wrap">
                 <span class="badge badge-prevente"><i class="ph-light ph-package"></i> Prévente</span>
               </div>
             </div>
             <div class="project-card__body">
               <h4 class="project-card__title">Livre de cuisine comorienne</h4>
-              <p class="project-card__author">👩‍🍳 Fatima Abdou — Grande Comore</p>
+              <p class="project-card__author"><i class="ph-light ph-user-circle"></i> Fatima Abdou — Grande Comore</p>
               <p class="project-card__desc">Recueil illustré de 120 recettes traditionnelles. Les lecteurs commandent à l'avance pour financer l'impression.</p>
               <div class="project-card__progress">
                 <div class="progress-bar">
@@ -352,7 +352,7 @@
             </div>
             <div class="project-card__footer">
               <span class="project-card__days"><strong>22 jours</strong> restants</span>
-              <button onclick="openSupportModal('prevente','Livre de cuisine comorienne')" class="btn btn-primary btn-sm">Soutenir</button>
+              <a href="projet-detail.html?id=1" class="btn btn-primary btn-sm">Soutenir <i class="ph-light ph-arrow-right"></i></a>
             </div>
           </div>
         </article>
@@ -361,7 +361,7 @@
         <article class="project-card" data-type="dons">
           <div class="project-card__inner">
             <div class="project-card__image project-card__image--dons">
-              🏫
+              <i class="ph-light ph-buildings" style="font-size:2.5rem;opacity:0.65;"></i>
               <div class="project-card__badge-wrap">
                 <span class="badge badge-dons"><i class="ph-light ph-handshake"></i> Dons</span>
               </div>
@@ -382,7 +382,7 @@
             </div>
             <div class="project-card__footer">
               <span class="project-card__days"><strong>45 jours</strong> restants</span>
-              <button onclick="openSupportModal('dons','École primaire à Mohéli')" class="btn btn-ocean btn-sm">Soutenir</button>
+              <a href="projet-detail.html?id=2" class="btn btn-ocean btn-sm">Soutenir <i class="ph-light ph-arrow-right"></i></a>
             </div>
           </div>
         </article>
@@ -398,7 +398,7 @@
             </div>
             <div class="project-card__body">
               <h4 class="project-card__title">Restaurant traditionnel Moroni</h4>
-              <p class="project-card__author">👨‍🍳 Nassim Hamidou — Grande Comore</p>
+              <p class="project-card__author"><i class="ph-light ph-user-circle"></i> Nassim Hamidou — Grande Comore</p>
               <p class="project-card__desc">Ouverture d'un restaurant de cuisine comorienne. 25% des parts proposées aux investisseurs.</p>
               <div class="project-card__progress">
                 <div class="progress-bar">
@@ -412,7 +412,7 @@
             </div>
             <div class="project-card__footer">
               <span class="project-card__days"><strong>8 jours</strong> restants</span>
-              <button onclick="openSupportModal('investissement','Restaurant traditionnel Moroni','25%','2 000 000')" class="btn btn-navy btn-sm">Investir</button>
+              <a href="projet-detail.html?id=3" class="btn btn-navy btn-sm">Investir <i class="ph-light ph-arrow-right"></i></a>
             </div>
           </div>
         </article>
@@ -642,12 +642,22 @@
         investissement: { icon:'ph-trend-up',  badgeCls:'badge-invest',  imgCls:'invest',   btnLabel:'Investir',     btnCls:'btn-navy'    },
       };
       const typeLabel = { prevente:'Prévente', dons:'Don solidaire', investissement:'Investissement' };
-      const secteurEmoji = { culture:'🎭', agriculture:'🌾', technologie:'💻', restauration:'🍽️', artisanat:'🎨', santé:'🏥', tourisme:'✈️', environnement:'🌿', education:'📚' };
+      const secteurEmoji = {
+        culture:       '<i class="ph-light ph-mask-happy"    style="font-size:2.5rem;opacity:0.65;"></i>',
+        agriculture:   '<i class="ph-light ph-plant"         style="font-size:2.5rem;opacity:0.65;"></i>',
+        technologie:   '<i class="ph-light ph-laptop"        style="font-size:2.5rem;opacity:0.65;"></i>',
+        restauration:  '<i class="ph-light ph-fork-knife"    style="font-size:2.5rem;opacity:0.65;"></i>',
+        artisanat:     '<i class="ph-light ph-palette"       style="font-size:2.5rem;opacity:0.65;"></i>',
+        santé:         '<i class="ph-light ph-first-aid"     style="font-size:2.5rem;opacity:0.65;"></i>',
+        tourisme:      '<i class="ph-light ph-airplane"      style="font-size:2.5rem;opacity:0.65;"></i>',
+        environnement: '<i class="ph-light ph-leaf"          style="font-size:2.5rem;opacity:0.65;"></i>',
+        education:     '<i class="ph-light ph-books"         style="font-size:2.5rem;opacity:0.65;"></i>',
+      };
 
       const cards = projects.map(p => {
         const tc  = typeCfg[p.type] || typeCfg.dons;
         const pct = p.montant > 0 ? Math.min(Math.round((p.montant_collecte / p.montant) * 100), 100) : 0;
-        const emoji = secteurEmoji[(p.secteur || '').toLowerCase()] || '📁';
+        const emoji = secteurEmoji[(p.secteur || '').toLowerCase()] || '<i class="ph-light ph-folder" style="font-size:2.5rem;opacity:0.65;"></i>';
         const desc  = (p.description || '').slice(0, 120) + ((p.description || '').length > 120 ? '…' : '');
 
         return `

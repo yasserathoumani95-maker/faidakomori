@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" role="img" aria-label="États-Unis">
+  <!-- Fond blanc (bandes blanches) -->
+  <rect width="24" height="16" fill="#FFFFFF"/>
+  <!-- 7 bandes rouges alternées (hauteur 16/13 ≈ 1.23) -->
+  <rect width="24" height="1.23" y="0"     fill="#B22234"/>
+  <rect width="24" height="1.23" y="2.46"  fill="#B22234"/>
+  <rect width="24" height="1.23" y="4.92"  fill="#B22234"/>
+  <rect width="24" height="1.23" y="7.38"  fill="#B22234"/>
+  <rect width="24" height="1.23" y="9.85"  fill="#B22234"/>
+  <rect width="24" height="1.23" y="12.31" fill="#B22234"/>
+  <rect width="24" height="1.23" y="14.77" fill="#B22234"/>
+  <!-- Canton bleu (couvre les 7 premières bandes côté gauche) -->
+  <rect width="10" height="8.62" fill="#3C3B6E"/>
+  <!-- Étoiles blanches simplifiées (5 rangées de points) -->
+  <circle cx="1.4" cy="0.95"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="3.3" cy="0.95"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="5.1" cy="0.95"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="6.9" cy="0.95"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="8.7" cy="0.95"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="2.3" cy="2.46"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="4.2" cy="2.46"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="6.0" cy="2.46"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="7.8" cy="2.46"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="1.4" cy="3.97"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="3.3" cy="3.97"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="5.1" cy="3.97"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="6.9" cy="3.97"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="8.7" cy="3.97"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="2.3" cy="5.48"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="4.2" cy="5.48"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="6.0" cy="5.48"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="7.8" cy="5.48"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="1.4" cy="6.99"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="3.3" cy="6.99"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="5.1" cy="6.99"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="6.9" cy="6.99"  r="0.42" fill="#FFFFFF"/>
+  <circle cx="8.7" cy="6.99"  r="0.42" fill="#FFFFFF"/>
+</svg>

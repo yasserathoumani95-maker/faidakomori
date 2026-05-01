@@ -5,11 +5,23 @@
    Convertit tous les éléments [data-kmf] sur la page
    ============================================================ */
 
+/* ── Drapeaux SVG inline (fonctionnent depuis toutes les pages) ── */
+const FK_FLAGS = {
+  KMF: `<img src="img/flags/km.svg" width="22" height="15" alt="Comores"
+              style="border-radius:2px;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,0.12);flex-shrink:0;">`,
+  EUR: `<img src="img/flags/eu.svg" width="22" height="15" alt="EU"
+              style="border-radius:2px;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,0.12);flex-shrink:0;">`,
+  USD: `<img src="img/flags/us.svg" width="22" height="15" alt="USA"
+              style="border-radius:2px;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,0.12);flex-shrink:0;">`,
+  CAD: `<img src="img/flags/ca.svg" width="22" height="15" alt="Canada"
+              style="border-radius:2px;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,0.12);flex-shrink:0;">`,
+};
+
 const FK_CURR = {
-  KMF: { symbol: 'KMF', rate: 1,          label: 'KMF — Franc comorien',    flag: '🇰🇲' },
-  EUR: { symbol: '€',   rate: 1 / 492,    label: 'EUR — Euro',               flag: '🇪🇺' },
-  USD: { symbol: '$',   rate: 1 / 450,    label: 'USD — Dollar américain',   flag: '🇺🇸' },
-  CAD: { symbol: 'CA$', rate: 1 / 331,    label: 'CAD — Dollar canadien',    flag: '🇨🇦' },
+  KMF: { symbol: 'KMF', rate: 1,          label: 'KMF — Franc comorien',    flag: FK_FLAGS.KMF },
+  EUR: { symbol: '€',   rate: 1 / 492,    label: 'EUR — Euro',               flag: FK_FLAGS.EUR },
+  USD: { symbol: '$',   rate: 1 / 450,    label: 'USD — Dollar américain',   flag: FK_FLAGS.USD },
+  CAD: { symbol: 'CA$', rate: 1 / 331,    label: 'CAD — Dollar canadien',    flag: FK_FLAGS.CAD },
 };
 
 /* ── Lecture / écriture préférence ────────────────────────── */
@@ -42,7 +54,7 @@ function fkApplyAll() {
   });
   /* Mettre à jour le label du bouton desktop */
   const btn = document.getElementById('fk-curr-btn');
-  if (btn) btn.innerHTML = `<i class="ph-light ph-currency-circle-dollar"></i> ${currency} <span class="fk-caret">▾</span>`;
+  if (btn) btn.innerHTML = `${FK_CURR[currency].flag} <span style="font-weight:700;">${currency}</span> <span class="fk-caret" style="font-size:0.58rem;opacity:0.7;">▾</span>`;
   /* Mettre à jour les options actives */
   document.querySelectorAll('.fk-curr-opt').forEach(opt => {
     const active = opt.dataset.currency === currency;
@@ -63,12 +75,12 @@ function fkInitDesktopBtn() {
   li.style.cssText = 'position:relative;display:flex;align-items:center;';
   li.innerHTML = `
     <button id="fk-curr-btn"
-      style="display:flex;align-items:center;gap:0.35rem;padding:0.32rem 0.7rem;
+      style="display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0.65rem;
              border:1.5px solid var(--border-solid);border-radius:20px;
              background:#fff;color:var(--navy);font-size:0.8rem;font-weight:700;
              cursor:pointer;transition:all 0.18s;white-space:nowrap;"
       aria-label="Changer la devise">
-      <i class="ph-light ph-currency-circle-dollar"></i> ${currency} <span class="fk-caret" style="font-size:0.6rem;">▾</span>
+      ${FK_CURR[currency].flag} <span style="font-weight:700;">${currency}</span> <span class="fk-caret" style="font-size:0.58rem;opacity:0.7;">▾</span>
     </button>
     <div id="fk-curr-dd"
       style="display:none;position:absolute;right:0;top:calc(100% + 8px);
@@ -77,10 +89,10 @@ function fkInitDesktopBtn() {
              min-width:210px;z-index:999;overflow:hidden;">
       ${Object.entries(FK_CURR).map(([code, cfg]) => `
         <button class="fk-curr-opt" data-currency="${code}"
-          style="display:flex;align-items:center;gap:0.6rem;width:100%;padding:0.65rem 1rem;
+          style="display:flex;align-items:center;gap:0.65rem;width:100%;padding:0.65rem 1rem;
                  font-size:0.84rem;font-weight:600;background:none;border:none;
                  cursor:pointer;color:var(--navy);transition:background 0.15s;text-align:left;">
-          <span style="font-size:1.1rem;">${cfg.flag}</span>
+          ${cfg.flag}
           <span>${cfg.label}</span>
         </button>`).join('')}
     </div>`;
@@ -133,7 +145,8 @@ function fkInitMobileBtn() {
     </span>` +
     Object.entries(FK_CURR).map(([code, cfg]) =>
       `<button class="fk-curr-opt" data-currency="${code}"
-         style="padding:0.3rem 0.7rem;border-radius:20px;font-size:0.78rem;font-weight:700;
+         style="display:inline-flex;align-items:center;gap:0.35rem;
+                padding:0.28rem 0.65rem;border-radius:20px;font-size:0.78rem;font-weight:700;
                 cursor:pointer;border:1.5px solid var(--border-solid);
                 background:${code === currency ? 'var(--navy)' : '#fff'};
                 color:${code === currency ? '#fff' : 'var(--navy)'};">

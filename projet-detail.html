@@ -223,7 +223,7 @@
         <div>
 
           <!-- Galerie visuelle -->
-          <div class="detail-gallery">📚</div>
+          <div class="detail-gallery" style="display:flex;align-items:center;justify-content:center;"><i class="ph-light ph-books" style="font-size:4rem;opacity:0.5;"></i></div>
 
           <!-- Badges + meta -->
           <div class="detail-badges">
@@ -234,7 +234,7 @@
 
           <h1 class="detail-title" style="font-size:clamp(1.6rem,3vw,2.2rem);">Livre de cuisine comorienne</h1>
           <p class="detail-author">
-            👩‍🍳 <strong>Fatima Abdou</strong> — Auteure culinaire, Moroni
+            <i class="ph-light ph-user-circle"></i> <strong>Fatima Abdou</strong> — Auteure culinaire, Moroni
           </p>
           <p class="detail-desc">
             Ce recueil de 120 recettes est le fruit de 3 ans de collecte auprès des familles des trois îles. Des plats quotidiens aux préparations de fête, chaque recette est illustrée et accompagnée de l'histoire du plat et de ses variantes régionales. Un patrimoine culinaire à préserver pour les générations futures.
@@ -266,7 +266,7 @@
 
               <h4 style="color:var(--navy);margin:2rem 0 1rem;">À propos de Fatima</h4>
               <div style="display:flex;align-items:flex-start;gap:1.25rem;background:var(--off-white);border-radius:var(--radius);padding:1.4rem;border:1.5px solid var(--border-solid);">
-                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold-pale),rgba(232,160,32,0.3));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">👩‍🍳</div>
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold-pale),rgba(232,160,32,0.3));display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ph-light ph-user-circle" style="font-size:1.8rem;color:var(--gold-dark);"></i></div>
                 <div>
                   <p style="font-weight:700;color:var(--navy);margin-bottom:0.25rem;">Fatima Abdou</p>
                   <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem;">Auteure et chercheuse culinaire, Moroni</p>
@@ -533,7 +533,7 @@
           <div style="display:flex;flex-direction:column;gap:0.65rem;" id="pay-cards-list">
             <div class="pay-card selected" data-method="huri" onclick="selectPayCard(this)">
               <div class="pay-card__radio"></div>
-              <div class="pay-card__icon">📱</div>
+              <div class="pay-card__icon"><i class="ph-light ph-device-mobile" style="font-size:1.4rem;"></i></div>
               <div class="pay-card__info">
                 <strong>Huri Money</strong>
                 <span>Mobile money — Telecom Comores</span>
@@ -541,7 +541,7 @@
             </div>
             <div class="pay-card" data-method="mvola" onclick="selectPayCard(this)">
               <div class="pay-card__radio"></div>
-              <div class="pay-card__icon">💛</div>
+              <div class="pay-card__icon"><i class="ph-light ph-device-mobile" style="font-size:1.4rem;color:#f0a500;"></i></div>
               <div class="pay-card__info">
                 <strong>MoVola</strong>
                 <span>Mobile money — Société Nationale des Postes</span>
@@ -549,7 +549,7 @@
             </div>
             <div class="pay-card" data-method="mpesa" onclick="selectPayCard(this)">
               <div class="pay-card__radio"></div>
-              <div class="pay-card__icon">🟢</div>
+              <div class="pay-card__icon"><i class="ph-light ph-device-mobile" style="font-size:1.4rem;color:#00a651;"></i></div>
               <div class="pay-card__info">
                 <strong>M-Pesa</strong>
                 <span>Mobile money — Comores Telecom</span>
@@ -557,7 +557,7 @@
             </div>
             <div class="pay-card" data-method="virement" onclick="selectPayCard(this)">
               <div class="pay-card__radio"></div>
-              <div class="pay-card__icon">🏦</div>
+              <div class="pay-card__icon"><i class="ph-light ph-bank" style="font-size:1.4rem;"></i></div>
               <div class="pay-card__info">
                 <strong>Virement bancaire</strong>
                 <span>BIC, BCC ou banque locale (RIB fourni)</span>
@@ -879,8 +879,12 @@
 
         // ── Galerie (icône type) ──────────────────────────
         const gallery = document.querySelector('.detail-gallery');
-        const typeEmoji = { prevente:'📦', dons:'🤝', investissement:'📈' };
-        if (gallery) gallery.textContent = typeEmoji[project.type] || '📁';
+        const typeEmoji = {
+          prevente:       '<i class="ph-light ph-package"   style="font-size:4rem;opacity:0.5;"></i>',
+          dons:           '<i class="ph-light ph-handshake" style="font-size:4rem;opacity:0.5;"></i>',
+          investissement: '<i class="ph-light ph-trend-up"  style="font-size:4rem;opacity:0.5;"></i>',
+        };
+        if (gallery) gallery.innerHTML = typeEmoji[project.type] || '<i class="ph-light ph-folder" style="font-size:4rem;opacity:0.5;"></i>';
 
         // ── Badges ────────────────────────────────────────
         const badgesEl = document.querySelector('.detail-badges');
@@ -1180,10 +1184,24 @@
           if (crumb) crumb.textContent = demo.nom_projet;
 
           // Galerie
-          const typeEmoji = { prevente:'📦', dons:'🤝', investissement:'📈' };
-          const emojiMap = { 1:'📚', 2:'🏫', 3:'🍽️', 4:'🎨', 5:'🐟', 6:'🌿', 7:'🎵', 8:'🛒', 9:'🌊' };
+          const typeEmoji = {
+            prevente:       '<i class="ph-light ph-package"       style="font-size:4rem;opacity:0.5;"></i>',
+            dons:           '<i class="ph-light ph-handshake"     style="font-size:4rem;opacity:0.5;"></i>',
+            investissement: '<i class="ph-light ph-trend-up"      style="font-size:4rem;opacity:0.5;"></i>',
+          };
+          const emojiMap = {
+            1: '<i class="ph-light ph-books"         style="font-size:4rem;opacity:0.5;"></i>',
+            2: '<i class="ph-light ph-buildings"     style="font-size:4rem;opacity:0.5;"></i>',
+            3: '<i class="ph-light ph-fork-knife"    style="font-size:4rem;opacity:0.5;"></i>',
+            4: '<i class="ph-light ph-palette"       style="font-size:4rem;opacity:0.5;"></i>',
+            5: '<i class="ph-light ph-fish-simple"   style="font-size:4rem;opacity:0.5;"></i>',
+            6: '<i class="ph-light ph-leaf"          style="font-size:4rem;opacity:0.5;"></i>',
+            7: '<i class="ph-light ph-music-note"    style="font-size:4rem;opacity:0.5;"></i>',
+            8: '<i class="ph-light ph-shopping-cart" style="font-size:4rem;opacity:0.5;"></i>',
+            9: '<i class="ph-light ph-waves"         style="font-size:4rem;opacity:0.5;"></i>',
+          };
           const gallery = document.querySelector('.detail-gallery');
-          if (gallery) gallery.textContent = emojiMap[demo.id] || typeEmoji[demo.type] || '📁';
+          if (gallery) gallery.innerHTML = emojiMap[demo.id] || typeEmoji[demo.type] || '<i class="ph-light ph-folder" style="font-size:4rem;opacity:0.5;"></i>';
 
           // Badges
           const badgesEl = document.querySelector('.detail-badges');
@@ -1249,7 +1267,7 @@
       const recapName = document.getElementById('pd-proj-name');
       const recapType = document.getElementById('pd-proj-type');
       if (recap && recapName) {
-        const typeLabels = { prevente:'📦 Prévente', dons:'💚 Don solidaire', investissement:'📈 Investissement' };
+        const typeLabels = { prevente:'Prévente', dons:'Don solidaire', investissement:'Investissement' };
         if (recapType) recapType.textContent = typeLabels[project.type] || project.type;
         recapName.textContent = project.nom_projet;
         recap.style.display = 'block';
@@ -1455,7 +1473,7 @@
             const telLine   = _fkPaiement?.paiement_tel || _fkProfile?.tel || '';
             document.getElementById('step4-user-name').textContent = `✓ Connecté en tant que ${user.prenom} ${user.nom}`;
             const step4Sub = document.getElementById('step4-user-sub');
-            if (step4Sub) step4Sub.textContent = [emailLine, telLine ? `📞 ${telLine}` : ''].filter(Boolean).join(' · ');
+            if (step4Sub) step4Sub.textContent = [emailLine, telLine ? `☎ ${telLine}` : ''].filter(Boolean).join(' · ');
             connectedDiv.style.display = '';
           }
           if (authBox) authBox.style.display = 'none';
@@ -1594,7 +1612,7 @@
       const method  = document.querySelector('#pay-cards-list .pay-card.selected')?.dataset.method || 'huri';
       const coords  = document.getElementById('don-coords')?.value?.trim() || '—';
       const methLabels = { huri:'Huri Money', mvola:'MoVola', mpesa:'M-Pesa', virement:'Virement bancaire' };
-      const typeLabels = { prevente:'📦 Prévente', dons:'💚 Don', investissement:'📈 Investissement' };
+      const typeLabels = { prevente:'Prévente', dons:'Don', investissement:'Investissement' };
 
       const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
       el('recap-projet',  proj?.nom_projet || '—');
