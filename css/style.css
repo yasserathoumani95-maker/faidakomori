@@ -608,22 +608,23 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 
 /* ── Logo SVG image navbar ─────────────────────────────────── */
 .navbar__logo-img {
+  display: block;
   height: 36px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
+  vertical-align: middle;
   transition: transform var(--duration-sm) var(--ease-spring),
               filter var(--duration-sm) var(--ease-out);
 }
 .navbar__logo:hover .navbar__logo-img {
-  transform: scale(1.08) rotate(-3deg);
-  filter: drop-shadow(0 3px 8px rgba(232,160,32,0.55));
+  transform: scale(1.06) rotate(-2deg);
+  filter: drop-shadow(0 2px 6px rgba(232,160,32,0.5));
 }
 .footer__logo-img {
-  width: 30px;
-  height: 30px;
+  height: 36px;
+  width: auto;
   object-fit: contain;
-  margin-right: 0.4rem;
   flex-shrink: 0;
 }
 .hero__subtitle {
@@ -1797,12 +1798,23 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 
   /* Admin table scroll horizontal */
   .admin-table-wrap      { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Onglets projet : taille réduite pour tenir sur 375px (tous 4 visibles) */
+  .detail-tab { font-size: 0.75rem; padding: 0.55rem 0.65rem; }
+
+  /* Navbar logo compact */
+  .navbar__logo-img { height: 28px; }
+  .navbar__logo { font-size: 1.05rem; gap: 0.3rem; }
+
+  /* Footer logo compact */
+  .footer__logo-img { height: 28px; }
+  .footer__logo { font-size: 1.2rem; gap: 0.3rem; }
 }
 
 /* ══════════════════════════════════════════════════════════════
    FOOTER LOGO IMAGE
    ══════════════════════════════════════════════════════════════ */
-.footer__logo-img { height: 44px; width: auto; margin-bottom: 0.75rem; }
+.footer__logo-img { height: 36px; width: auto; margin-bottom: 0; }
 
 /* ══════════════════════════════════════════════════════════════
    BADGE VERT (Dons) — aligné sur le vert charte #00C853
@@ -2847,6 +2859,16 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
   .detail-grid .btn-primary {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* ── Onglets projet : compact pour que les 4 tiennent sur 375px ── */
+@media (max-width: 430px) {
+  .detail-tabs .detail-tab {
+    font-size: 0.73rem !important;
+    padding: 0.55rem 0.6rem !important;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 }
 
