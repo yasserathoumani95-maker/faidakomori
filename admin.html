@@ -957,7 +957,7 @@
 
       <!-- Entretiens à venir (dynamique) -->
       <div style="margin-bottom:1.5rem;">
-        <div style="font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:1rem;">🗓️ Entretiens à venir</div>
+        <div style="font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:1rem;"><i class="ph-light ph-calendar"></i> Entretiens à venir</div>
         <div id="dashboard-entretiens-list"><div style="color:var(--text-muted);font-size:0.875rem;">Chargement…</div></div>
       </div>
 
@@ -977,9 +977,9 @@
         <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
           <select style="padding:0.5rem 0.9rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.82rem;font-family:var(--font-body);color:var(--text);background:var(--white);">
             <option>Tous les statuts</option>
-            <option>🆕 Nouveau</option>
-            <option>🔍 En analyse</option>
-            <option>🗓️ Entretien</option>
+            <option>Nouveau</option>
+            <option>En analyse</option>
+            <option>Entretien</option>
             <option><i class="ph-light ph-check-circle"></i> Approuvé</option>
             <option><i class="ph-light ph-x-circle"></i> Refusé</option>
             <option><i class="ph-light ph-rocket-launch"></i> Publié</option>
@@ -1303,7 +1303,7 @@
             <div class="announcement-card__title"><i class="ph-light ph-confetti"></i> FaidaKomori atteint 9 projets actifs !</div>
             <div class="announcement-card__body">Nous sommes fiers d'annoncer que 9 projets comoriens sont actuellement en cours de financement sur notre plateforme. Merci à tous les porteurs de projet et aux soutiens pour leur confiance.</div>
             <div class="announcement-card__footer">
-              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 1)">✏️ Modifier</button>
+              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 1)"><i class="ph-light ph-pencil-simple"></i> Modifier</button>
               <button class="admin-btn admin-btn--danger">Dépublier</button>
             </div>
           </div>
@@ -1313,17 +1313,17 @@
             <div class="announcement-card__title"><i class="ph-light ph-handshake"></i> Nouveau partenariat avec l'ANPI Comores</div>
             <div class="announcement-card__body">FaidaKomori officialise son partenariat avec l'ANPI (Agence Nationale pour la Promotion des Investissements). Les porteurs de projet financés peuvent désormais créer leur entreprise gratuitement via ce partenariat.</div>
             <div class="announcement-card__footer">
-              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 2)">✏️ Modifier</button>
+              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 2)"><i class="ph-light ph-pencil-simple"></i> Modifier</button>
               <button class="admin-btn admin-btn--danger">Dépublier</button>
             </div>
           </div>
 
           <div class="announcement-card">
             <div class="announcement-card__date">28 Mars 2026 · Événement</div>
-            <div class="announcement-card__title">📅 Webinaire : Comment financer votre projet aux Comores</div>
+            <div class="announcement-card__title"><i class="ph-light ph-calendar-blank"></i> Webinaire : Comment financer votre projet aux Comores</div>
             <div class="announcement-card__body">Rejoignez-nous le 20 avril à 18h (heure de Moroni) pour un webinaire gratuit sur le financement participatif aux Comores. Inscription gratuite via WhatsApp.</div>
             <div class="announcement-card__footer">
-              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 3)">✏️ Modifier</button>
+              <button class="admin-btn admin-btn--outline" onclick="openDrawer('edit_annonce', 3)"><i class="ph-light ph-pencil-simple"></i> Modifier</button>
               <button class="admin-btn admin-btn--danger">Dépublier</button>
             </div>
           </div>
@@ -1332,7 +1332,7 @@
         <!-- Formulaire nouvelle annonce -->
         <div>
           <div style="background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border-solid);padding:1.5rem;">
-            <div style="font-weight:700;color:var(--navy);margin-bottom:1.25rem;font-size:1rem;">📢 Publier une annonce</div>
+            <div style="font-weight:700;color:var(--navy);margin-bottom:1.25rem;font-size:1rem;"><i class="ph-light ph-megaphone"></i> Publier une annonce</div>
             <div class="interview-form">
               <div>
                 <label>Titre de l'annonce</label>
@@ -1357,7 +1357,7 @@
                 <input type="date" value="2026-04-10" />
               </div>
               <button class="admin-btn admin-btn--gold" style="width:100%;padding:0.75rem;font-size:0.9rem;" onclick="publishAnnonce()">
-                📢 Publier l'annonce
+                <i class="ph-light ph-megaphone"></i> Publier l'annonce
               </button>
             </div>
           </div>
@@ -1411,9 +1411,9 @@
       <!-- Filtres statut -->
       <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;" id="paiements-statut-filters">
         <button class="paiement-filter-btn active" data-statut="">Tous</button>
-        <button class="paiement-filter-btn" data-statut="en_attente">⏳ En attente</button>
-        <button class="paiement-filter-btn" data-statut="confirme">✅ Confirmés</button>
-        <button class="paiement-filter-btn" data-statut="annule">❌ Annulés</button>
+        <button class="paiement-filter-btn" data-statut="en_attente"><i class="ph-light ph-hourglass"></i> En attente</button>
+        <button class="paiement-filter-btn" data-statut="confirme"><i class="ph-light ph-check-circle"></i> Confirmés</button>
+        <button class="paiement-filter-btn" data-statut="annule"><i class="ph-light ph-x-circle"></i> Annulés</button>
       </div>
 
       <!-- Filtres type -->
@@ -1565,12 +1565,12 @@
 
   /* ── Helpers HTML ──────────────────────────────────────────── */
   const STATUS_LABELS = {
-    new:       { label:'🆕 Nouveau',    cls:'status--new' },
-    review:    { label:'🔍 En analyse', cls:'status--review' },
-    interview: { label:'🗓️ Entretien',  cls:'status--interview' },
-    approved:  { label:'✅ Approuvé',   cls:'status--approved' },
-    rejected:  { label:'❌ Refusé',     cls:'status--rejected' },
-    published: { label:'🚀 Publié',     cls:'status--published' },
+    new:       { label:'<i class="ph-light ph-sparkle"></i> Nouveau',    cls:'status--new' },
+    review:    { label:'<i class="ph-light ph-magnifying-glass"></i> En analyse', cls:'status--review' },
+    interview: { label:'<i class="ph-light ph-calendar"></i> Entretien',  cls:'status--interview' },
+    approved:  { label:'<i class="ph-light ph-check-circle"></i> Approuvé',   cls:'status--approved' },
+    rejected:  { label:'<i class="ph-light ph-x-circle"></i> Refusé',     cls:'status--rejected' },
+    published: { label:'<i class="ph-light ph-rocket-launch"></i> Publié',     cls:'status--published' },
   };
   const TYPE_BADGES = {
     prevente:      `<span class="badge badge-prevente" style="font-size:0.72rem;"><i class="ph-light ph-package"></i> Prévente</span>`,
@@ -1709,8 +1709,8 @@
         const isOnline = !['inperson','phone'].includes(info.type_entretien);
         const reponse = info.reponse_porteur;
         const reponseTag = reponse
-          ? `<span style="font-size:.72rem;font-weight:700;color:${reponse==='accepted'?'#00C853':'#DC2626'};margin-left:.4rem;">${reponse==='accepted'?'✅ Confirmé':'❌ Décliné'}</span>`
-          : `<span style="font-size:.72rem;color:#9CA3AF;margin-left:.4rem;">⏳ En attente</span>`;
+          ? `<span style="font-size:.72rem;font-weight:700;color:${reponse==='accepted'?'#00C853':'#DC2626'};margin-left:.4rem;">${reponse==='accepted'?'<i class="ph-light ph-check-circle"></i> Confirmé':'<i class="ph-light ph-x-circle"></i> Décliné'}</span>`
+          : `<span style="font-size:.72rem;color:#9CA3AF;margin-left:.4rem;"><i class="ph-light ph-hourglass"></i> En attente</span>`;
         return `<div class="interview-card" style="cursor:pointer;" onclick="openDrawer('demande',${p.id})">
           <div class="interview-card__date-block">
             <div class="interview-card__day">${dateStr[0]}</div>
@@ -1725,9 +1725,9 @@
             </div>
           </div>
           <div class="admin-actions" onclick="event.stopPropagation()">
-            <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview',${p.id})">✏️</button>
-            <button class="admin-btn admin-btn--green" onclick="approveProject(${p.id})">✅</button>
-            <button class="admin-btn admin-btn--danger" onclick="rejectProject(${p.id})">❌</button>
+            <button class="admin-btn admin-btn--gold" onclick="openDrawer('interview',${p.id})"><i class="ph-light ph-pencil-simple"></i></button>
+            <button class="admin-btn admin-btn--green" onclick="approveProject(${p.id})"><i class="ph-light ph-check-circle"></i></button>
+            <button class="admin-btn admin-btn--danger" onclick="rejectProject(${p.id})"><i class="ph-light ph-x-circle"></i></button>
           </div>
         </div>`;
       };
@@ -1758,7 +1758,7 @@
     try {
       await API.admin.updateStatus(id, 'approved', note);
       closeDrawer();
-      showToast('✅ Projet approuvé — le porteur est notifié par email.', 'success');
+      showToast('Projet approuvé — le porteur est notifié par email.', 'success');
       loadAdminStats(); loadRecentDemandes(); loadDemandes(); loadEntretiens();
     } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
   }
@@ -1769,7 +1769,7 @@
     try {
       await API.admin.updateStatus(id, 'rejected', note);
       closeDrawer();
-      showToast('❌ Projet refusé — le candidat est notifié par email.', 'warning');
+      showToast('Projet refusé — le candidat est notifié par email.', 'warning');
       loadAdminStats(); loadRecentDemandes(); loadDemandes(); loadEntretiens();
     } catch (e) { showToast('Erreur : ' + e.message, 'warning'); }
   }
@@ -1853,21 +1853,21 @@
         const reponse = info.reponse_porteur;
         const reponseHtml = reponse
           ? `<div style="margin-top:.5rem;font-size:.82rem;font-weight:700;color:${reponse==='accepted'?'#00C853':'#DC2626'};">
-              ${reponse==='accepted' ? '✅ Porteur confirmé' : '❌ Porteur a décliné'}
+              ${reponse==='accepted' ? 'Porteur confirmé' : 'Porteur a décliné'}
              </div>`
-          : `<div style="margin-top:.5rem;font-size:.8rem;color:#9CA3AF;font-style:italic;">⏳ En attente de réponse du porteur</div>`;
+          : `<div style="margin-top:.5rem;font-size:.8rem;color:#9CA3AF;font-style:italic;">En attente de réponse du porteur</div>`;
 
         interviewBlock = `
           <div style="padding:1rem;background:#FFFBEB;border:1.5px solid rgba(232,160,32,.35);border-radius:10px;margin-bottom:1rem;">
-            <div style="font-weight:700;color:#9A6310;margin-bottom:.4rem;font-size:.88rem;">🗓️ Entretien planifié</div>
+            <div style="font-weight:700;color:#9A6310;margin-bottom:.4rem;font-size:.88rem;"><i class="ph-light ph-calendar"></i> Entretien planifié</div>
             <div style="font-size:.85rem;color:var(--text-muted);line-height:1.8;">
-              📅 <strong>${dateStr}</strong> à <strong>${info.heure||'—'}</strong><br>
-              📡 ${tLabels[info.type_entretien]||info.type_entretien||'—'}
+              <i class="ph-light ph-calendar-blank"></i> <strong>${dateStr}</strong> à <strong>${info.heure||'—'}</strong><br>
+              <i class="ph-light ph-broadcast"></i> ${tLabels[info.type_entretien]||info.type_entretien||'—'}
               ${info.lien ? `· <a href="${info.lien}" target="_blank" style="color:var(--ocean);">Lien</a>` : ''}
-              ${info.notes ? `<br>📝 ${info.notes}` : ''}
+              ${info.notes ? `<br><i class="ph-light ph-note-pencil"></i> ${info.notes}` : ''}
             </div>
             ${reponseHtml}
-            <button class="admin-btn admin-btn--outline" style="margin-top:.75rem;font-size:.75rem;" onclick="openDrawer('interview',${id})">✏️ Modifier l'entretien</button>
+            <button class="admin-btn admin-btn--outline" style="margin-top:.75rem;font-size:.75rem;" onclick="openDrawer('interview',${id})"><i class="ph-light ph-pencil-simple"></i> Modifier l'entretien</button>
           </div>`;
       }
 
@@ -1884,23 +1884,23 @@
       let actionBtns = '';
       if (p.status === 'new' || p.status === 'review') {
         actionBtns = `
-          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="openDrawer('interview',${id})">🗓️ Planifier entretien</button>
-          <button class="admin-btn admin-btn--outline" style="flex:1;" onclick="setReview(${id})">🔍 Mettre en examen</button>
-          <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})">✅ Approuver</button>
-          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})">❌ Refuser</button>`;
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="openDrawer('interview',${id})"><i class="ph-light ph-calendar"></i> Planifier entretien</button>
+          <button class="admin-btn admin-btn--outline" style="flex:1;" onclick="setReview(${id})"><i class="ph-light ph-magnifying-glass"></i> Mettre en examen</button>
+          <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})"><i class="ph-light ph-check-circle"></i> Approuver</button>
+          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})"><i class="ph-light ph-x-circle"></i> Refuser</button>`;
       } else if (p.status === 'interview') {
         actionBtns = `
-          <button class="admin-btn admin-btn--green" style="flex:2;" onclick="approveProject(${id})">✅ Entretien terminé — Approuver</button>
-          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})">❌ Refuser</button>`;
+          <button class="admin-btn admin-btn--green" style="flex:2;" onclick="approveProject(${id})"><i class="ph-light ph-check-circle"></i> Entretien terminé — Approuver</button>
+          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})"><i class="ph-light ph-x-circle"></i> Refuser</button>`;
       } else if (p.status === 'approved') {
         actionBtns = `
           <button class="admin-btn admin-btn--green" style="flex:1;" onclick="openDrawer('publish',${id})"><i class="ph-light ph-rocket-launch"></i> Publier le projet</button>
-          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})">❌ Refuser</button>`;
+          <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})"><i class="ph-light ph-x-circle"></i> Refuser</button>`;
       } else if (p.status === 'published') {
-        actionBtns = `<div style="font-size:.85rem;color:var(--green-deep);font-weight:700;">🚀 Projet publié et en ligne</div>`;
+        actionBtns = `<div style="font-size:.85rem;color:var(--green-deep);font-weight:700;"><i class="ph-light ph-rocket-launch"></i> Projet publié et en ligne</div>`;
       } else if (p.status === 'rejected') {
         actionBtns = `
-          <div style="font-size:.82rem;color:#B91C1C;font-weight:600;margin-bottom:.5rem;">❌ Dossier refusé</div>
+          <div style="font-size:.82rem;color:#B91C1C;font-weight:600;margin-bottom:.5rem;"><i class="ph-light ph-x-circle"></i> Dossier refusé</div>
           <button class="admin-btn admin-btn--outline" style="flex:1;" onclick="setReview(${id})">↩️ Remettre en examen</button>`;
       }
 
@@ -1948,18 +1948,18 @@
       const today = new Date().toISOString().split('T')[0];
       return `
       <div class="admin-drawer__header">
-        <div class="admin-drawer__title">🗓️ Planifier un entretien</div>
+        <div class="admin-drawer__title"><i class="ph-light ph-calendar"></i> Planifier un entretien</div>
         <div class="admin-drawer__sub">${porteurNom}</div>
       </div>
       <div class="interview-form">
         <div>
           <label>Type d'entretien</label>
           <select id="interviewType" onchange="updateLinkField()">
-            <option value="google_meet" ${existing.type_entretien==='google_meet'?'selected':''}>📹 Google Meet (en ligne)</option>
-            <option value="zoom" ${existing.type_entretien==='zoom'?'selected':''}>📹 Zoom (en ligne)</option>
+            <option value="google_meet" ${existing.type_entretien==='google_meet'?'selected':''}>Google Meet (en ligne)</option>
+            <option value="zoom" ${existing.type_entretien==='zoom'?'selected':''}>Zoom (en ligne)</option>
             <option value="whatsapp" ${existing.type_entretien==='whatsapp'?'selected':''}>WhatsApp Video</option>
             <option value="phone" ${existing.type_entretien==='phone'?'selected':''}>☎ Appel téléphonique</option>
-            <option value="inperson" ${existing.type_entretien==='inperson'?'selected':''}>📍 Présentiel — Moroni</option>
+            <option value="inperson" ${existing.type_entretien==='inperson'?'selected':''}>Présentiel — Moroni</option>
           </select>
         </div>
         <div id="meetLinkField">
@@ -2012,7 +2012,7 @@
       const isOnline = !['inperson','phone'].includes(info.type_entretien);
       return `
       <div class="admin-drawer__header">
-        <div class="admin-drawer__title">🗓️ Détail de l'entretien</div>
+        <div class="admin-drawer__title"><i class="ph-light ph-calendar"></i> Détail de l'entretien</div>
         <div class="admin-drawer__sub">${porteurNom}</div>
       </div>
       <div class="admin-drawer__section">
@@ -2026,7 +2026,7 @@
       </div>
       <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap;">
         <button class="admin-btn admin-btn--green" style="flex:1;" onclick="openDrawer('score',${id})"><i class="ph-light ph-chart-bar"></i> Évaluer le dossier</button>
-        <button class="admin-btn admin-btn--outline" onclick="openDrawer('interview',${id})">✏️ Modifier</button>
+        <button class="admin-btn admin-btn--outline" onclick="openDrawer('interview',${id})"><i class="ph-light ph-pencil-simple"></i> Modifier</button>
       </div>`;
     },
 
@@ -2066,7 +2066,7 @@
         <textarea class="interview-form" style="width:100%;padding:0.7rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-solid);font-size:0.875rem;font-family:var(--font-body);min-height:90px;resize:vertical;" placeholder="Ex : Projet solide, porteur motivé. Revoir les projections de vente au mois 3..."></textarea>
       </div>
       <div style="display:flex;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap;">
-        <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})">✅ Approuver le projet</button>
+        <button class="admin-btn admin-btn--green" style="flex:1;" onclick="approveProject(${id})"><i class="ph-light ph-check-circle"></i> Approuver le projet</button>
         <button class="admin-btn admin-btn--danger" style="flex:1;" onclick="rejectProject(${id})"><i class="ph-light ph-x-circle"></i> Refuser</button>
       </div>`;
     },
@@ -2111,7 +2111,7 @@
 
     new_annonce: () => `
       <div class="admin-drawer__header">
-        <div class="admin-drawer__title">📢 Nouvelle annonce</div>
+        <div class="admin-drawer__title"><i class="ph-light ph-megaphone"></i> Nouvelle annonce</div>
         <div class="admin-drawer__sub">Elle sera visible sur la plateforme</div>
       </div>
       <div class="interview-form">
@@ -2138,7 +2138,7 @@
           <input type="date" value="2026-04-10" />
         </div>
         <div style="display:flex;gap:0.75rem;">
-          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="publishAnnonce()">📢 Publier</button>
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="publishAnnonce()"><i class="ph-light ph-megaphone"></i> Publier</button>
           <button class="admin-btn admin-btn--outline" onclick="closeDrawer()">Annuler</button>
         </div>
       </div>
@@ -2146,7 +2146,7 @@
 
     edit_annonce: (id) => `
       <div class="admin-drawer__header">
-        <div class="admin-drawer__title">✏️ Modifier l'annonce #${id}</div>
+        <div class="admin-drawer__title"><i class="ph-light ph-pencil-simple"></i> Modifier l'annonce #${id}</div>
         <div class="admin-drawer__sub">Modifiez et re-publiez</div>
       </div>
       <div class="interview-form">
@@ -2173,7 +2173,7 @@
           <input type="date" value="2026-04-${String(id*5).padStart(2,'0')}" />
         </div>
         <div style="display:flex;gap:0.75rem;">
-          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="saveAnnonce(${id})">💾 Enregistrer</button>
+          <button class="admin-btn admin-btn--gold" style="flex:1;" onclick="saveAnnonce(${id})"><i class="ph-light ph-floppy-disk"></i> Enregistrer</button>
           <button class="admin-btn admin-btn--danger" onclick="closeDrawer()">Annuler</button>
         </div>
       </div>
@@ -2181,7 +2181,7 @@
 
     interview_new: () => `
       <div class="admin-drawer__header">
-        <div class="admin-drawer__title">🗓️ Planifier un entretien</div>
+        <div class="admin-drawer__title"><i class="ph-light ph-calendar"></i> Planifier un entretien</div>
         <div class="admin-drawer__sub">Choisissez le candidat et les modalités</div>
       </div>
       <div class="interview-form">
@@ -2282,7 +2282,7 @@
     try {
       await API.admin.scheduleInterview(id, { type_entretien, date, heure, duree, lien, notes });
       closeDrawer();
-      showToast('🗓️ Entretien planifié ! Le porteur a été notifié.', 'success');
+      showToast('Entretien planifié ! Le porteur a été notifié.', 'success');
       window._adminProjects[id] = { ...window._adminProjects[id], status: 'interview',
         note_admin: JSON.stringify({ type_entretien, date, heure, duree, lien, notes }) };
       loadAdminStats(); loadRecentDemandes(); loadDemandes(); loadEntretiens();
@@ -2290,11 +2290,11 @@
   }
   function publishAnnonce() {
     closeDrawer();
-    showToast('📢 Annonce publiée avec succès !', 'success');
+    showToast('Annonce publiée avec succès !', 'success');
   }
   function saveAnnonce(id) {
     closeDrawer();
-    showToast('💾 Annonce #' + id + ' mise à jour.', 'success');
+    showToast('Annonce #' + id + ' mise à jour.', 'success');
   }
   function sendInvite(id) {
     showToast('Lien Zoom envoyé au candidat #' + id, 'success');
@@ -2512,20 +2512,20 @@
             <tbody>
               ${contributions.map(c => {
                 const statutBadge = c.statut_paiement === 'confirme'
-                  ? '<span class="statut-badge statut-badge--confirme">✅ Confirmé</span>'
+                  ? '<span class="statut-badge statut-badge--confirme"><i class="ph-light ph-check-circle"></i> Confirmé</span>'
                   : c.statut_paiement === 'annule'
-                    ? '<span class="statut-badge statut-badge--annule">❌ Annulé</span>'
-                    : '<span class="statut-badge statut-badge--attente">⏳ En attente</span>';
+                    ? '<span class="statut-badge statut-badge--annule"><i class="ph-light ph-x-circle"></i> Annulé</span>'
+                    : '<span class="statut-badge statut-badge--attente"><i class="ph-light ph-hourglass"></i> En attente</span>';
 
                 const actions = c.statut_paiement === 'en_attente'
                   ? `<div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
                        <button onclick="confirmerPaiement(${c.id},'confirme')"
                          style="padding:0.3rem 0.7rem;border-radius:50px;border:none;background:rgba(0,200,83,0.15);color:#065F46;font-size:0.75rem;font-weight:700;cursor:pointer;">
-                         ✅ Confirmer
+                         <i class="ph-light ph-check-circle"></i> Confirmer
                        </button>
                        <button onclick="confirmerPaiement(${c.id},'annule')"
                          style="padding:0.3rem 0.7rem;border-radius:50px;border:none;background:rgba(220,38,38,0.1);color:#B91C1C;font-size:0.75rem;font-weight:700;cursor:pointer;">
-                         ❌ Annuler
+                         <i class="ph-light ph-x-circle"></i> Annuler
                        </button>
                      </div>`
                   : '<span style="font-size:0.75rem;color:var(--text-muted);">—</span>';
@@ -2572,8 +2572,8 @@
       await API.admin.confirmerContribution(id, statut, note);
       showToast(
         statut === 'confirme'
-          ? '✅ Paiement confirmé — le contributeur est notifié.'
-          : '❌ Contribution annulée.',
+          ? 'Paiement confirmé — le contributeur est notifié.'
+          : 'Contribution annulée.',
         statut === 'confirme' ? 'success' : 'warning'
       );
       loadPaiements();
