@@ -471,8 +471,9 @@
 
   <!-- ── MODAL SOUTIEN ─────────────────────────────────────── -->
   <div class="modal-overlay" id="pd-soutien">
-    <div class="modal modal-relative" style="max-height:92vh;overflow-y:auto;padding-bottom:1.5rem;">
+    <div class="modal modal-relative modal-form" style="max-height:92vh;">
       <button class="modal__close" onclick="closeModal('pd-soutien')">✕</button>
+      <div class="modal__scroll">
 
       <!-- Rappel projet -->
       <div id="pd-proj-recap" style="display:none;background:var(--sand);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-bottom:1.25rem;border-left:3px solid var(--gold);">
@@ -758,13 +759,15 @@
         </div>
 
       </form>
+      </div><!-- /.modal__scroll -->
     </div>
   </div>
 
   <!-- ── MODAL SUCCÈS DON ──────────────────────────────────── -->
   <div class="modal-overlay" id="pd-don-success">
-    <div class="modal success-modal modal-relative">
+    <div class="modal success-modal modal-relative modal-form">
       <button class="modal__close" onclick="closeModal('pd-don-success')">✕</button>
+      <div class="modal__scroll">
       <span class="success-modal__icon"><i class="ph-light ph-confetti"></i></span>
       <h3 class="modal__title">Contribution enregistrée !</h3>
       <p style="color:var(--text-muted);margin-bottom:1rem;line-height:1.75;" id="success-main-text">
@@ -795,6 +798,7 @@
         <a href="login.html" class="btn btn-outline-navy btn-full"><i class="ph-light ph-user-plus"></i> Créer un compte pour suivre ma contribution</a>
       </div>
       <a href="projets.html" class="btn btn-ghost btn-full">Voir d'autres projets</a>
+      </div><!-- /.modal__scroll -->
     </div>
   </div>
 

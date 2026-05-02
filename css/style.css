@@ -606,12 +606,11 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
   flex-shrink: 0;
 }
 
-/* ── Vrai logo SVG image (remplace le badge CSS) ─────────── */
+/* ── Logo SVG image navbar ─────────────────────────────────── */
 .navbar__logo-img {
-  width: 36px;
   height: 36px;
+  width: auto;
   object-fit: contain;
-  margin-right: 0.5rem;
   flex-shrink: 0;
   transition: transform var(--duration-sm) var(--ease-spring),
               filter var(--duration-sm) var(--ease-out);
@@ -1523,7 +1522,16 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 .detail-author { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
 .detail-desc   { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.8; max-width: 100%; }
 
-.detail-tabs { display: flex; gap: 0; border-bottom: 1.5px solid var(--border-solid); margin-bottom: 2rem; }
+.detail-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1.5px solid var(--border-solid);
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.detail-tabs::-webkit-scrollbar { display: none; }
 .detail-tab {
   padding: 0.7rem 1.35rem;
   font-size: 0.88rem;
@@ -1532,6 +1540,8 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
   border-bottom: 2.5px solid transparent;
   margin-bottom: -1.5px;
   transition: all var(--duration-sm) var(--ease-out);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .detail-tab:hover         { color: var(--navy); }
 .detail-tab.active        { color: var(--navy); border-bottom-color: var(--gold); }
@@ -1616,18 +1626,38 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
   top: 1.25rem; right: 1.25rem;
   background: var(--sand);
   border: 1px solid var(--border-solid);
-  width: 34px; height: 34px;
+  width: 32px; height: 32px;
+  min-height: 0;
   border-radius: 50%;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  line-height: 1;
   color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all var(--duration-sm) var(--ease-spring);
+  z-index: 10;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  flex-shrink: 0;
 }
 .modal__close:hover { background: var(--border-solid); color: var(--text); transform: scale(1.05); }
-.modal-relative     { position: relative; }
+.modal-relative { position: relative; }
+
+/* Modal avec formulaire multi-étapes : X fixe + corps scrollable */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 !important;
+}
+.modal-form .modal__scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 3.5rem 2.5rem 2rem;
+  max-height: calc(90vh - 2rem);
+}
 .modal__icon        { font-size: 3.5rem; margin-bottom: 1rem; display: block; }
 .modal__title       { color: var(--navy); margin-bottom: 0.5rem; }
 .modal__sub         { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.9rem; max-width: 100%; }
@@ -1770,15 +1800,8 @@ p  { font-size: 1rem; line-height: 1.75; max-width: 65ch; }
 }
 
 /* ══════════════════════════════════════════════════════════════
-   LOGO IMAGE
+   FOOTER LOGO IMAGE
    ══════════════════════════════════════════════════════════════ */
-.navbar__logo-img {
-  height: 36px;
-  width: auto;
-  flex-shrink: 0;
-  transition: opacity var(--duration-sm) var(--ease-out);
-}
-.navbar__logo:hover .navbar__logo-img { opacity: 0.88; }
 .footer__logo-img { height: 44px; width: auto; margin-bottom: 0.75rem; }
 
 /* ══════════════════════════════════════════════════════════════
