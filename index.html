@@ -12,6 +12,7 @@
   <meta name="theme-color"        content="#00C853" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/style.css?v=13" />
+  <link rel="stylesheet" href="css/design-v2.css?v=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -68,6 +69,210 @@
       <div class="hero__bg-orb hero__bg-orb--1"></div>
       <div class="hero__bg-orb hero__bg-orb--2"></div>
       <div class="hero__bg-orb hero__bg-orb--3"></div>
+
+      <!-- ── Scène isométrique Karthala ──────────────────── -->
+      <svg class="hero__iso" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="volcFaceTop2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2a5018" stop-opacity="0.28"/><stop offset="100%" stop-color="#1a3510" stop-opacity="0.18"/></linearGradient>
+          <linearGradient id="volcFaceTop3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#364820" stop-opacity="0.32"/><stop offset="100%" stop-color="#243016" stop-opacity="0.22"/></linearGradient>
+          <linearGradient id="volcFaceTop4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#404828" stop-opacity="0.38"/><stop offset="100%" stop-color="#2c3418" stop-opacity="0.28"/></linearGradient>
+          <linearGradient id="volcLeft" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e2208" stop-opacity="0.42"/><stop offset="100%" stop-color="#060f04" stop-opacity="0.32"/></linearGradient>
+          <linearGradient id="volcRight" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#365828" stop-opacity="0.28"/><stop offset="100%" stop-color="#243a18" stop-opacity="0.2"/></linearGradient>
+          <radialGradient id="lavaGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FF7020" stop-opacity="0.95"/><stop offset="40%" stop-color="#E84000" stop-opacity="0.65"/><stop offset="100%" stop-color="#C02000" stop-opacity="0"/></radialGradient>
+          <radialGradient id="craterHalo" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FF5500" stop-opacity="0.5"/><stop offset="100%" stop-color="#FF2000" stop-opacity="0"/></radialGradient>
+          <linearGradient id="solarTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#40B8E0" stop-opacity="0.75"/><stop offset="100%" stop-color="#1060A0" stop-opacity="0.55"/></linearGradient>
+          <linearGradient id="solarLeft" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0850A0" stop-opacity="0.55"/><stop offset="100%" stop-color="#042060" stop-opacity="0.65"/></linearGradient>
+          <linearGradient id="coinTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFD868" stop-opacity="0.95"/><stop offset="100%" stop-color="#E8A820" stop-opacity="0.85"/></linearGradient>
+          <linearGradient id="coinSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C88818" stop-opacity="0.9"/><stop offset="100%" stop-color="#9A6408" stop-opacity="0.8"/></linearGradient>
+          <linearGradient id="terrTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#183a10" stop-opacity="0.3"/><stop offset="100%" stop-color="#0c2008" stop-opacity="0.2"/></linearGradient>
+          <linearGradient id="terrLeft" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c2008" stop-opacity="0.38"/><stop offset="100%" stop-color="#060e04" stop-opacity="0.28"/></linearGradient>
+          <linearGradient id="terrRight" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#204828" stop-opacity="0.25"/><stop offset="100%" stop-color="#143018" stop-opacity="0.18"/></linearGradient>
+          <filter id="fGlow"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="fSmoke"><feGaussianBlur stdDeviation="14"/></filter>
+          <filter id="fCoinGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- ░░ TERRAIN / ILE ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+        <!-- Plateforme principale base (niveau sol) -->
+        <!-- Top face -->
+        <polygon points="900,430 1240,600 900,770 560,600" fill="url(#terrTop)"/>
+        <!-- Front-left -->
+        <polygon points="560,600 900,770 900,830 560,660" fill="url(#terrLeft)"/>
+        <!-- Front-right -->
+        <polygon points="1240,600 900,770 900,830 1240,660" fill="url(#terrRight)"/>
+        <!-- Extension terrain gauche -->
+        <polygon points="560,600 900,770 900,810 480,740 200,620 240,530 560,430" fill="url(#terrTop)" opacity="0.75"/>
+        <polygon points="240,530 560,600 560,660 220,590" fill="url(#terrLeft)" opacity="0.6"/>
+        <!-- Extension terrain droite -->
+        <polygon points="1240,600 900,770 900,810 1140,810 1400,670 1440,600 1440,530 1300,530" fill="url(#terrTop)" opacity="0.65"/>
+        <polygon points="1240,600 1240,660 1440,570 1440,510" fill="url(#terrRight)" opacity="0.55"/>
+
+        <!-- ░░ VOLCAN KARTHALA (isométrique 5 niveaux) ░░░░░░ -->
+
+        <!-- Niveau 1 — base large (déjà terrain) -->
+
+        <!-- Niveau 2 — premier gradin -->
+        <polygon points="900,370 1130,490 900,610 670,490" fill="url(#volcFaceTop2)"/>
+        <polygon points="670,490 900,610 900,770 560,600" fill="url(#volcLeft)"/>
+        <polygon points="1130,490 900,610 900,770 1240,600" fill="url(#volcRight)"/>
+
+        <!-- Niveau 3 — deuxième gradin -->
+        <polygon points="900,315 1060,400 900,485 740,400" fill="url(#volcFaceTop3)"/>
+        <polygon points="740,400 900,485 900,610 670,490" fill="url(#volcLeft)"/>
+        <polygon points="1060,400 900,485 900,610 1130,490" fill="url(#volcRight)"/>
+
+        <!-- Niveau 4 — troisième gradin -->
+        <polygon points="900,268 990,315 900,362 810,315" fill="url(#volcFaceTop4)"/>
+        <polygon points="810,315 900,362 900,485 740,400" fill="url(#volcLeft)"/>
+        <polygon points="990,315 900,362 900,485 1060,400" fill="url(#volcRight)"/>
+
+        <!-- Niveau 5 — sommet juste sous le cratère -->
+        <polygon points="900,235 940,258 900,280 860,258" fill="#303828" fill-opacity="0.55"/>
+        <polygon points="860,258 900,280 900,362 810,315" fill="url(#volcLeft)" opacity="1.1"/>
+        <polygon points="940,258 900,280 900,362 990,315" fill="url(#volcRight)" opacity="1.1"/>
+
+        <!-- ░░ CRATÈRE + LAVE ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+        <!-- Halo de chaleur externe -->
+        <ellipse cx="900" cy="245" rx="110" ry="52" fill="url(#craterHalo)" filter="url(#fGlow)" opacity="0.55"/>
+        <!-- Bord du cratère (roche sombre) -->
+        <ellipse cx="900" cy="247" rx="68" ry="32" fill="#180c06" fill-opacity="0.82"/>
+        <!-- Lave incandescente -->
+        <ellipse cx="900" cy="249" rx="52" ry="24" fill="url(#lavaGlow)"/>
+        <!-- Point le plus chaud -->
+        <ellipse cx="900" cy="251" rx="28" ry="12" fill="#FF9040" fill-opacity="0.9" filter="url(#fGlow)"/>
+
+        <!-- ░░ FUMÉE DU VOLCAN (animée) ░░░░░░░░░░░░░░░░░░░░░ -->
+        <circle class="smoke s1" cx="893" cy="228" r="16" fill="rgba(210,195,182,0.38)" filter="url(#fSmoke)"/>
+        <circle class="smoke s2" cx="912" cy="210" r="13" fill="rgba(190,178,164,0.32)" filter="url(#fSmoke)"/>
+        <circle class="smoke s3" cx="882" cy="196" r="18" fill="rgba(170,158,144,0.26)" filter="url(#fSmoke)"/>
+        <circle class="smoke s4" cx="905" cy="178" r="22" fill="rgba(150,140,128,0.2)"  filter="url(#fSmoke)"/>
+        <circle class="smoke s5" cx="888" cy="158" r="26" fill="rgba(130,122,112,0.14)" filter="url(#fSmoke)"/>
+        <circle class="smoke s6" cx="908" cy="135" r="30" fill="rgba(110,104,95,0.09)"  filter="url(#fSmoke)"/>
+
+        <!-- ░░ PANNEAUX SOLAIRES (isométriques) ░░░░░░░░░░░░░░ -->
+        <!-- Panneau A — terrain gauche avant -->
+        <g class="solar-panel" transform="translate(360,652)">
+          <polygon points="-52,-14 0,-40 52,-14 0,12" fill="url(#solarTop)"/>
+          <line x1="-52" y1="-14" x2="52" y2="-14" stroke="rgba(10,90,160,0.5)" stroke-width="0.9"/>
+          <line x1="-17" y1="-35" x2="-17" y2="8"  stroke="rgba(10,90,160,0.4)" stroke-width="0.7"/>
+          <line x1="17"  y1="-35" x2="17"  y2="8"  stroke="rgba(10,90,160,0.4)" stroke-width="0.7"/>
+          <polygon points="-52,-14 0,12 0,34 -52,8"  fill="url(#solarLeft)"/>
+          <polygon points="52,-14 0,12 0,34 52,8"    fill="rgba(40,80,140,0.3)"/>
+          <rect x="-5" y="32" width="10" height="18" fill="rgba(50,40,30,0.55)"/>
+          <polygon points="-12,50 12,50 18,56 -18,56" fill="rgba(40,30,20,0.55)"/>
+          <!-- Reflet lumineux (animé) -->
+          <ellipse class="solar-shine" cx="0" cy="-20" rx="18" ry="8" fill="rgba(180,240,255,0.22)"/>
+        </g>
+
+        <!-- Panneau B — plus reculé, gauche -->
+        <g class="solar-panel" transform="translate(500,610)">
+          <polygon points="-44,-12 0,-34 44,-12 0,10" fill="url(#solarTop)" opacity="0.9"/>
+          <line x1="-44" y1="-12" x2="44" y2="-12" stroke="rgba(10,90,160,0.45)" stroke-width="0.8"/>
+          <line x1="0" y1="-34" x2="0" y2="10" stroke="rgba(10,90,160,0.4)" stroke-width="0.7"/>
+          <polygon points="-44,-12 0,10 0,28 -44,6" fill="url(#solarLeft)"/>
+          <polygon points="44,-12 0,10 0,28 44,6" fill="rgba(40,80,140,0.28)"/>
+          <rect x="-4" y="27" width="8" height="14" fill="rgba(50,40,30,0.5)"/>
+          <ellipse class="solar-shine" cx="0" cy="-18" rx="14" ry="6" fill="rgba(180,240,255,0.2)"/>
+        </g>
+
+        <!-- Panneau C — terrain droite -->
+        <g class="solar-panel" transform="translate(1120,630)">
+          <polygon points="-46,-13 0,-36 46,-13 0,10" fill="url(#solarTop)" opacity="0.88"/>
+          <line x1="-46" y1="-13" x2="46" y2="-13" stroke="rgba(10,90,160,0.45)" stroke-width="0.8"/>
+          <line x1="0" y1="-36" x2="0" y2="10" stroke="rgba(10,90,160,0.4)" stroke-width="0.7"/>
+          <polygon points="-46,-13 0,10 0,30 -46,7" fill="url(#solarLeft)"/>
+          <polygon points="46,-13 0,10 0,30 46,7" fill="rgba(40,80,140,0.28)"/>
+          <rect x="-4" y="28" width="8" height="16" fill="rgba(50,40,30,0.5)"/>
+          <ellipse class="solar-shine" cx="0" cy="-19" rx="15" ry="6" fill="rgba(180,240,255,0.2)"/>
+        </g>
+
+        <!-- Panneau D — terrain droite reculé -->
+        <g class="solar-panel" transform="translate(1280,585)">
+          <polygon points="-38,-10 0,-30 38,-10 0,10" fill="url(#solarTop)" opacity="0.82"/>
+          <line x1="-38" y1="-10" x2="38" y2="-10" stroke="rgba(10,90,160,0.4)" stroke-width="0.7"/>
+          <line x1="0" y1="-30" x2="0" y2="10" stroke="rgba(10,90,160,0.35)" stroke-width="0.6"/>
+          <polygon points="-38,-10 0,10 0,26 -38,6" fill="url(#solarLeft)"/>
+          <polygon points="38,-10 0,10 0,26 38,6" fill="rgba(40,80,140,0.25)"/>
+          <rect x="-4" y="25" width="7" height="12" fill="rgba(50,40,30,0.45)"/>
+          <ellipse class="solar-shine" cx="0" cy="-16" rx="12" ry="5" fill="rgba(180,240,255,0.18)"/>
+        </g>
+
+        <!-- ░░ PIÈCES ISOMÉTRIQUES (animées) ░░░░░░░░░░░░░░░░░ -->
+        <!-- Format : ellipse top + rect body + ellipse bottom -->
+
+        <!-- Pièce 1 — gauche haut -->
+        <g class="iso-coin c1" filter="url(#fCoinGlow)">
+          <ellipse cx="240" cy="388" rx="30" ry="15" fill="url(#coinTop)"/>
+          <rect x="210" y="388" width="60" height="13" fill="url(#coinSide)"/>
+          <ellipse cx="240" cy="401" rx="30" ry="15" fill="#B07010" fill-opacity="0.7"/>
+          <text x="240" y="397" text-anchor="middle" font-size="9" font-weight="700" fill="#5a3000" fill-opacity="0.7" font-family="serif">KMF</text>
+        </g>
+
+        <!-- Pièce 2 — gauche milieu -->
+        <g class="iso-coin c2">
+          <ellipse cx="145" cy="480" rx="24" ry="12" fill="url(#coinTop)"/>
+          <rect x="121" y="480" width="48" height="11" fill="url(#coinSide)"/>
+          <ellipse cx="145" cy="491" rx="24" ry="12" fill="#B07010" fill-opacity="0.7"/>
+        </g>
+
+        <!-- Pièce 3 — bas gauche, grande -->
+        <g class="iso-coin c3" filter="url(#fCoinGlow)">
+          <ellipse cx="420" cy="540" rx="36" ry="18" fill="url(#coinTop)"/>
+          <rect x="384" y="540" width="72" height="15" fill="url(#coinSide)"/>
+          <ellipse cx="420" cy="555" rx="36" ry="18" fill="#B07010" fill-opacity="0.7"/>
+          <text x="420" y="550" text-anchor="middle" font-size="10" font-weight="700" fill="#5a3000" fill-opacity="0.7" font-family="serif">FK</text>
+        </g>
+
+        <!-- Pièce 4 — centre bas -->
+        <g class="iso-coin c4">
+          <ellipse cx="660" cy="580" rx="28" ry="14" fill="url(#coinTop)"/>
+          <rect x="632" y="580" width="56" height="12" fill="url(#coinSide)"/>
+          <ellipse cx="660" cy="592" rx="28" ry="14" fill="#B07010" fill-opacity="0.7"/>
+        </g>
+
+        <!-- Pièce 5 — centre-haut (flottante haute) -->
+        <g class="iso-coin c5" filter="url(#fCoinGlow)">
+          <ellipse cx="720" cy="350" rx="26" ry="13" fill="url(#coinTop)"/>
+          <rect x="694" y="350" width="52" height="11" fill="url(#coinSide)"/>
+          <ellipse cx="720" cy="361" rx="26" ry="13" fill="#B07010" fill-opacity="0.7"/>
+          <text x="720" y="358" text-anchor="middle" font-size="8" font-weight="700" fill="#5a3000" fill-opacity="0.65" font-family="serif">KMF</text>
+        </g>
+
+        <!-- Pièce 6 — droite haut -->
+        <g class="iso-coin c6">
+          <ellipse cx="1120" cy="410" rx="26" ry="13" fill="url(#coinTop)"/>
+          <rect x="1094" y="410" width="52" height="11" fill="url(#coinSide)"/>
+          <ellipse cx="1120" cy="421" rx="26" ry="13" fill="#B07010" fill-opacity="0.7"/>
+        </g>
+
+        <!-- Pièce 7 — droite, grande -->
+        <g class="iso-coin c7" filter="url(#fCoinGlow)">
+          <ellipse cx="1320" cy="490" rx="32" ry="16" fill="url(#coinTop)"/>
+          <rect x="1288" y="490" width="64" height="14" fill="url(#coinSide)"/>
+          <ellipse cx="1320" cy="504" rx="32" ry="16" fill="#B07010" fill-opacity="0.7"/>
+          <text x="1320" y="499" text-anchor="middle" font-size="9" font-weight="700" fill="#5a3000" fill-opacity="0.65" font-family="serif">FC</text>
+        </g>
+
+        <!-- Pièce 8 — droite milieu -->
+        <g class="iso-coin c8">
+          <ellipse cx="1380" cy="370" rx="20" ry="10" fill="url(#coinTop)"/>
+          <rect x="1360" y="370" width="40" height="9" fill="url(#coinSide)"/>
+          <ellipse cx="1380" cy="379" rx="20" ry="10" fill="#B07010" fill-opacity="0.7"/>
+        </g>
+
+        <!-- Pièce 9 — bas centre-droite -->
+        <g class="iso-coin c9">
+          <ellipse cx="1060" cy="550" rx="22" ry="11" fill="url(#coinTop)"/>
+          <rect x="1038" y="550" width="44" height="10" fill="url(#coinSide)"/>
+          <ellipse cx="1060" cy="560" rx="22" ry="11" fill="#B07010" fill-opacity="0.7"/>
+        </g>
+
+        <!-- ░░ PETITS ARBRES ISOMÉTRIQUES ░░░░░░░░░░░░░░░░░░░░ -->
+        <g transform="translate(290,615)"><rect x="-4" y="-2" width="8" height="24" fill="rgba(55,28,8,0.45)"/><polygon points="0,-48 30,0 -30,0" fill="rgba(0,90,25,0.32)"/><polygon points="0,-68 22,-18 -22,-18" fill="rgba(0,120,35,0.38)"/></g>
+        <g transform="translate(460,595)"><rect x="-3" y="-2" width="6" height="20" fill="rgba(55,28,8,0.4)"/><polygon points="0,-40 24,0 -24,0" fill="rgba(0,80,22,0.28)"/><polygon points="0,-56 18,-16 -18,-16" fill="rgba(0,110,30,0.34)"/></g>
+        <g transform="translate(1200,615)"><rect x="-4" y="-2" width="8" height="22" fill="rgba(55,28,8,0.4)"/><polygon points="0,-45 28,0 -28,0" fill="rgba(0,88,24,0.3)"/><polygon points="0,-62 20,-17 -20,-17" fill="rgba(0,118,33,0.35)"/></g>
+        <g transform="translate(1360,585)"><rect x="-3" y="-2" width="6" height="18" fill="rgba(55,28,8,0.36)"/><polygon points="0,-36 22,0 -22,0" fill="rgba(0,75,20,0.25)"/><polygon points="0,-50 16,-14 -16,-14" fill="rgba(0,105,28,0.3)"/></g>
+      </svg>
     </div>
 
     <div class="container">
@@ -78,7 +283,22 @@
           <div class="hero__badge"><img src="img/flags/km.svg" width="20" height="13" alt="Comores" style="border-radius:2px;vertical-align:middle;margin-right:0.35rem;box-shadow:0 0 0 1px rgba(0,0,0,0.15);"> Plateforme comorienne</div>
           <h1 class="hero__title">
             Financez votre projet.<br />
-            <em>Ensemble.</em>
+            <span class="hero__accent-wrap">
+              <em class="hero__accent-em">Ensemble.</em>
+              <svg class="hero__accent-line" viewBox="0 0 360 18" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stop-color="#E8A020" stop-opacity="0.15"/>
+                    <stop offset="30%"  stop-color="#F0B830" stop-opacity="0.9"/>
+                    <stop offset="70%"  stop-color="#E8A020" stop-opacity="1"/>
+                    <stop offset="100%" stop-color="#E8A020" stop-opacity="0.2"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 3 12 Q 60 5 120 11 Q 180 17 240 10 Q 300 4 357 11"
+                  stroke="url(#lineGrad)" stroke-width="2.8"
+                  fill="none" stroke-linecap="round" class="accent-path"/>
+              </svg>
+            </span>
           </h1>
           <p class="hero__subtitle">
             La première plateforme de financement participatif des Comores. Prévente, dons ou investissement — choisissez le modèle qui correspond à votre projet.
@@ -1004,6 +1224,46 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeSupportModal();
     });
+  </script>
+
+  <!-- ── Design v2 enhancements ─────────────────────────── -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="floating-cta" id="floatingCta">
+    <a href="deposer.html">
+      <i class="ph-light ph-rocket-launch"></i>
+      Déposer mon projet
+    </a>
+  </div>
+
+  <script>
+    /* Scroll progress bar */
+    const scrollBar = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      scrollBar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+
+    /* Floating CTA — apparaît après 400px de scroll */
+    const floatingCta = document.getElementById('floatingCta');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) floatingCta.classList.add('visible');
+      else floatingCta.classList.remove('visible');
+    }, { passive: true });
+
+    /* Spotlight border effect sur les model cards */
+    document.querySelectorAll('.model-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%';
+        const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + '%';
+        card.style.setProperty('--spotlight-x', x);
+        card.style.setProperty('--spotlight-y', y);
+      });
+    });
+
+    /* Why cards — live-dot position relative fix */
+    const heroBadge = document.querySelector('.hero__right > div:last-child');
+    if (heroBadge) heroBadge.style.position = 'relative';
   </script>
 </main>
 </body>
