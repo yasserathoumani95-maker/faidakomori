@@ -647,10 +647,22 @@
        iOS — pas de zoom sur les champs
     ════════════════════════════════════════════════ */
     @media (max-width: 768px) {
-      input, select, textarea {
+      input:not([type="checkbox"]):not([type="radio"]),
+      select,
+      textarea {
         font-size: 16px !important;
         touch-action: manipulation;
         -webkit-appearance: none;
+      }
+      input[type="checkbox"],
+      input[type="radio"] {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        flex-shrink: 0 !important;
+        cursor: pointer;
+        touch-action: manipulation;
+        accent-color: var(--green);
       }
       button, .btn {
         min-height: 44px !important;
