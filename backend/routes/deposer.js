@@ -34,6 +34,9 @@ router.post('/', async (req, res) => {
   if (!type || !nom_projet) {
     return res.status(400).json({ error: 'Type et nom du projet sont obligatoires.' });
   }
+  if (!['prevente', 'dons', 'investissement'].includes(type)) {
+    return res.status(400).json({ error: 'Type de projet invalide.' });
+  }
 
   let user;
   const existing = await db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
@@ -78,8 +81,9 @@ router.post('/', async (req, res) => {
       (user_id, type, nom_projet, description, secteur, montant, duree,
        budget_lien, budget_description,
        parts_pourcentage, valeur_entreprise,
+       contrepartie, impact, entreprise,
        status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
   `).run(
     user.id,
     type,
@@ -91,7 +95,10 @@ router.post('/', async (req, res) => {
     budget_lien                   || null,
     budget_description            || null,
     parseFloat(parts_pourcentage) || null,
-    parseInt(valeur_entreprise)   || null
+    parseInt(valeur_entreprise)   || null,
+    contrepartie                  || null,
+    impact                        || null,
+    entreprise                    || null
   );
 
   const project = await db.prepare('SELECT * FROM projects WHERE id = ?').get(projResult.lastInsertRowid);

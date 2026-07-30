@@ -222,13 +222,37 @@ router.patch('/contributions/:id/statut', async (req, res) => {
     WHERE c.id = ?
   `).get(req.params.id);
   if (!contrib) return res.status(404).json({ error: 'Contribution introuvable.' });
-  if (contrib.statut_paiement === 'confirme') {
-    return res.status(409).json({ error: 'Ce paiement est déjà confirmé.' });
+  const ancienStatut = contrib.statut_paiement;
+  if (statut === ancienStatut) {
+    return res.status(409).json({ error: statut === 'confirme' ? 'Ce paiement est déjà confirmé.' : 'Cette contribution est déjà annulée.' });
   }
 
   await db.prepare(`
     UPDATE contributions SET statut_paiement = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
   `).run(statut, contrib.id);
+
+  // ── Compteurs du projet : incrément à la confirmation,
+  //    décrément si on annule un paiement déjà confirmé ──────
+  if (statut === 'confirme') {
+    await db.prepare(`
+      UPDATE projects SET
+        montant_collecte = montant_collecte + ?,
+        nb_contributeurs = nb_contributeurs + 1,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(parseInt(contrib.montant), contrib.project_id);
+  } else if (statut === 'annule' && ancienStatut === 'confirme') {
+    const proj = await db.prepare(`SELECT montant_collecte, nb_contributeurs FROM projects WHERE id = ?`).get(contrib.project_id);
+    const nouveauMontant = Math.max((parseInt(proj?.montant_collecte) || 0) - parseInt(contrib.montant), 0);
+    const nouveauNb      = Math.max((parseInt(proj?.nb_contributeurs) || 0) - 1, 0);
+    await db.prepare(`
+      UPDATE projects SET
+        montant_collecte = ?,
+        nb_contributeurs = ?,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(nouveauMontant, nouveauNb, contrib.project_id);
+  }
 
   // Notifier le contributeur (s'il a un compte)
   if (contrib.user_id) {
@@ -276,7 +300,7 @@ router.get('/top-donors', async (req, res) => {
       COUNT(*)        AS count
     FROM contributions c
     LEFT JOIN users u ON c.user_id = u.id
-    WHERE c.anonyme = 0
+    WHERE c.anonyme = 0 AND c.statut_paiement = 'confirme'
     GROUP BY COALESCE(CAST(c.user_id AS TEXT), c.nom_contributeur)
     ORDER BY total DESC
     LIMIT 10

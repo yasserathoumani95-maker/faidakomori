@@ -118,6 +118,17 @@ const TABLES_PG = [
     created_at TEXT NOT NULL DEFAULT ${NOW_TEXT}, updated_at TEXT)`,
 ];
 
+/* ── Recalcul des compteurs projets (source de vérité :
+      contributions au statut 'confirme') — SQLite & PostgreSQL ── */
+const RECOMPUTE_COUNTERS = `
+  UPDATE projects SET
+    montant_collecte = (SELECT COALESCE(SUM(montant),0) FROM contributions
+                        WHERE contributions.project_id = projects.id
+                          AND contributions.statut_paiement = 'confirme'),
+    nb_contributeurs = (SELECT COUNT(*) FROM contributions
+                        WHERE contributions.project_id = projects.id
+                          AND contributions.statut_paiement = 'confirme')`;
+
 /* ── API publique ─────────────────────────────────────────── */
 const db = {
   prepare(sql) {
@@ -195,6 +206,10 @@ async function initPostgres(connectionString) {
   ];
   for (const m of migrationsPG) { try { await pool.query(m); } catch {} }
 
+  // Recalcul des compteurs projets depuis les paiements CONFIRMÉS
+  // (auto-réparateur : corrige les anciens montants « optimistes »)
+  try { await pool.query(RECOMPUTE_COUNTERS); } catch (e) { console.error('[DB] Recalcul compteurs:', e.message); }
+
   // Compte admin
   const adminRes = await pool.query("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
   if (!adminRes.rows.length) {
@@ -270,6 +285,9 @@ async function initSqlJsLocal() {
     `ALTER TABLE contributions ADD COLUMN reference TEXT`,
   ];
   for (const m of migrationsSQLite) { try { sqlDb.run(m); saveDb(); } catch {} }
+
+  // Recalcul des compteurs projets depuis les paiements CONFIRMÉS
+  try { sqlDb.run(RECOMPUTE_COUNTERS); saveDb(); } catch (e) { console.error('[DB] Recalcul compteurs:', e.message); }
 
   const adminRes = sqlDb.exec("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
   if (!adminRes[0]?.values?.length) {

@@ -61,7 +61,8 @@ router.get('/:id', async (req, res) => {
 
   const contributions = await db.prepare(`
     SELECT montant, nom_contributeur, anonyme, message, created_at
-    FROM contributions WHERE project_id = ? ORDER BY created_at DESC LIMIT 20
+    FROM contributions WHERE project_id = ? AND statut_paiement = 'confirme'
+    ORDER BY created_at DESC LIMIT 20
   `).all(project.id);
 
   res.json({ project, contributions });
@@ -79,6 +80,9 @@ router.post('/', requireAuth, async (req, res) => {
   if (!type || !nom_projet) {
     return res.status(400).json({ error: 'Type et nom du projet sont obligatoires.' });
   }
+  if (!['prevente', 'dons', 'investissement'].includes(type)) {
+    return res.status(400).json({ error: 'Type de projet invalide.' });
+  }
 
   // Mettre à jour tel/ile du porteur si fournis
   if (tel || ile) {
@@ -88,12 +92,14 @@ router.post('/', requireAuth, async (req, res) => {
   }
 
   const result = await db.prepare(`
-    INSERT INTO projects (user_id, type, nom_projet, description, secteur, montant, duree, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 'new')
+    INSERT INTO projects (user_id, type, nom_projet, description, secteur, montant, duree,
+                          parts_pourcentage, valeur_entreprise, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
   `).run(
     req.user.id, type, nom_projet.trim(),
     description || null, secteur || null,
-    parseInt(montant) || 0, parseInt(duree) || 30
+    parseInt(montant) || 0, parseInt(duree) || 30,
+    parseFloat(parts_pourcentage) || null, parseInt(valeur_entreprise) || null
   );
 
   // Notifier les admins
@@ -152,14 +158,9 @@ router.post('/:id/contribute', optionalAuth, async (req, res) => {
     reference
   );
 
-  // Mettre à jour les compteurs du projet (comptabilité optimiste)
-  await db.prepare(`
-    UPDATE projects SET
-      montant_collecte = montant_collecte + ?,
-      nb_contributeurs = nb_contributeurs + 1,
-      updated_at = CURRENT_TIMESTAMP
-    WHERE id = ?
-  `).run(montantInt, project.id);
+  // NOTE : les compteurs du projet (montant_collecte, nb_contributeurs)
+  // ne sont mis à jour qu'à la CONFIRMATION du paiement par l'admin
+  // (route PATCH /api/admin/contributions/:id/statut) — jamais avant.
 
   // Notifier le porteur de projet avec les coordonnées de paiement
   if (project.user_id) {
@@ -230,7 +231,7 @@ router.get('/:id/contributions', async (req, res) => {
 
   const contributions = await db.prepare(`
     SELECT montant, nom_contributeur, anonyme, message, created_at
-    FROM contributions WHERE project_id = ?
+    FROM contributions WHERE project_id = ? AND statut_paiement = 'confirme'
     ORDER BY created_at DESC
   `).all(project.id);
 
@@ -254,6 +255,18 @@ router.post('/:id/demande-versement', requireAuth, async (req, res) => {
   const pending = await db.prepare(`SELECT id FROM versements WHERE project_id = ? AND status = 'pending' LIMIT 1`).get(project.id);
   if (pending) {
     return res.status(409).json({ error: 'Vous avez déjà une demande de versement en attente.' });
+  }
+
+  // Plafond : montant collecté (paiements confirmés) moins ce qui a déjà été versé
+  const dejaVerse = await db.prepare(`
+    SELECT COALESCE(SUM(COALESCE(montant_verse, montant_demande)), 0) AS total
+    FROM versements WHERE project_id = ? AND status = 'versed'
+  `).get(project.id);
+  const disponible = Math.max((parseInt(project.montant_collecte) || 0) - (parseInt(dejaVerse?.total) || 0), 0);
+  if (parseInt(montant_demande) > disponible) {
+    return res.status(400).json({
+      error: `Montant trop élevé. Disponible pour versement : ${disponible.toLocaleString('fr-FR')} KMF (fonds confirmés moins versements déjà effectués).`
+    });
   }
 
   await db.prepare(`
