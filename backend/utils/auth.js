@@ -29,4 +29,16 @@ function isValidEmail(email) {
   return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-module.exports = { signToken, JWT_SECRET, JWT_EXPIRES, isValidEmail };
+/**
+ * Valide une image en data URL (JPEG/PNG/WebP, base64, ≤ ~600 Ko encodé).
+ * Utilisé pour la photo de projet stockée en base.
+ * @param {string} dataUrl
+ * @returns {boolean}
+ */
+function isValidImageDataUrl(dataUrl) {
+  return typeof dataUrl === 'string'
+    && dataUrl.length <= 800_000
+    && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(dataUrl);
+}
+
+module.exports = { signToken, JWT_SECRET, JWT_EXPIRES, isValidEmail, isValidImageDataUrl };

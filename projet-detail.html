@@ -888,7 +888,13 @@
           dons:           '<i class="ph-light ph-handshake" style="font-size:4rem;opacity:0.5;"></i>',
           investissement: '<i class="ph-light ph-trend-up"  style="font-size:4rem;opacity:0.5;"></i>',
         };
-        if (gallery) gallery.innerHTML = typeEmoji[project.type] || '<i class="ph-light ph-folder" style="font-size:4rem;opacity:0.5;"></i>';
+        if (gallery) {
+          const hasPhoto = project.image_url && /^data:image\/(jpeg|png|webp);base64,/.test(project.image_url);
+          gallery.innerHTML = hasPhoto
+            ? `<img src="${project.image_url}" alt="${esc(project.nom_projet)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />`
+            : (typeEmoji[project.type] || '<i class="ph-light ph-folder" style="font-size:4rem;opacity:0.5;"></i>');
+          if (hasPhoto) { gallery.style.position = 'relative'; gallery.style.overflow = 'hidden'; }
+        }
 
         // ── Badges ────────────────────────────────────────
         const badgesEl = document.querySelector('.detail-badges');

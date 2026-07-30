@@ -7,7 +7,7 @@
 const router  = require('express').Router();
 const bcrypt  = require('bcryptjs');
 const db      = require('../database');
-const { signToken, isValidEmail } = require('../utils/auth');
+const { signToken, isValidEmail, isValidImageDataUrl } = require('../utils/auth');
 const { sendProjetRecu, sendAdminNouveauProjet } = require('../utils/mailer');
 
 // ── POST /api/deposer ─────────────────────────────────────────
@@ -21,7 +21,9 @@ router.post('/', async (req, res) => {
     type, nom_projet, description, secteur, montant, duree,
     budget_lien, budget_description,
     // Champs spécifiques type
-    contrepartie, parts_pourcentage, valeur_entreprise, impact, entreprise
+    contrepartie, parts_pourcentage, valeur_entreprise, impact, entreprise,
+    // Photo du projet (data URL compressée côté client)
+    image_url
   } = req.body;
 
   // ── Validation minimale ──────────────────────────────────
@@ -76,14 +78,17 @@ router.post('/', async (req, res) => {
   }
 
   // ── Créer le projet lié à ce compte ─────────────────────
+  // Photo : n'accepter qu'une data URL image valide et raisonnable
+  const photoUrl = isValidImageDataUrl(image_url) ? image_url : null;
+
   const projResult = await db.prepare(`
     INSERT INTO projects
       (user_id, type, nom_projet, description, secteur, montant, duree,
        budget_lien, budget_description,
        parts_pourcentage, valeur_entreprise,
-       contrepartie, impact, entreprise,
+       contrepartie, impact, entreprise, image_url,
        status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
   `).run(
     user.id,
     type,
@@ -98,7 +103,8 @@ router.post('/', async (req, res) => {
     parseInt(valeur_entreprise)   || null,
     contrepartie                  || null,
     impact                        || null,
-    entreprise                    || null
+    entreprise                    || null,
+    photoUrl
   );
 
   const project = await db.prepare('SELECT * FROM projects WHERE id = ?').get(projResult.lastInsertRowid);

@@ -1067,12 +1067,16 @@
         const pct = p.montant > 0 ? Math.min(Math.round((p.montant_collecte / p.montant) * 100), 100) : 0;
         const emoji = secteurEmoji[(p.secteur || '').toLowerCase()] || '<i class="ph-light ph-folder" style="font-size:2.5rem;opacity:0.65;"></i>';
         const desc  = esc((p.description || '').slice(0, 120) + ((p.description || '').length > 120 ? '…' : ''));
+        const hasPhoto = p.image_url && /^data:image\/(jpeg|png|webp);base64,/.test(p.image_url);
+        const visual = hasPhoto
+          ? `<img src="${p.image_url}" alt="${esc(p.nom_projet)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy" />`
+          : emoji;
 
         return `
           <article class="project-card reveal" data-type="${esc(p.type)}">
             <div class="project-card__inner">
-              <div class="project-card__image project-card__image--${tc.imgCls}">
-                ${emoji}
+              <div class="project-card__image project-card__image--${tc.imgCls}" style="position:relative;overflow:hidden;">
+                ${visual}
                 <div class="project-card__badge-wrap">
                   <span class="badge ${tc.badgeCls}"><i class="ph-light ${tc.icon}"></i> ${typeLabel[p.type]}</span>
                 </div>

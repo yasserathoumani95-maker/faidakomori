@@ -294,6 +294,18 @@
               <p class="form-error">Ce champ est obligatoire.</p>
             </div>
 
+            <div class="form-group">
+              <label class="form-label" for="photo-projet">Photo du projet</label>
+              <input type="file" id="photo-projet" name="photo_projet" accept="image/jpeg,image/png,image/webp" class="form-input" style="padding:0.6rem;" />
+              <p class="form-hint">JPG, PNG ou WebP. La photo est compressée automatiquement. Une belle photo augmente fortement vos chances de financement !</p>
+              <div id="photo-preview-wrap" style="display:none;margin-top:0.75rem;position:relative;width:fit-content;">
+                <img id="photo-preview" alt="Aperçu de la photo du projet" style="max-width:280px;max-height:180px;border-radius:12px;border:1.5px solid var(--border-solid);object-fit:cover;display:block;" />
+                <button type="button" id="photo-remove" aria-label="Retirer la photo"
+                  style="position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;border:none;background:#DC2626;color:#fff;font-weight:700;cursor:pointer;line-height:1;">✕</button>
+              </div>
+              <p class="form-error" id="photo-error" style="display:none;">Impossible de lire cette image. Choisissez un fichier JPG, PNG ou WebP.</p>
+            </div>
+
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="montant">Montant recherché (KMF) <span>*</span></label>
@@ -842,6 +854,9 @@
 
       const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
 
+      // Photo compressée (data URL) préparée par le widget photo
+      const image_url = window._photoDataUrl || null;
+
       // Construire le payload projet
       const projectPayload = {
         type:               g('selected-type'),
@@ -861,6 +876,7 @@
         valeur_entreprise:  g('valeur-entreprise'),
         impact:             g('impact'),
         entreprise:         document.querySelector('input[name="entreprise"]:checked')?.value || '',
+        image_url,
       };
 
       // Désactiver le bouton
@@ -932,6 +948,61 @@
       }
 
     }, true); // capture = true pour court-circuiter le handler de main.js
+
+    /* ── Widget photo : lecture + compression canvas → data URL ──
+       Redimensionne à 1200px max et compresse en JPEG qualité 0.8.
+       Résultat stocké dans window._photoDataUrl (≤ ~300 Ko). ── */
+    const photoInput   = document.getElementById('photo-projet');
+    const photoPreview = document.getElementById('photo-preview');
+    const photoWrap    = document.getElementById('photo-preview-wrap');
+    const photoError   = document.getElementById('photo-error');
+    const photoRemove  = document.getElementById('photo-remove');
+
+    function clearPhoto() {
+      window._photoDataUrl = null;
+      if (photoInput) photoInput.value = '';
+      if (photoWrap)  photoWrap.style.display = 'none';
+    }
+
+    photoRemove?.addEventListener('click', clearPhoto);
+
+    photoInput?.addEventListener('change', () => {
+      photoError.style.display = 'none';
+      const file = photoInput.files && photoInput.files[0];
+      if (!file) { clearPhoto(); return; }
+      if (!/^image\/(jpeg|png|webp)$/.test(file.type)) {
+        photoError.style.display = 'block';
+        clearPhoto();
+        return;
+      }
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const MAX = 1200;
+        let { width, height } = img;
+        if (width > MAX || height > MAX) {
+          const ratio = Math.min(MAX / width, MAX / height);
+          width  = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        let dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        // Si toujours trop lourd (> ~400 Ko base64), réduire la qualité
+        if (dataUrl.length > 550_000) dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+        window._photoDataUrl = dataUrl;
+        photoPreview.src = dataUrl;
+        photoWrap.style.display = 'block';
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        photoError.style.display = 'block';
+        clearPhoto();
+      };
+      img.src = url;
+    });
   });
   </script>
 </body>

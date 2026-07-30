@@ -74,7 +74,7 @@ router.post('/', requireAuth, async (req, res) => {
     type, nom_projet, description, secteur,
     montant, duree,
     nom, prenom, tel, ile,
-    parts_pourcentage, valeur_entreprise
+    parts_pourcentage, valeur_entreprise, image_url
   } = req.body;
 
   if (!type || !nom_projet) {
@@ -91,15 +91,19 @@ router.post('/', requireAuth, async (req, res) => {
       .run(tel || (u && u.tel), ile || (u && u.ile), req.user.id);
   }
 
+  const { isValidImageDataUrl } = require('../utils/auth');
+  const photoUrl = isValidImageDataUrl(image_url) ? image_url : null;
+
   const result = await db.prepare(`
     INSERT INTO projects (user_id, type, nom_projet, description, secteur, montant, duree,
-                          parts_pourcentage, valeur_entreprise, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
+                          parts_pourcentage, valeur_entreprise, image_url, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
   `).run(
     req.user.id, type, nom_projet.trim(),
     description || null, secteur || null,
     parseInt(montant) || 0, parseInt(duree) || 30,
-    parseFloat(parts_pourcentage) || null, parseInt(valeur_entreprise) || null
+    parseFloat(parts_pourcentage) || null, parseInt(valeur_entreprise) || null,
+    photoUrl
   );
 
   // Notifier les admins
