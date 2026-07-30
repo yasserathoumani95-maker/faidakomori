@@ -39,8 +39,8 @@ router.get('/stats', async (req, res) => {
 // ── GET /api/admin/projects — tous les projets ───────────────
 router.get('/projects', async (req, res) => {
   const { status, page = 1, limit = 20 } = req.query;
-  const lim = parseInt(limit);
-  const off = (parseInt(page) - 1) * lim;
+  const lim = Math.min(Math.max(parseInt(limit) || 20, 1), 200);
+  const off = Math.max(((parseInt(page) || 1) - 1) * lim, 0);
 
   let sql  = `SELECT p.*, u.nom, u.prenom, u.email, u.tel FROM projects p LEFT JOIN users u ON p.user_id = u.id`;
   const args = [];
@@ -181,8 +181,8 @@ router.patch('/users/:id/role', async (req, res) => {
 // ── GET /api/admin/contributions ─────────────────────────────
 router.get('/contributions', async (req, res) => {
   const { statut, type, page = 1, limit = 50 } = req.query;
-  const lim = parseInt(limit);
-  const off = (parseInt(page) - 1) * lim;
+  const lim = Math.min(Math.max(parseInt(limit) || 50, 1), 500);
+  const off = Math.max(((parseInt(page) || 1) - 1) * lim, 0);
 
   let sql  = `SELECT c.*, p.nom_projet, p.type, u.email AS user_email, u.nom AS user_nom, u.prenom AS user_prenom
               FROM contributions c

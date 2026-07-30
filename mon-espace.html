@@ -656,7 +656,6 @@
 
   <script src="js/api.js"></script>
   <script src="js/currency.js?v=1"></script>
-  <script src="js/db-local.js"></script>
   <script src="js/main.js"></script>
   <script>
   document.addEventListener('DOMContentLoaded', async () => {
@@ -728,12 +727,12 @@
             return `
               <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;padding:0.85rem 1rem;background:#fff;border:1.5px solid var(--border-solid);border-radius:var(--radius-sm);margin-bottom:0.6rem;">
                 <div>
-                  <div style="font-weight:700;color:var(--navy);font-size:0.9rem;">${c.anonyme ? 'Anonyme' : (c.nom_contributeur || 'Contributeur')}</div>
+                  <div style="font-weight:700;color:var(--navy);font-size:0.9rem;">${esc(c.anonyme ? 'Anonyme' : (c.nom_contributeur || 'Contributeur'))}</div>
                   <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.15rem;">
                     ${parseInt(c.montant).toLocaleString('fr-FR')} KMF · ${date}
-                    ${c.coordonnees_paiement ? `· <i class="ph-light ph-device-mobile"></i> ${c.coordonnees_paiement}` : ''}
+                    ${c.coordonnees_paiement ? `· <i class="ph-light ph-device-mobile"></i> ${esc(c.coordonnees_paiement)}` : ''}
                   </div>
-                  ${c.message ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;font-style:italic;">"${c.message}"</div>` : ''}
+                  ${c.message ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;font-style:italic;">"${esc(c.message)}"</div>` : ''}
                 </div>
                 <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
                   <span style="display:inline-flex;align-items:center;gap:0.35rem;background:${sc.bg};color:${sc.color};font-size:0.75rem;font-weight:700;padding:0.3rem 0.7rem;border-radius:50px;">
@@ -798,7 +797,7 @@
         if (preventePublies.length > 0 && livraisonsSection && livraisonsSelect) {
           livraisonsSection.style.display = 'block';
           livraisonsSelect.innerHTML = preventePublies.map(p =>
-            `<option value="${p.id}">${p.nom_projet}</option>`
+            `<option value="${p.id}">${esc(p.nom_projet)}</option>`
           ).join('');
           await loadLivraisons(preventePublies[0].id);
         }
@@ -841,11 +840,11 @@
                 <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;flex-wrap:wrap;">
                   <span class="projet-dot ${dot}"></span>
                   <span>${typeIcons[p.type] || '<i class="ph-light ph-folder"></i>'}</span>
-                  <strong class="dashboard-project-card__title">${p.nom_projet}</strong>
+                  <strong class="dashboard-project-card__title">${esc(p.nom_projet)}</strong>
                   <span class="status ${st.color}">${st.label}</span>
                 </div>
                 <div class="dashboard-project-card__meta">
-                  ${p.secteur ? p.secteur + ' · ' : ''}
+                  ${p.secteur ? esc(p.secteur) + ' · ' : ''}
                   ${p.montant ? parseInt(p.montant).toLocaleString('fr-FR') + ' KMF objectif' : ''}
                   · Soumis le ${new Date(p.created_at).toLocaleDateString('fr-FR')}
                 </div>
@@ -1023,14 +1022,14 @@
         const bg = colors[p.status] || '#F3F4F6';
         noteHtml = `
           <div style="padding:.75rem 1rem;background:${bg};border-radius:10px;font-size:.85rem;color:var(--navy);margin-bottom:1rem;">
-            <i class="ph-light ph-chat-circle"></i> ${p.note_admin}
+            <i class="ph-light ph-chat-circle"></i> ${esc(p.note_admin)}
           </div>`;
       }
 
       if (p.status === 'rejected') {
         noteHtml = `<div style="padding:.75rem 1rem;background:#FEE2E2;border-radius:10px;font-size:.85rem;color:#B91C1C;margin-bottom:1rem;font-weight:600;">
           ❌ Votre dossier n'a pas été retenu à ce stade.
-          ${p.note_admin ? `<div style="font-weight:400;margin-top:.3rem;">${p.note_admin}</div>` : ''}
+          ${p.note_admin ? `<div style="font-weight:400;margin-top:.3rem;">${esc(p.note_admin)}</div>` : ''}
         </div>` + noteHtml;
       }
 
@@ -1163,14 +1162,14 @@
                 <span style="display:inline-flex;align-items:center;gap:0.3rem;background:${tc.bg};color:${tc.color};font-size:0.73rem;font-weight:700;padding:0.2rem 0.65rem;border-radius:50px;">
                   <i class="ph-light ${tc.icon}"></i> ${tc.label}
                 </span>
-                <strong class="dashboard-project-card__title">${c.nom_projet}</strong>
+                <strong class="dashboard-project-card__title">${esc(c.nom_projet)}</strong>
               </div>
               <div class="dashboard-project-card__meta">
                 <i class="ph-light ph-calendar-blank"></i> ${new Date(c.created_at).toLocaleDateString('fr-FR')}
                 &nbsp;·&nbsp; <i class="ph-light ph-device-mobile"></i> ${methodLabel}
                 ${c.anonyme ? '&nbsp;·&nbsp; <i class="ph-light ph-eye-slash"></i> Anonyme' : ''}
               </div>
-              ${c.message ? `<div style="margin-top:0.5rem;font-size:0.83rem;color:var(--text-muted);font-style:italic;padding:0.5rem 0.75rem;background:var(--sand);border-radius:var(--radius-sm);">"${c.message}"</div>` : ''}
+              ${c.message ? `<div style="margin-top:0.5rem;font-size:0.83rem;color:var(--text-muted);font-style:italic;padding:0.5rem 0.75rem;background:var(--sand);border-radius:var(--radius-sm);">"${esc(c.message)}"</div>` : ''}
 
               ${c.type === 'investissement' && c.parts_pourcentage ? `
                 <div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-muted);">
@@ -1279,7 +1278,7 @@
         container.innerHTML = notifications.map(n => `
           <div class="announcement-card" style="${!n.lu ? 'border-left:3px solid var(--green);' : ''}">
             <div class="announcement-card__date">${new Date(n.created_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
-            <div class="announcement-card__title" style="${!n.lu ? 'color:var(--navy);' : 'color:var(--text-muted);font-weight:500;'}">${n.message}</div>
+            <div class="announcement-card__title" style="${!n.lu ? 'color:var(--navy);' : 'color:var(--text-muted);font-weight:500;'}">${esc(n.message)}</div>
             ${n.lien ? `<a href="${n.lien}" style="font-size:0.82rem;color:var(--green);font-weight:600;margin-top:0.4rem;display:inline-block;">Voir <i class="ph-light ph-arrow-right"></i></a>` : ''}
           </div>`).join('');
       } catch (err) {
@@ -1397,7 +1396,7 @@
           if (select) {
             select.innerHTML = publishedProjects.map(p => {
               const pct = p.montant > 0 ? Math.round((p.montant_collecte / p.montant) * 100) : 0;
-              return `<option value="${p.id}">${p.nom_projet} — ${pct}% collecté (${parseInt(p.montant_collecte||0).toLocaleString('fr-FR')} / ${parseInt(p.montant||0).toLocaleString('fr-FR')} KMF)</option>`;
+              return `<option value="${p.id}">${esc(p.nom_projet)} — ${pct}% collecté (${parseInt(p.montant_collecte||0).toLocaleString('fr-FR')} / ${parseInt(p.montant||0).toLocaleString('fr-FR')} KMF)</option>`;
             }).join('');
             // Afficher le montant disponible
             select.addEventListener('change', updateVersementHint);
@@ -1446,8 +1445,8 @@
               <strong style="color:var(--navy);">${parseInt(v.montant_verse || v.montant_demande).toLocaleString('fr-FR')} KMF</strong>
               <span style="font-size:0.75rem;font-weight:700;color:${s.color};background:rgba(0,0,0,0.05);padding:0.2rem 0.6rem;border-radius:50px;">${s.label}</span>
             </div>
-            ${v.motif ? `<div style="font-size:0.83rem;color:var(--text-muted);margin-top:0.3rem;">${v.motif}</div>` : ''}
-            ${v.note_admin ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;font-style:italic;"><i class="ph-light ph-chat-circle"></i> ${v.note_admin}</div>` : ''}
+            ${v.motif ? `<div style="font-size:0.83rem;color:var(--text-muted);margin-top:0.3rem;">${esc(v.motif)}</div>` : ''}
+            ${v.note_admin ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;font-style:italic;"><i class="ph-light ph-chat-circle"></i> ${esc(v.note_admin)}</div>` : ''}
             <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem;">${new Date(v.created_at).toLocaleDateString('fr-FR')}</div>
           </div>`;
         }).join('');

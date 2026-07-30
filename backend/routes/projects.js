@@ -14,8 +14,8 @@ const { requireAuth, optionalAuth } = require('../middleware/auth');
 // ── GET /api/projects — liste publique ───────────────────────
 router.get('/', async (req, res) => {
   const { type, page = 1, limit = 12 } = req.query;
-  const lim = parseInt(limit);
-  const off = (parseInt(page) - 1) * lim;
+  const lim = Math.min(Math.max(parseInt(limit) || 12, 1), 100);
+  const off = Math.max(((parseInt(page) || 1) - 1) * lim, 0);
 
   let sql    = `SELECT p.*, u.nom, u.prenom FROM projects p LEFT JOIN users u ON p.user_id = u.id WHERE p.status = 'published'`;
   const args = [];

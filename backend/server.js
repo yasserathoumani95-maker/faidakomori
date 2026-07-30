@@ -17,10 +17,36 @@ const app  = express();
 const PORT = process.env.PORT || 3001;
 
 // ── Sécurité ─────────────────────────────────────────────────
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:  ["'self'"],
+      scriptSrc:   ["'self'", "'unsafe-inline'", 'https://unpkg.com', 'https://cdn.jsdelivr.net'],
+      styleSrc:    ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://unpkg.com', 'https://cdn.jsdelivr.net'],
+      fontSrc:     ["'self'", 'https://fonts.gstatic.com', 'https://unpkg.com', 'https://cdn.jsdelivr.net', 'data:'],
+      imgSrc:      ["'self'", 'data:', 'https:'],
+      connectSrc:  ["'self'", 'http://localhost:3001'],
+      frameAncestors: ["'none'"],
+      objectSrc:   ["'none'"],
+      baseUri:     ["'self'"],
+    },
+  },
+}));
 
+// Origines autorisées : le site lui-même + développement local
+const ALLOWED_ORIGINS = [
+  process.env.SITE_URL || 'https://faidakomori.onrender.com',
+  'http://localhost:3001',
+  'http://127.0.0.1:3001',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+];
 app.use(cors({
-  origin: (origin, cb) => cb(null, true),
+  origin: (origin, cb) => {
+    // Requêtes same-origin ou outils locaux (pas d'en-tête Origin) → OK
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    cb(new Error('Origine non autorisée par CORS'));
+  },
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -93,8 +119,7 @@ app.use((err, req, res, next) => {
 db.init().then(() => {
   app.listen(PORT, () => {
     console.log(`\n✅  FaidaKomori API démarrée`);
-    console.log(`   → http://localhost:${PORT}`);
-    console.log(`   → Admin : admin@faidakomori.km / Admin@FK2024!\n`);
+    console.log(`   → http://localhost:${PORT}\n`);
   });
 }).catch(err => {
   console.error('❌ Erreur démarrage DB:', err);

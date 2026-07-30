@@ -522,7 +522,6 @@
 
   <script src="js/api.js"></script>
   <script src="js/currency.js?v=1"></script>
-  <script src="js/db-local.js"></script>
   <script src="js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -561,10 +560,10 @@
           const tc  = typeCfg[p.type] || typeCfg.dons;
           const pct = p.montant > 0 ? Math.min(Math.round((p.montant_collecte / p.montant) * 100), 100) : 0;
           const emoji = secteurEmoji[(p.secteur || '').toLowerCase()] || '<i class="ph-light ph-folder" style="font-size:2.5rem;opacity:0.65;"></i>';
-          const desc = (p.description || '').slice(0, 130) + ((p.description || '').length > 130 ? '…' : '');
+          const desc = esc((p.description || '').slice(0, 130) + ((p.description || '').length > 130 ? '…' : ''));
 
           return `
-            <div class="project-card reveal" data-type="${p.type}" data-ile="${p.ile || ''}">
+            <div class="project-card reveal" data-type="${esc(p.type)}" data-ile="${esc(p.ile || '')}">
               <div class="project-card__image project-card__image--${tc.imgCls}">
                 ${emoji}
                 <div class="project-card__badge-wrap">
@@ -572,8 +571,8 @@
                 </div>
               </div>
               <div class="project-card__body">
-                <h4 class="project-card__title">${p.nom_projet}</h4>
-                <p class="project-card__author"><i class="ph-light ph-user-circle"></i> ${p.prenom || ''} ${p.nom || ''}${p.ile ? ' — ' + p.ile : ''}</p>
+                <h4 class="project-card__title">${esc(p.nom_projet)}</h4>
+                <p class="project-card__author"><i class="ph-light ph-user-circle"></i> ${esc(p.prenom || '')} ${esc(p.nom || '')}${p.ile ? ' — ' + esc(p.ile) : ''}</p>
                 <p class="project-card__desc">${desc || 'Projet en cours de financement.'}</p>
                 <div class="project-card__progress">
                   <div class="progress-bar">

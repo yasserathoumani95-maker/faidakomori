@@ -21,7 +21,6 @@
   </style>
   <script src="js/api.js"></script>
   <script src="js/currency.js?v=1"></script>
-  <script src="js/db-local.js"></script>
   <style>
     /* ── Admin-specific styles (complément) ── */
     body { background: var(--off-white); }
@@ -1586,11 +1585,11 @@
     const dot = `<span class="admin-dot admin-dot--${p.status || 'new'}"></span>`;
     return `<tr onclick="openDrawer('demande',${p.id})" title="Voir le dossier">
       <td>
-        <div class="admin-table__name">${dot}${p.prenom || ''} ${p.nom || ''}</div>
-        <div class="admin-table__sub" style="padding-left:13px;">${p.nom_projet}</div>
+        <div class="admin-table__name">${dot}${esc(p.prenom || '')} ${esc(p.nom || '')}</div>
+        <div class="admin-table__sub" style="padding-left:13px;">${esc(p.nom_projet)}</div>
       </td>
       <td>${TYPE_BADGES[p.type] || p.type}</td>
-      <td>${p.ile || '—'}</td>
+      <td>${esc(p.ile || '—')}</td>
       <td>${montant} KMF</td>
       <td>${date}</td>
       <td><span class="status ${st.cls}">${st.label}</span></td>
@@ -1718,11 +1717,11 @@
             <div class="interview-card__month">${dateStr[1] || ''}</div>
           </div>
           <div class="interview-card__info">
-            <div class="interview-card__title">${p.prenom || ''} ${p.nom || ''} — ${p.nom_projet} ${reponseTag}</div>
+            <div class="interview-card__title">${esc(p.prenom || '')} ${esc(p.nom || '')} — ${esc(p.nom_projet)} ${reponseTag}</div>
             <div class="interview-card__meta">
-              ${info.heure || ''} ${info.duree ? '· ' + info.duree : ''}
-              ${typeLabel ? `· <span class="interview-card__type interview-card__type--${isOnline ? 'online' : 'inperson'}"><i class="ph-light ph-${isOnline ? 'video-camera' : 'map-pin'}"></i> ${typeLabel}</span>` : ''}
-              ${info.lien ? `· <a href="${info.lien}" target="_blank" style="font-size:0.78rem;color:var(--navy);" onclick="event.stopPropagation()">Rejoindre</a>` : ''}
+              ${esc(info.heure || '')} ${info.duree ? '· ' + esc(info.duree) : ''}
+              ${typeLabel ? `· <span class="interview-card__type interview-card__type--${isOnline ? 'online' : 'inperson'}"><i class="ph-light ph-${isOnline ? 'video-camera' : 'map-pin'}"></i> ${esc(typeLabel)}</span>` : ''}
+              ${info.lien && /^https?:\/\//i.test(info.lien) ? `· <a href="${esc(info.lien)}" target="_blank" rel="noopener" style="font-size:0.78rem;color:var(--navy);" onclick="event.stopPropagation()">Rejoindre</a>` : ''}
             </div>
           </div>
           <div class="admin-actions" onclick="event.stopPropagation()">
@@ -1862,10 +1861,10 @@
           <div style="padding:1rem;background:#FFFBEB;border:1.5px solid rgba(232,160,32,.35);border-radius:10px;margin-bottom:1rem;">
             <div style="font-weight:700;color:#9A6310;margin-bottom:.4rem;font-size:.88rem;"><i class="ph-light ph-calendar"></i> Entretien planifié</div>
             <div style="font-size:.85rem;color:var(--text-muted);line-height:1.8;">
-              <i class="ph-light ph-calendar-blank"></i> <strong>${dateStr}</strong> à <strong>${info.heure||'—'}</strong><br>
-              <i class="ph-light ph-broadcast"></i> ${tLabels[info.type_entretien]||info.type_entretien||'—'}
-              ${info.lien ? `· <a href="${info.lien}" target="_blank" style="color:var(--ocean);">Lien</a>` : ''}
-              ${info.notes ? `<br><i class="ph-light ph-note-pencil"></i> ${info.notes}` : ''}
+              <i class="ph-light ph-calendar-blank"></i> <strong>${dateStr}</strong> à <strong>${esc(info.heure||'—')}</strong><br>
+              <i class="ph-light ph-broadcast"></i> ${tLabels[info.type_entretien]||esc(info.type_entretien||'—')}
+              ${info.lien && /^https?:\/\//i.test(info.lien) ? `· <a href="${esc(info.lien)}" target="_blank" rel="noopener" style="color:var(--ocean);">Lien</a>` : ''}
+              ${info.notes ? `<br><i class="ph-light ph-note-pencil"></i> ${esc(info.notes)}` : ''}
             </div>
             ${reponseHtml}
             <button class="admin-btn admin-btn--outline" style="margin-top:.75rem;font-size:.75rem;" onclick="openDrawer('interview',${id})"><i class="ph-light ph-pencil-simple"></i> Modifier l'entretien</button>
@@ -1918,21 +1917,21 @@
 
       <div class="admin-drawer__section">
         <div class="admin-drawer__section-title">Porteur de projet</div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Nom</div><div class="admin-drawer__field-value">${p.prenom || ''} ${p.nom || ''}</div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Île</div><div class="admin-drawer__field-value">${p.ile || '—'}</div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Email</div><div class="admin-drawer__field-value"><a href="mailto:${p.email}" style="color:var(--ocean);">${p.email || '—'}</a></div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Téléphone</div><div class="admin-drawer__field-value">${p.tel || '—'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Nom</div><div class="admin-drawer__field-value">${esc(p.prenom || '')} ${esc(p.nom || '')}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Île</div><div class="admin-drawer__field-value">${esc(p.ile || '—')}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Email</div><div class="admin-drawer__field-value"><a href="mailto:${esc(p.email)}" style="color:var(--ocean);">${esc(p.email || '—')}</a></div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Téléphone</div><div class="admin-drawer__field-value">${esc(p.tel || '—')}</div></div>
       </div>
       <div class="admin-drawer__section">
         <div class="admin-drawer__section-title">Projet</div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Titre</div><div class="admin-drawer__field-value"><strong>${p.nom_projet}</strong></div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Titre</div><div class="admin-drawer__field-value"><strong>${esc(p.nom_projet)}</strong></div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Modèle</div><div class="admin-drawer__field-value">${TYPE_BADGES[p.type] || p.type}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Montant cible</div><div class="admin-drawer__field-value">${montant} KMF</div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Secteur</div><div class="admin-drawer__field-value">${p.secteur || '—'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Secteur</div><div class="admin-drawer__field-value">${esc(p.secteur || '—')}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Durée</div><div class="admin-drawer__field-value">${p.duree ? p.duree + ' jours' : '—'}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Soumis le</div><div class="admin-drawer__field-value">${date}</div></div>
       </div>
-      ${p.description ? `<div class="admin-drawer__section"><div class="admin-drawer__section-title">Description</div><p style="font-size:.875rem;color:var(--text-muted);line-height:1.7;">${p.description}</p></div>` : ''}
+      ${p.description ? `<div class="admin-drawer__section"><div class="admin-drawer__section-title">Description</div><p style="font-size:.875rem;color:var(--text-muted);line-height:1.7;">${esc(p.description)}</p></div>` : ''}
       ${interviewBlock}
       ${decisionBlock}
       <div style="display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap;">
@@ -1942,7 +1941,7 @@
 
     interview: (id) => {
       const p = window._adminProjects[id] || {};
-      const porteurNom = p.prenom ? `${p.prenom} ${p.nom} — ${p.nom_projet}` : `Dossier #${id}`;
+      const porteurNom = p.prenom ? `${esc(p.prenom)} ${esc(p.nom)} — ${esc(p.nom_projet)}` : `Dossier #${id}`;
       // Récupérer les données d'entretien existantes si déjà planifié
       let existing = {};
       try { existing = JSON.parse(p.note_admin || '{}'); } catch {}
@@ -1965,7 +1964,7 @@
         </div>
         <div id="meetLinkField">
           <label>Lien de réunion</label>
-          <input type="url" id="meetLink" value="${existing.lien || ''}" placeholder="https://meet.google.com/xxx-yyyy-zzz" />
+          <input type="url" id="meetLink" value="${esc(existing.lien || '')}" placeholder="https://meet.google.com/xxx-yyyy-zzz" />
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
           <div>
@@ -2001,7 +2000,7 @@
       const p = window._adminProjects[id] || {};
       let info = {};
       try { info = JSON.parse(p.note_admin || '{}'); } catch {}
-      const porteurNom = p.prenom ? `${p.prenom} ${p.nom} — ${p.nom_projet}` : `Dossier #${id}`;
+      const porteurNom = p.prenom ? `${esc(p.prenom)} ${esc(p.nom)} — ${esc(p.nom_projet)}` : `Dossier #${id}`;
       const typeLabels = {
         google_meet: '<i class="ph-light ph-video-camera"></i> Google Meet',
         zoom:        '<i class="ph-light ph-video-camera"></i> Zoom',
@@ -2019,11 +2018,11 @@
       <div class="admin-drawer__section">
         <div class="admin-drawer__section-title">Informations entretien</div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Date</div><div class="admin-drawer__field-value">${info.date ? new Date(info.date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '—'}</div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Heure</div><div class="admin-drawer__field-value">${info.heure || '—'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Heure</div><div class="admin-drawer__field-value">${esc(info.heure || '—')}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Type</div><div class="admin-drawer__field-value">${typeLabel}</div></div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Durée</div><div class="admin-drawer__field-value">${info.duree || '—'}</div></div>
-        ${isOnline && info.lien ? `<div class="admin-drawer__field"><div class="admin-drawer__field-label">Lien</div><div class="admin-drawer__field-value" style="word-break:break-all;font-size:0.8rem;"><a href="${info.lien}" target="_blank">${info.lien}</a></div></div>` : ''}
-        ${info.notes ? `<div class="admin-drawer__field"><div class="admin-drawer__field-label">Notes</div><div class="admin-drawer__field-value">${info.notes}</div></div>` : ''}
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Durée</div><div class="admin-drawer__field-value">${esc(info.duree || '—')}</div></div>
+        ${isOnline && info.lien && /^https?:\/\//i.test(info.lien) ? `<div class="admin-drawer__field"><div class="admin-drawer__field-label">Lien</div><div class="admin-drawer__field-value" style="word-break:break-all;font-size:0.8rem;"><a href="${esc(info.lien)}" target="_blank" rel="noopener">${esc(info.lien)}</a></div></div>` : ''}
+        ${info.notes ? `<div class="admin-drawer__field"><div class="admin-drawer__field-label">Notes</div><div class="admin-drawer__field-value">${esc(info.notes)}</div></div>` : ''}
       </div>
       <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap;">
         <button class="admin-btn admin-btn--green" style="flex:1;" onclick="openDrawer('score',${id})"><i class="ph-light ph-chart-bar"></i> Évaluer le dossier</button>
@@ -2033,7 +2032,7 @@
 
     score: (id) => {
       const p = window._adminProjects[id] || {};
-      const porteurNom = p.prenom ? `${p.prenom} ${p.nom} — ${p.nom_projet}` : `Dossier #${id}`;
+      const porteurNom = p.prenom ? `${esc(p.prenom)} ${esc(p.nom)} — ${esc(p.nom_projet)}` : `Dossier #${id}`;
       return `
       <div class="admin-drawer__header">
         <div class="admin-drawer__title"><i class="ph-light ph-chart-bar"></i> Grille d'évaluation</div>
@@ -2075,7 +2074,7 @@
     publish: (id) => {
       const p = window._adminProjects[id] || {};
       const montant = parseInt(p.montant || 0).toLocaleString('fr-FR');
-      const porteurNom = p.prenom ? `${p.prenom} ${p.nom}` : `Porteur #${id}`;
+      const porteurNom = p.prenom ? `${esc(p.prenom)} ${esc(p.nom)}` : `Porteur #${id}`;
       const typeLabel = TYPE_BADGES[p.type] || p.type || '—';
       return `
       <div class="admin-drawer__header">
@@ -2084,7 +2083,7 @@
       </div>
       <div class="admin-drawer__section">
         <div class="admin-drawer__section-title">Récapitulatif</div>
-        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Projet</div><div class="admin-drawer__field-value">${p.nom_projet || '—'}</div></div>
+        <div class="admin-drawer__field"><div class="admin-drawer__field-label">Projet</div><div class="admin-drawer__field-value">${esc(p.nom_projet || '—')}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Porteur</div><div class="admin-drawer__field-value">${porteurNom}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Modèle</div><div class="admin-drawer__field-value">${typeLabel}</div></div>
         <div class="admin-drawer__field"><div class="admin-drawer__field-label">Montant cible</div><div class="admin-drawer__field-value">${montant} KMF</div></div>
@@ -2335,22 +2334,24 @@
         versed:   { label:'Versé',      bg:'rgba(10,123,108,0.08)', color:'var(--ocean)' },
       };
 
+      window._adminVersements = {};
       container.innerHTML = versements.map(v => {
-        const s = statusMap[v.status] || { label:v.status, bg:'', color:'' };
+        window._adminVersements[v.id] = v;
+        const s = statusMap[v.status] || { label:esc(v.status), bg:'', color:'' };
         const pct = v.montant > 0 ? Math.round(((v.montant_collecte||0) / v.montant) * 100) : 0;
         return `
-          <div class="admin-project-card" style="cursor:pointer;border-left:4px solid ${s.color};" onclick='openVersementDrawer(${JSON.stringify(v)})'>
+          <div class="admin-project-card" style="cursor:pointer;border-left:4px solid ${s.color};" onclick="openVersementDrawer(window._adminVersements[${parseInt(v.id)}])">
             <div class="admin-project-card__main">
               <div class="admin-project-card__header">
-                <strong>${v.nom_projet || 'Projet #' + v.project_id}</strong>
+                <strong>${esc(v.nom_projet || 'Projet #' + v.project_id)}</strong>
                 <span style="font-size:0.75rem;font-weight:700;color:${s.color};background:${s.bg};padding:0.2rem 0.7rem;border-radius:50px;">${s.label}</span>
               </div>
               <div class="admin-project-card__meta">
-                ${v.prenom || ''} ${v.nom || ''} · ${v.email || ''} · ${v.tel || ''}
+                ${esc(v.prenom || '')} ${esc(v.nom || '')} · ${esc(v.email || '')} · ${esc(v.tel || '')}
               </div>
               <div style="margin-top:0.5rem;display:flex;gap:1rem;font-size:0.85rem;flex-wrap:wrap;">
                 <span><strong style="color:var(--navy);">${parseInt(v.montant_demande||0).toLocaleString('fr-FR')} KMF</strong> demandés</span>
-                <span style="color:var(--text-muted);">${v.motif || ''}</span>
+                <span style="color:var(--text-muted);">${esc(v.motif || '')}</span>
                 <span style="color:var(--text-muted);">Collecté : ${parseInt(v.montant_collecte||0).toLocaleString('fr-FR')} / ${parseInt(v.montant||0).toLocaleString('fr-FR')} KMF (${pct}%)</span>
               </div>
             </div>
@@ -2371,7 +2372,7 @@
     document.getElementById('dv-title').innerHTML    = `<i class="ph-light ph-money"></i> Demande #${v.id}`;
     document.getElementById('dv-porteur').textContent = `${v.prenom || ''} ${v.nom || ''}`;
     document.getElementById('dv-contact').textContent = `${v.email || ''} · ${v.tel || ''}`;
-    document.getElementById('dv-paiement-tel').innerHTML    = v.paiement_tel    ? `<i class="ph-light ph-device-mobile"></i> ${v.paiement_tel}` : '<span style="color:var(--text-muted);font-style:italic;">Non renseigné</span>';
+    document.getElementById('dv-paiement-tel').innerHTML    = v.paiement_tel    ? `<i class="ph-light ph-device-mobile"></i> ${esc(v.paiement_tel)}` : '<span style="color:var(--text-muted);font-style:italic;">Non renseigné</span>';
     document.getElementById('dv-paiement-banque').textContent = v.paiement_banque ? `Banque : ${v.paiement_banque}` : '';
     document.getElementById('dv-paiement-rib').textContent    = v.paiement_rib    ? `RIB : ${v.paiement_rib}` : '';
     document.getElementById('dv-montant').textContent = `${m.toLocaleString('fr-FR')} KMF`;
@@ -2445,7 +2446,7 @@
                 ${medals[i] || `<span style="font-weight:700;color:var(--text-muted);">#${i+1}</span>`}
               </div>
               <div style="flex:1;">
-                <div style="font-weight:700;color:var(--navy);font-size:0.95rem;">${d.nom}</div>
+                <div style="font-weight:700;color:var(--navy);font-size:0.95rem;">${esc(d.nom)}</div>
                 <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.1rem;">${d.count} contribution${d.count > 1 ? 's' : ''}</div>
               </div>
               <div style="font-family:var(--font-heading);font-weight:800;color:var(--gold-dark);font-size:1.1rem;text-align:right;">
@@ -2532,23 +2533,23 @@
                   : '<span style="font-size:0.75rem;color:var(--text-muted);">—</span>';
 
                 const nom = c.anonyme ? '<em style="color:var(--text-muted);">Anonyme</em>'
-                  : (c.user_prenom ? `${c.user_prenom} ${c.user_nom}` : (c.nom_contributeur || '—'));
+                  : (c.user_prenom ? `${esc(c.user_prenom)} ${esc(c.user_nom)}` : esc(c.nom_contributeur || '—'));
                 const coords = c.coordonnees_paiement
-                  ? `<span style="font-family:monospace;font-size:0.8rem;background:var(--off-white);padding:0.15rem 0.4rem;border-radius:4px;">${c.coordonnees_paiement}</span>`
+                  ? `<span style="font-family:monospace;font-size:0.8rem;background:var(--off-white);padding:0.15rem 0.4rem;border-radius:4px;">${esc(c.coordonnees_paiement)}</span>`
                   : '<span style="color:var(--text-muted);">—</span>';
                 const date = c.created_at ? new Date(c.created_at).toLocaleDateString('fr-FR') : '—';
                 const ref  = c.reference
-                  ? `<span style="font-family:monospace;font-size:0.78rem;font-weight:700;color:var(--navy);">${c.reference}</span>`
+                  ? `<span style="font-family:monospace;font-size:0.78rem;font-weight:700;color:var(--navy);">${esc(c.reference)}</span>`
                   : '<span style="color:var(--text-muted);font-size:0.78rem;">—</span>';
 
                 return `
                   <tr>
                     <td>${ref}</td>
-                    <td style="max-width:150px;font-weight:600;color:var(--navy);">${c.nom_projet || '—'}</td>
-                    <td>${typeLabel[c.type] || c.type || '—'}</td>
+                    <td style="max-width:150px;font-weight:600;color:var(--navy);">${esc(c.nom_projet || '—')}</td>
+                    <td>${typeLabel[c.type] || esc(c.type || '—')}</td>
                     <td>${nom}</td>
                     <td style="font-weight:700;white-space:nowrap;">${parseInt(c.montant || 0).toLocaleString('fr-FR')} <span style="font-size:0.72rem;font-weight:500;">KMF</span></td>
-                    <td>${methLabel[c.methode_paiement] || c.methode_paiement || '—'}</td>
+                    <td>${methLabel[c.methode_paiement] || esc(c.methode_paiement || '—')}</td>
                     <td>${coords}</td>
                     <td>${statutBadge}</td>
                     <td style="white-space:nowrap;">${date}</td>

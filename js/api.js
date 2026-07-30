@@ -4,6 +4,18 @@
    BASE_URL pointe vers le backend Express (port 3001)
    ============================================================ */
 
+/* ── Échappement HTML anti-XSS — à utiliser sur TOUTE donnée
+      utilisateur insérée via innerHTML / template literal ────── */
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+window.esc = esc;
+
 const API = (() => {
   // URL de l'API : relative en production (Render), absolue en local
   const BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
@@ -182,11 +194,11 @@ function initNavbarAuth() {
 
     if (isLogged && user) {
       /* ── Utilisateur connecté : dropdown avec avatar ───── */
-      const initial = (user.prenom?.[0] || user.nom?.[0] || '?').toUpperCase();
+      const initial = esc((user.prenom?.[0] || user.nom?.[0] || '?').toUpperCase());
       li.innerHTML = `
         <div class="navbar__user" id="navbar-user-menu">
           <div class="navbar__user-avatar" id="navbar-avatar-badge">${initial}</div>
-          <span class="navbar__user-label">${user.prenom}</span>
+          <span class="navbar__user-label">${esc(user.prenom)}</span>
           <span class="navbar__user-caret">▾</span>
           <div class="navbar__user-menu">
             <a href="mon-espace.html"><i class="ph-light ph-user-circle"></i> Mon espace</a>
@@ -240,7 +252,7 @@ function initNavbarAuth() {
       const linksHtml = `
         <a class="mobile-auth-item" href="mon-espace.html"
            style="color:var(--green);font-weight:600;display:flex;align-items:center;gap:0.5rem;">
-          <i class="ph-light ph-user-circle"></i> Mon espace (${user.prenom})
+          <i class="ph-light ph-user-circle"></i> Mon espace (${esc(user.prenom)})
         </a>
         ${user.role === 'admin'
           ? `<a class="mobile-auth-item" href="admin.html"
@@ -293,7 +305,7 @@ function initNavbarAuth() {
 
     if (isLogged && user) {
       /* Avatar cliquable → ouvre le menu hamburger */
-      const initial = (user.prenom?.[0] || user.nom?.[0] || '?').toUpperCase();
+      const initial = esc((user.prenom?.[0] || user.nom?.[0] || '?').toUpperCase());
       wrap.innerHTML = `<div class="nmb-avatar">${initial}</div>`;
       wrap.querySelector('.nmb-avatar').addEventListener('click', () => hamburger.click());
     } else {

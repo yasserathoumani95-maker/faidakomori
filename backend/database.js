@@ -198,12 +198,12 @@ async function initPostgres(connectionString) {
   // Compte admin
   const adminRes = await pool.query("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
   if (!adminRes.rows.length) {
-    const hash = bcrypt.hashSync('Admin@FK2024!', 12);
+    const hash = bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'Admin@FK2024!', 12);
     await pool.query(
       "INSERT INTO users (nom, prenom, email, password_hash, role) VALUES ($1,$2,$3,$4,'admin')",
       ['Admin', 'FaidaKomori', 'admin@faidakomori.km', hash]
     );
-    console.log('[DB] Compte admin créé → admin@faidakomori.km / Admin@FK2024!');
+    console.log('[DB] Compte admin créé → admin@faidakomori.km');
   }
 
   console.log('[DB] ✅ Connecté à PostgreSQL (Neon)');
@@ -273,13 +273,13 @@ async function initSqlJsLocal() {
 
   const adminRes = sqlDb.exec("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
   if (!adminRes[0]?.values?.length) {
-    const hash = bcrypt.hashSync('Admin@FK2024!', 12);
+    const hash = bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'Admin@FK2024!', 12);
     sqlDb.run(
       "INSERT INTO users (nom, prenom, email, password_hash, role) VALUES (?,?,?,?,'admin')",
       ['Admin', 'FaidaKomori', 'admin@faidakomori.km', hash]
     );
     saveDb();
-    console.log('[DB] Compte admin créé → admin@faidakomori.km / Admin@FK2024!');
+    console.log('[DB] Compte admin créé → admin@faidakomori.km');
   }
 }
 
